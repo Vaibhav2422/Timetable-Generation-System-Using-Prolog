@@ -1,0 +1,71 @@
+# AI-Based Timetable Generation System - Git Ignore File
+
+# Prolog compiled files
+*.qlf
+*.qly
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Log files
+*.log
+logs/
+
+# Export temporary files
+temp/
+exports/
+
+# Database files (if persistence enabled)
+data/timetable_db.pl
+data/*.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node modules (if using any JavaScript build tools)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Python cache (if using any Python tools)
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# OS generated files
+Thumbs.db
+Desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Test output
+test-results/
+coverage/
+
+# Build artifacts
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+
+# PDF generation temporary files
+*.aux
+*.out
+*.toc
+
+# Keep directory structure
+!.gitkeep
