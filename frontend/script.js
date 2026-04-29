@@ -780,114 +780,92 @@ function renderTimetable(timetable) {
         return;
     }
 
-    // Support both matrix-based and assignments-based response shapes
-    const rooms     = timetable.rooms     || [];
-    const timeslots = timetable.timeslots || timetable.slots || [];
+    const slots       = timetable.timeslots || timetable.slots || [];
     const assignments = timetable.assignments || [];
 
-    // Build a lookup map: roomId -> slotId -> assignment
-    // Also resolve IDs to display names using the rooms/slots arrays
-    const roomById  = {};
-    rooms.forEach(r => { roomById[r.id] = r; });
-    const slotById  = {};
-    timeslots.forEach(s => { slotById[s.id] = s; });
-
-    // Build matrix from assignments if no matrix provided
-    let matrix = timetable.matrix;
-    if (!matrix && assignments.length > 0) {
-        // Only include rooms that have at least one assignment
-        const usedRoomIds = [...new Set(assignments.map(a => a.room_id))];
-        const usedRooms   = usedRoomIds.map(id => roomById[id] || { id, name: id });
-
-        // Build matrix: rows = rooms, cols = timeslots
-        const assignMap = {};
-        assignments.forEach(a => {
-            const key = `${a.room_id}__${a.slot_id}`;
-            // Resolve display names from resourceData if available
-            const roomName    = (roomById[a.room_id]  || {}).name    || a.room_id;
-            const slotObj     = slotById[a.slot_id]   || {};
-            const subjectName = _resolveId('subjects', a.subject_id);
-            const teacherName = _resolveId('teachers', a.teacher_id);
-            const className   = _resolveId('classes',  a.class_id);
-            assignMap[key] = {
-                room:    roomName,
-                subject: subjectName,
-                teacher: teacherName,
-                class:   className,
-                // keep raw ids for explain
-                room_id: a.room_id, subject_id: a.subject_id,
-                teacher_id: a.teacher_id, class_id: a.class_id, slot_id: a.slot_id
-            };
-        });
-
-        matrix = usedRooms.map(room =>
-            timeslots.map(slot => assignMap[`${room.id}__${slot.id}`] || null)
-        );
-
-        // Swap rooms reference to only used rooms for rendering
-        timetable._usedRooms = usedRooms;
-    }
-
-    if (!matrix || matrix.length === 0) {
+    if (assignments.length === 0) {
         gridContainer.innerHTML = '<p class="empty-state">No assignments in timetable</p>';
         return;
     }
 
-    const renderRooms = timetable._usedRooms || rooms;
+    // Build lookup maps
+    const slotById = {};
+    slots.forEach(s => { slotById[s.id] = s; });
 
-    gridContainer.innerHTML = '';
-    gridContainer.style.gridTemplateColumns = `140px repeat(${timeslots.length}, minmax(140px, 1fr))`;
+    // Resolve display names
+    function resolveName(type, id) {
+        if (!id) return '—';
+        const items = (typeof resourceData !== 'undefined' && resourceData[type]) || [];
+        const found = items.find(x => x.id === id);
+        return found ? (found.name || id) : id;
+    }
 
-    // Corner cell
-    const cornerCell = document.createElement('div');
-    cornerCell.className = 'grid-cell grid-header';
-    cornerCell.textContent = 'Room / Time';
-    gridContainer.appendChild(cornerCell);
+    // Get unique days in order
+    const dayOrder = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+    const usedDays = [...new Set(slots.map(s => (s.day||'').toLowerCase()))].sort((a,b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
 
-    // Slot headers
-    timeslots.forEach(slot => {
-        const headerCell = document.createElement('div');
-        headerCell.className = 'grid-cell grid-header';
-        const day    = slot.day    ? slot.day.charAt(0).toUpperCase() + slot.day.slice(1) : '';
-        const period = slot.period ? `P${slot.period}` : '';
-        const time   = slot.start_time || slot.start || '';
-        headerCell.innerHTML = `<strong>${day}</strong><br>${period}<br><small>${time}</small>`;
-        gridContainer.appendChild(headerCell);
+    // Get unique periods sorted
+    const usedPeriods = [...new Set(slots.map(s => s.period))].sort((a,b) => a - b);
+
+    // Build slot lookup: day+period -> slot
+    const slotByDayPeriod = {};
+    slots.forEach(s => { slotByDayPeriod[`${(s.day||'').toLowerCase()}__${s.period}`] = s; });
+
+    // Build assignment lookup: slotId -> [assignments]
+    const assignBySlot = {};
+    assignments.forEach(a => {
+        if (!assignBySlot[a.slot_id]) assignBySlot[a.slot_id] = [];
+        assignBySlot[a.slot_id].push(a);
     });
 
-    // Room rows
-    matrix.forEach((row, roomIdx) => {
-        const room = renderRooms[roomIdx];
-        const roomHeader = document.createElement('div');
-        roomHeader.className = 'grid-cell grid-header';
-        roomHeader.textContent = room?.name || `Room ${roomIdx + 1}`;
-        gridContainer.appendChild(roomHeader);
+    // Get time labels for period headers
+    const periodTimes = {};
+    usedPeriods.forEach(p => {
+        const slot = slots.find(s => s.period === p);
+        periodTimes[p] = slot ? (slot.start_time || slot.start || `P${p}`) : `P${p}`;
+    });
 
-        row.forEach((cell, slotIdx) => {
-            const cellDiv = document.createElement('div');
-            cellDiv.className = 'grid-cell';
-            cellDiv.dataset.room = roomIdx;
-            cellDiv.dataset.slot = slotIdx;
+    // Build table HTML
+    let html = '<table class="tt-table"><thead><tr>';
+    html += '<th class="tt-day-header">Day / Time</th>';
+    usedPeriods.forEach(p => {
+        html += `<th class="tt-period-header"><div>P${p}</div><small>${periodTimes[p]}</small></th>`;
+    });
+    html += '</tr></thead><tbody>';
 
-            if (cell) {
-                cellDiv.classList.add('assignment');
-                if (cell.subject) {
-                    cellDiv.classList.add(`subject-${cell.subject.toLowerCase().replace(/\s+/g, '-')}`);
-                }
-                cellDiv.innerHTML = `
-                    <div class="assignment">
-                        <strong>${cell.class || cell.class_id || '—'}</strong>
-                        <div>${cell.subject || cell.subject_id || '—'}</div>
-                        <small>${cell.teacher || cell.teacher_id || '—'}</small>
-                    </div>`;
-                cellDiv.addEventListener('click', () => showExplanation(cell));
+    usedDays.forEach(day => {
+        html += `<tr><td class="tt-day-cell">${day.charAt(0).toUpperCase() + day.slice(1)}</td>`;
+        usedPeriods.forEach(p => {
+            const slot = slotByDayPeriod[`${day}__${p}`];
+            const cellAssignments = slot ? (assignBySlot[slot.id] || []) : [];
+            if (cellAssignments.length === 0) {
+                html += '<td class="tt-empty">—</td>';
             } else {
-                cellDiv.classList.add('empty');
-                cellDiv.textContent = '—';
+                html += '<td class="tt-cell">';
+                cellAssignments.forEach(a => {
+                    const cls     = resolveName('classes',  a.class_id);
+                    const subj    = resolveName('subjects', a.subject_id);
+                    const teacher = resolveName('teachers', a.teacher_id);
+                    const room    = resolveName('rooms',    a.room_id);
+                    html += `<div class="tt-entry">
+                        <strong>${cls}</strong>
+                        <div class="tt-subject">${subj}</div>
+                        <small class="tt-teacher">${teacher}</small>
+                        <small class="tt-room">${room}</small>
+                    </div>`;
+                });
+                html += '</td>';
             }
-            gridContainer.appendChild(cellDiv);
         });
+        html += '</tr>';
     });
+
+    html += '</tbody></table>';
+
+    // Reset grid styles and inject table
+    gridContainer.style.gridTemplateColumns = '';
+    gridContainer.style.display = 'block';
+    gridContainer.innerHTML = html;
 }
 
 /** Resolve an ID to a display name using resourceData, falling back to the raw id */
