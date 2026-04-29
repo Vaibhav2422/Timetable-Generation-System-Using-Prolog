@@ -735,6 +735,9 @@ async function generateTimetable() {
             if (exportPdf)  exportPdf.disabled  = false;
             if (exportCsv)  exportCsv.disabled  = false;
             if (exportJson) exportJson.disabled = false;
+            // Auto-load quality score and search stats
+            if (typeof loadQualityScore === 'function') loadQualityScore();
+            setTimeout(() => { if (typeof loadSearchStatistics === 'function') loadSearchStatistics(); }, 2000);
         }, 1000);
 
     } catch (error) {
@@ -2025,11 +2028,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Patch: after timetable renders, also load quality score (only when a new timetable is set)
-const _origRenderTimetable = renderTimetable;
-function renderTimetable(timetable) {
-    _origRenderTimetable(timetable);
-    if (timetable) loadQualityScore();
-}
+// NOTE: quality score loading is inlined into the original renderTimetable function above
 
 
 // ============================================
@@ -2600,12 +2599,7 @@ const _loadSearchStatsBtnInit = () => {
 document.addEventListener('DOMContentLoaded', _loadSearchStatsBtnInit);
 
 // Auto-load search statistics after timetable generation completes
-const _origGenerateTimetableForStats = generateTimetable;
-async function generateTimetable() {
-    await _origGenerateTimetableForStats();
-    // Auto-load stats after a short delay to let the server update
-    setTimeout(loadSearchStatistics, 2000);
-}
+// NOTE: stats loading is inlined into the original generateTimetable function above
 
 // ============================================
 // Feature 8: Multiple Timetable Generation

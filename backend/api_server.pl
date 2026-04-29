@@ -77,9 +77,8 @@
 :- use_module(library(time)).
 :- mutex_create(timetable_mutex, []).
 
-%% CORS: allow all origins on every request
-:- multifile http:cors_allow_origin/2.
-http:cors_allow_origin(_, '*').
+%% CORS: handled explicitly per-handler via cors_enable calls
+%% Global hook disabled to prevent duplicate headers
 
 %% Backend modules
 :- use_module(knowledge_base).
@@ -130,12 +129,6 @@ http:cors_allow_origin(_, '*').
 %% start_server(+Port)
 %% Start HTTP server on specified port
 %% Validates: Requirements 13.3, 13.4
-%% Allow all origins for CORS preflight and actual requests
-:- multifile http:cors_allow_origin/2.
-http:cors_allow_origin(_, '*').
-
-%% Enable CORS globally
-:- set_setting(http:cors, [*]).
 
 start_server(Port) :-
     log_info('Starting HTTP server'),
@@ -157,13 +150,17 @@ cors_headers :-
 %% reply_json_with_cors(+Data)
 %% Reply with JSON and CORS headers
 reply_json_with_cors(Data) :-
-    cors_enable,
+    format('Access-Control-Allow-Origin: *~n'),
+    format('Access-Control-Allow-Methods: GET, POST, OPTIONS~n'),
+    format('Access-Control-Allow-Headers: Content-Type~n'),
     reply_json(Data).
 
 %% reply_json_with_cors(+Data, +Options)
 %% Reply with JSON, CORS headers, and options
 reply_json_with_cors(Data, Options) :-
-    cors_enable,
+    format('Access-Control-Allow-Origin: *~n'),
+    format('Access-Control-Allow-Methods: GET, POST, OPTIONS~n'),
+    format('Access-Control-Allow-Headers: Content-Type~n'),
     (Options = [status(Code)] ->
         reply_json(Data, [status(Code)])
     ;
@@ -402,7 +399,6 @@ store_resource_by_type(Type, _) :-
 %% Handle POST /api/generate - Generate timetable
 %% Validates: Requirement 11.2
 handle_generate(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -433,7 +429,6 @@ handle_generate(Request) :-
     ).
 
 handle_generate(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -455,7 +450,6 @@ handle_generate_error(Error) :-
 %% Handle GET /api/timetable - Retrieve current timetable
 %% Validates: Requirement 11.3
 handle_get_timetable(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -471,7 +465,6 @@ handle_get_timetable(Request) :-
     ).
 
 handle_get_timetable(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -494,7 +487,6 @@ handle_get_timetable_error(Error) :-
 %% Handle GET /api/reliability - Get reliability score
 %% Validates: Requirement 11.4
 handle_reliability(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -517,7 +509,6 @@ handle_reliability(Request) :-
     ).
 
 handle_reliability(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -535,7 +526,6 @@ handle_reliability_error(Error) :-
 %% Handle POST /api/explain - Explain assignment
 %% Validates: Requirement 11.5
 handle_explain(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -556,7 +546,6 @@ handle_explain(Request) :-
     ).
 
 handle_explain(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -581,7 +570,6 @@ find_assignment_in_timetable(session(ClassID, SubjectID), Timetable, Assignment)
 %% Handle GET /api/conflicts - Detect conflicts
 %% Validates: Requirement 11.6
 handle_conflicts(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -598,7 +586,6 @@ handle_conflicts(Request) :-
     ).
 
 handle_conflicts(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -626,7 +613,6 @@ format_conflicts_json([room_conflict(RoomID, SlotID, Sessions)|Rest],
 %% Handle POST /api/repair - Repair timetable
 %% Validates: Requirement 11.6
 handle_repair(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -650,7 +636,6 @@ handle_repair(Request) :-
     ).
 
 handle_repair(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -673,7 +658,6 @@ handle_repair_error(Error) :-
 %% Handle GET /api/analytics - Get resource utilization analytics
 %% Validates: Requirements 22.1, 22.2, 22.3, 22.4
 handle_analytics(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -689,7 +673,6 @@ handle_analytics(Request) :-
     ).
 
 handle_analytics(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -767,7 +750,6 @@ calculate_schedule_density(Timetable, Density) :-
 %% Handle GET /api/export - Export timetable in various formats
 %% Validates: Requirements 25.1, 25.2, 25.3, 25.4
 handle_export(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -785,7 +767,6 @@ handle_export(Request) :-
     ).
 
 handle_export(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -855,7 +836,6 @@ format_user_error(Error, ErrorMsg) :-
 %% handle_explain_detailed(+Request)
 %% Handle POST /api/explain_detailed - Return structured XAI explanation
 handle_explain_detailed(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -873,7 +853,6 @@ handle_explain_detailed(Request) :-
     ).
 
 handle_explain_detailed(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -895,7 +874,6 @@ handle_explain_detailed_error(Error) :-
 %% Handle GET /api/suggest_fixes
 %% Returns all detected conflicts together with actionable fix suggestions.
 handle_suggest_fixes(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -915,7 +893,6 @@ handle_suggest_fixes(Request) :-
     ).
 
 handle_suggest_fixes(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -981,7 +958,6 @@ pairs_to_dict([Key-Value|Rest], Dict) :-
 %% Handle POST /api/apply_fix
 %% Applies a chosen fix to the current timetable and returns the updated timetable.
 handle_apply_fix(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1012,7 +988,6 @@ handle_apply_fix(Request) :-
     ).
 
 handle_apply_fix(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1037,7 +1012,6 @@ handle_apply_fix_error(Error) :-
 %% Runs a what-if scenario against the current timetable and returns the
 %% simulated timetable together with a reliability score.
 handle_simulate(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1065,7 +1039,6 @@ handle_simulate(Request) :-
     ).
 
 handle_simulate(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1084,7 +1057,6 @@ handle_simulate_error(Error) :-
 %% Runs two scenarios and returns a diff comparison.
 %% Expected body: {scenario_a: {scenario, ...}, scenario_b: {scenario, ...}}
 handle_compare_scenarios(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1133,7 +1105,6 @@ handle_compare_scenarios(Request) :-
     ).
 
 handle_compare_scenarios(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1172,7 +1143,6 @@ format_changes_json([_|Rest], RestJSON) :-
 %% Handle GET /api/quality_score
 %% Returns the overall quality score (0-100) and a per-metric breakdown.
 handle_quality_score(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -1189,7 +1159,6 @@ handle_quality_score(Request) :-
     ).
 
 handle_quality_score(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1211,7 +1180,6 @@ handle_quality_score_error(Error) :-
 %% Handle GET /api/recommendations
 %% Returns a prioritised list of AI-generated improvement recommendations.
 handle_recommendations(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -1229,7 +1197,6 @@ handle_recommendations(Request) :-
     ).
 
 handle_recommendations(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1248,7 +1215,6 @@ handle_recommendations_error(Error) :-
 %% Applies a chosen recommendation and returns the updated timetable.
 %% Expected body: { priority, category, description, action: { type, ... } }
 handle_apply_recommendation(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1278,7 +1244,6 @@ handle_apply_recommendation(Request) :-
     ).
 
 handle_apply_recommendation(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1310,7 +1275,6 @@ dict_to_action(Dict, ActionTerm) :-
 %% Handle GET /api/heatmap?type=teacher|room|timeslot
 %% Returns heatmap data as JSON with cells containing id, label, and intensity.
 handle_heatmap(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -1326,7 +1290,6 @@ handle_heatmap(Request) :-
     ).
 
 handle_heatmap(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1353,7 +1316,6 @@ handle_heatmap_error(Error) :-
 %% Handle GET /api/search_stats
 %% Returns comprehensive statistics about the last CSP search run.
 handle_search_stats(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -1366,7 +1328,6 @@ handle_search_stats(Request) :-
     ).
 
 handle_search_stats(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1390,7 +1351,6 @@ handle_search_stats_error(Error) :-
 %% Returns a ranked list of up to N timetable solutions with quality and
 %% reliability badges.
 handle_generate_multiple(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1416,7 +1376,6 @@ handle_generate_multiple(Request) :-
     ).
 
 handle_generate_multiple(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1454,7 +1413,6 @@ format_ranked_solutions([Sol|Rest], [Formatted|RestFormatted]) :-
 %% For simplicity the client sends two full timetable JSON objects:
 %%   { timetable_a: <json>, timetable_b: <json> }
 handle_compare_timetables(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1492,7 +1450,6 @@ handle_compare_timetables(Request) :-
     ).
 
 handle_compare_timetables(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1515,7 +1472,6 @@ handle_compare_timetables_error(Error) :-
 %% Handle GET /api/constraint_weights
 %% Returns the current weight for every soft constraint.
 handle_constraint_weights(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -1529,7 +1485,6 @@ handle_constraint_weights(Request) :-
     ).
 
 handle_constraint_weights(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1554,7 +1509,6 @@ format_weights_json(Weights, JSON) :-
 %% Body: { "workload_balance": 0.9, "avoid_late_theory": 0.5, ... }
 %% Accepts a partial dict - only the provided keys are updated.
 handle_set_weights(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1574,7 +1528,6 @@ handle_set_weights(Request) :-
     ).
 
 handle_set_weights(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1606,7 +1559,6 @@ apply_weight_updates(JSONDict) :-
 %% Body: { "weights": { "workload_balance": 0.9, ... } }
 %% Applies the provided weights then generates a timetable.
 handle_generate_with_weights(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1638,7 +1590,6 @@ handle_generate_with_weights(Request) :-
     ).
 
 handle_generate_with_weights(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1672,7 +1623,6 @@ format_assignments_json([_|Rest], RestJSON) :-
 %% Body: { "type": "teacher|subject|room|timeslot|class", ...fields... }
 %% Returns: { status, valid, errors, suggestions, conflicts }
 handle_validate_input(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1704,7 +1654,6 @@ handle_validate_input(Request) :-
     ).
 
 handle_validate_input(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1742,7 +1691,6 @@ handle_validate_input_error(Error) :-
 %%     "reliability":     <float 0-1>
 %%   }
 handle_optimize_ga(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1774,7 +1722,6 @@ handle_optimize_ga(Request) :-
     ).
 
 handle_optimize_ga(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1815,7 +1762,6 @@ build_ga_options(JSONData, Options) :-
 %% Response:
 %%   { "status": "success", "valid": true|false, "warnings": [...] }
 handle_validate_move(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1842,7 +1788,6 @@ handle_validate_move(Request) :-
     ).
 
 handle_validate_move(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1865,7 +1810,6 @@ handle_validate_move_error(Error) :-
 %% Response:
 %%   { "status": "success", "timetable": <json>, "effects": [...] }
 handle_apply_move(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1905,7 +1849,6 @@ handle_apply_move(Request) :-
     ).
 
 handle_apply_move(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1928,7 +1871,6 @@ handle_apply_move_error(Error) :-
 %% Response:
 %%   { "status": "success", "alternatives": [{"room_id": ..., "slot_id": ...}, ...] }
 handle_suggest_alternatives(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -1952,7 +1894,6 @@ handle_suggest_alternatives(Request) :-
     ).
 
 handle_suggest_alternatives(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -1985,7 +1926,6 @@ format_alternatives_json([alt(RoomID, SlotID) | Rest],
 %% Handle GET /api/learning_stats
 %% Returns statistics about what the learning system has discovered.
 handle_learning_stats(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -1998,7 +1938,6 @@ handle_learning_stats(Request) :-
     ).
 
 handle_learning_stats(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2016,7 +1955,6 @@ handle_learning_stats_error(Error) :-
 %% Handle POST /api/apply_learning
 %% Stores the current timetable in history and returns updated learning stats.
 handle_apply_learning(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -2041,7 +1979,6 @@ handle_apply_learning(Request) :-
     ).
 
 handle_apply_learning(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2059,7 +1996,6 @@ handle_apply_learning_error(Error) :-
 %% Handle POST /api/clear_history
 %% Clears all stored timetable history and learned patterns.
 handle_clear_history(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -2075,7 +2011,6 @@ handle_clear_history(Request) :-
     ).
 
 handle_clear_history(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2102,7 +2037,6 @@ handle_clear_history_error(Error) :-
 %% Analyses the current timetable and returns discovered patterns with
 %% confidence scores.  The caller may then accept or reject each pattern.
 handle_discover_patterns(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -2129,7 +2063,6 @@ handle_discover_patterns(Request) :-
     ).
 
 handle_discover_patterns(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2164,7 +2097,6 @@ format_patterns_json([pattern(Type, Desc, Confidence, SuggestedConstraint)|Rest]
 %% Accepts a user-approved pattern and stores it as an active soft constraint.
 %% Body: { constraint: "<constraint atom string>", description: "..." }
 handle_apply_pattern(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -2187,7 +2119,6 @@ handle_apply_pattern(Request) :-
     ).
 
 handle_apply_pattern(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2237,7 +2168,6 @@ handle_apply_pattern_error(Error) :-
 %%   }
 %%
 handle_analyze_scenarios(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -2276,7 +2206,6 @@ handle_analyze_scenarios(Request) :-
     ).
 
 handle_analyze_scenarios(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2357,7 +2286,6 @@ format_ranked_scenario_results([Result|Rest], [Formatted|RestFormatted]) :-
 %% Handle GET /api/constraint_graph
 %% Returns the constraint graph as JSON with nodes, edges, and metrics.
 handle_constraint_graph(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -2372,7 +2300,6 @@ handle_constraint_graph(Request) :-
     ).
 
 handle_constraint_graph(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2398,7 +2325,6 @@ handle_constraint_graph_error(Error) :-
 %% Handle GET /api/complexity_analysis
 %% Returns comprehensive AI solver complexity metrics.
 handle_complexity_analysis(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -2418,7 +2344,6 @@ handle_complexity_analysis(Request) :-
     ).
 
 handle_complexity_analysis(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2445,7 +2370,6 @@ handle_complexity_analysis_error(Error) :-
 %% Request body: {"query": "Show Dr. Smith schedule"}
 %% Response: {"status": "success", "answer": "...", "intent": "...", "entity": "..."}
 handle_nl_query(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -2473,7 +2397,6 @@ handle_nl_query(Request) :-
     ).
 
 handle_nl_query(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2507,7 +2430,6 @@ handle_nl_query_error(Error) :-
 %%     "bottlenecks": [...],
 %%     "suggestions": [...] }
 handle_predict_conflicts(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     catch(
@@ -2549,13 +2471,11 @@ handle_predict_conflicts(Request) :-
     ).
 
 handle_predict_conflicts(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     format('~n').
 
 handle_predict_conflicts(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     format_user_error('Use POST /api/predict_conflicts with optional {sessions: [...]}', Msg),
     reply_json_with_cors(_{status: error, message: Msg}, [status(400)]).
 
@@ -2616,7 +2536,6 @@ action_to_json(action(Priority, Description),
 %% Optional body: { "author": "...", "reason": "..." }
 %% Saves the current timetable as a new version and returns the version ID.
 handle_save_version(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -2646,7 +2565,6 @@ handle_save_version(Request) :-
     ).
 
 handle_save_version(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2664,7 +2582,6 @@ handle_save_version_error(Error) :-
 %% Handle GET /api/versions
 %% Returns all saved version metadata, newest first.
 handle_list_versions(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -2682,7 +2599,6 @@ handle_list_versions(Request) :-
     ).
 
 handle_list_versions(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2700,7 +2616,6 @@ handle_list_versions_error(Error) :-
 %% Handle GET /api/version?id=<version_id>
 %% Returns the timetable stored under the given version ID.
 handle_load_version(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(get), Request),
     !,
     safe_execute(
@@ -2725,7 +2640,6 @@ handle_load_version(Request) :-
     ).
 
 handle_load_version(Request) :-
-    cors_enable(Request, [methods([get, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2744,7 +2658,6 @@ handle_load_version_error(Error) :-
 %% Body: { "version_a": "v1", "version_b": "v2" }
 %% Returns a detailed diff between the two versions.
 handle_compare_versions(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -2786,7 +2699,6 @@ handle_compare_versions(Request) :-
     ).
 
 handle_compare_versions(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
@@ -2805,7 +2717,6 @@ handle_compare_versions_error(Error) :-
 %% Body: { "version_id": "v2" }
 %% Restores the current timetable to the specified version.
 handle_rollback(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     safe_execute(
@@ -2831,7 +2742,6 @@ handle_rollback(Request) :-
     ).
 
 handle_rollback(Request) :-
-    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
     reply_cors_preflight(Request).
