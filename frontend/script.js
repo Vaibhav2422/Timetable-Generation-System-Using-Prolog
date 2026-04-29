@@ -1974,6 +1974,22 @@ function _populateScenarioDropdowns() {
             resourceData.rooms.map(r => `<option value="${r.id}">${r.name}</option>`).join('');
         if (current) roomSel.value = current;
     }
+    // Populate class dropdown for extra_class scenario
+    const classSel = document.getElementById('scenario-class-id');
+    if (classSel && resourceData.classes.length > 0) {
+        const current = classSel.value;
+        classSel.innerHTML = '<option value="">Select class…</option>' +
+            resourceData.classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        if (current) classSel.value = current;
+    }
+    // Populate subject dropdown for extra_class scenario
+    const subjSel = document.getElementById('scenario-subject-id');
+    if (subjSel && resourceData.subjects.length > 0) {
+        const current = subjSel.value;
+        subjSel.innerHTML = '<option value="">Select subject…</option>' +
+            resourceData.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+        if (current) subjSel.value = current;
+    }
 }
 
 /**
@@ -2035,15 +2051,28 @@ async function simulateScenario(scenarioType) {
  */
 function buildScenarioParams(scenarioType) {
     switch (scenarioType) {
-        case 'teacher_absence':
-            return { teacher_id: document.getElementById('scenario-teacher-id').value.trim() };
-        case 'room_maintenance':
-            return { room_id: document.getElementById('scenario-room-id').value.trim() };
-        case 'extra_class':
+        case 'teacher_absence': {
+            const raw = document.getElementById('scenario-teacher-id').value.trim();
+            // Accept either an ID (t1) or a name — resolve to ID
+            const teacher = resourceData.teachers.find(t => t.id === raw || t.name === raw);
+            return { teacher_id: teacher ? teacher.id : raw };
+        }
+        case 'room_maintenance': {
+            const raw = document.getElementById('scenario-room-id').value.trim();
+            const room = resourceData.rooms.find(r => r.id === raw || r.name === raw);
+            return { room_id: room ? room.id : raw };
+        }
+        case 'extra_class': {
+            const rawClass   = document.getElementById('scenario-class-id').value.trim();
+            const rawSubject = document.getElementById('scenario-subject-id').value.trim();
+            // Resolve name → ID for both class and subject
+            const cls  = resourceData.classes.find(c => c.id === rawClass   || c.name === rawClass);
+            const subj = resourceData.subjects.find(s => s.id === rawSubject || s.name === rawSubject);
             return {
-                class_id:   document.getElementById('scenario-class-id').value.trim(),
-                subject_id: document.getElementById('scenario-subject-id').value.trim()
+                class_id:   cls  ? cls.id  : rawClass,
+                subject_id: subj ? subj.id : rawSubject
             };
+        }
         case 'exam_week': {
             const raw = document.getElementById('scenario-exam-slots').value.trim();
             return { exam_slots: raw.split(',').map(s => s.trim()).filter(Boolean) };

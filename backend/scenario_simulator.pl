@@ -51,39 +51,12 @@
 %
 % ============================================================================
 
-simulate_scenario(teacher_absence, Params, Result) :-
-    log_info('Simulating teacher absence scenario'),
-    get_dict(teacher_id, Params, TeacherID),
-    get_current_timetable(OriginalMatrix),
-    % Mark teacher unavailable and reassign their sessions
-    mark_teacher_unavailable(TeacherID, OriginalMatrix, SimMatrix, Changes),
-    schedule_reliability(SimMatrix, Reliability),
-    Result = _{
-        scenario: teacher_absence,
-        teacher_id: TeacherID,
-        timetable: SimMatrix,
-        reliability: Reliability,
-        changes: Changes
-    }.
-
-simulate_scenario(room_maintenance, Params, Result) :-
-    log_info('Simulating room maintenance scenario'),
-    get_dict(room_id, Params, RoomID),
-    get_current_timetable(OriginalMatrix),
-    mark_room_unavailable(RoomID, OriginalMatrix, SimMatrix, Changes),
-    schedule_reliability(SimMatrix, Reliability),
-    Result = _{
-        scenario: room_maintenance,
-        room_id: RoomID,
-        timetable: SimMatrix,
-        reliability: Reliability,
-        changes: Changes
-    }.
-
 simulate_scenario(extra_class, Params, Result) :-
     log_info('Simulating extra class scenario'),
-    get_dict(class_id, Params, ClassID),
-    get_dict(subject_id, Params, SubjectID),
+    (get_dict(class_id, Params, ClassID) -> true ;
+        throw(error(missing_param, 'extra_class scenario requires class_id'))),
+    (get_dict(subject_id, Params, SubjectID) -> true ;
+        throw(error(missing_param, 'extra_class scenario requires subject_id'))),
     get_current_timetable(OriginalMatrix),
     add_extra_session(ClassID, SubjectID, OriginalMatrix, SimMatrix, Changes),
     schedule_reliability(SimMatrix, Reliability),
@@ -96,9 +69,40 @@ simulate_scenario(extra_class, Params, Result) :-
         changes: Changes
     }.
 
+simulate_scenario(teacher_absence, Params, Result) :-
+    log_info('Simulating teacher absence scenario'),
+    (get_dict(teacher_id, Params, TeacherID) -> true ;
+        throw(error(missing_param, 'teacher_absence scenario requires teacher_id'))),
+    get_current_timetable(OriginalMatrix),
+    mark_teacher_unavailable(TeacherID, OriginalMatrix, SimMatrix, Changes),
+    schedule_reliability(SimMatrix, Reliability),
+    Result = _{
+        scenario: teacher_absence,
+        teacher_id: TeacherID,
+        timetable: SimMatrix,
+        reliability: Reliability,
+        changes: Changes
+    }.
+
+simulate_scenario(room_maintenance, Params, Result) :-
+    log_info('Simulating room maintenance scenario'),
+    (get_dict(room_id, Params, RoomID) -> true ;
+        throw(error(missing_param, 'room_maintenance scenario requires room_id'))),
+    get_current_timetable(OriginalMatrix),
+    mark_room_unavailable(RoomID, OriginalMatrix, SimMatrix, Changes),
+    schedule_reliability(SimMatrix, Reliability),
+    Result = _{
+        scenario: room_maintenance,
+        room_id: RoomID,
+        timetable: SimMatrix,
+        reliability: Reliability,
+        changes: Changes
+    }.
+
 simulate_scenario(exam_week, Params, Result) :-
     log_info('Simulating exam week scenario'),
-    get_dict(exam_slots, Params, ExamSlots),
+    (get_dict(exam_slots, Params, ExamSlots) -> true ;
+        throw(error(missing_param, 'exam_week scenario requires exam_slots'))),
     get_current_timetable(OriginalMatrix),
     apply_exam_week_constraints(ExamSlots, OriginalMatrix, SimMatrix, Changes),
     schedule_reliability(SimMatrix, Reliability),
