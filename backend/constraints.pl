@@ -35,6 +35,7 @@
     check_batch_parent_no_conflict/3,
     check_max_sessions_per_day/3,
     check_teacher_max_per_day/3,
+    check_teacher_weekly_load/2,
     check_all_hard_constraints/6,
     
     % Soft constraint predicates
@@ -113,8 +114,22 @@ classes_share_students(C1, C2) :-
     ).
 
 % ----------------------------------------------------------------------------
-% check_max_sessions_per_day/3: No more than 6 sessions for a class per day
+% check_teacher_weekly_load/3: Enforce teacher max weekly hours
 % ----------------------------------------------------------------------------
+% Prevents any single teacher from exceeding their maxload.
+% This is the hard gate that stops Vaishali from taking all sessions.
+%
+check_teacher_weekly_load(TeacherID, Matrix) :-
+    (teacher(TeacherID, _, _, MaxLoad, _) ; user:teacher(TeacherID, _, _, MaxLoad, _)),
+    get_all_assignments(Matrix, Assignments),
+    findall(Dur,
+        (member(assigned(_, _, SubjID, TeacherID, _), Assignments),
+         (subject(SubjID, _, _, _, Dur) ; user:subject(SubjID, _, _, _, Dur))),
+        Durations),
+    sum_list(Durations, TotalHours),
+    TotalHours < MaxLoad.   % strict less-than: leave room for this new session
+
+
 % Prevents hectic days — a class should not have more than 6 hours of
 % scheduled sessions on any single day.
 %
@@ -359,7 +374,8 @@ check_all_hard_constraints(RoomID, ClassID, SubjectID, TeacherID, SlotID, Matrix
     check_teacher_available(TeacherID, SlotID),
     check_batch_parent_no_conflict(ClassID, SlotID, Matrix),
     check_max_sessions_per_day(ClassID, SlotID, Matrix),
-    check_teacher_max_per_day(TeacherID, SlotID, Matrix).
+    check_teacher_max_per_day(TeacherID, SlotID, Matrix),
+    check_teacher_weekly_load(TeacherID, Matrix).
 
 % ============================================================================
 % PART 2: SOFT CONSTRAINT SCORING PREDICATES

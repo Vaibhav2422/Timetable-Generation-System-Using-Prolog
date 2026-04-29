@@ -118,10 +118,13 @@ random_chromosome(Sessions, Teachers, Rooms, Slots, Chromosome) :-
 
 random_gene(Teachers, Rooms, Slots, Session, gene(Session, TeacherID, RoomID, SlotID)) :-
     Session = session(_, SubjectID),
-    % Pick a qualified teacher (or any teacher if none qualified)
+    % Pick a qualified teacher weighted by inverse current load (less loaded = more likely)
     findall(T, (member(teacher(T,_,_,_,_), Teachers), qualified(T, SubjectID)), QualTeachers),
     (QualTeachers \= [] -> TeacherPool = QualTeachers ; TeacherPool = Teachers),
-    random_member_from(TeacherPool, TeacherID),
+    % Build load-weighted pool: repeat each teacher (MaxLoad - CurrentLoad) times
+    build_weighted_teacher_pool(TeacherPool, WeightedPool),
+    (WeightedPool \= [] -> random_member_from(WeightedPool, TeacherID)
+    ;   random_member_from(TeacherPool, TeacherID)),
     % Pick a suitable room (or any room)
     findall(R, (member(room(R,_,_,_), Rooms), check_room_suitable(R, SubjectID)), SuitRooms),
     (SuitRooms \= [] -> RoomPool = SuitRooms ; RoomPool = Rooms),
@@ -129,6 +132,23 @@ random_gene(Teachers, Rooms, Slots, Session, gene(Session, TeacherID, RoomID, Sl
     % Pick a random slot
     random_member_from(Slots, SlotTerm),
     (SlotTerm = timeslot(SlotID,_,_,_,_) -> true ; SlotID = SlotTerm).
+
+%% build_weighted_teacher_pool/2
+%% Each teacher appears (MaxLoad - CurrentLoad) times so less-loaded teachers
+%% are proportionally more likely to be picked.
+build_weighted_teacher_pool(Teachers, WeightedPool) :-
+    findall(TID,
+        (member(TID, Teachers),
+         (user:teacher(TID, _, _, MaxLoad, _) ; teacher(TID, _, _, MaxLoad, _)),
+         MaxLoad > 0),
+        UniqueTeachers),
+    sort(UniqueTeachers, Unique),
+    findall(TID,
+        (member(TID, Unique),
+         (user:teacher(TID, _, _, MaxLoad, _) ; teacher(TID, _, _, MaxLoad, _)),
+         Weight is max(1, MaxLoad),   % at least 1 slot in pool
+         between(1, Weight, _)),
+        WeightedPool).
 
 %% random_member_from/2 - Pick a random element from a list
 random_member_from([X], X) :- !.
@@ -143,22 +163,48 @@ random_member_from(List, X) :-
 %% Format: fitness_function(+Chromosome, -Fitness)
 %%
 %% Fitness combines:
-%%   50% hard constraint satisfaction
-%%   30% soft constraint score
-%%   20% quality score
+%%   40% hard constraint satisfaction
+%%   30% workload spread (Gini coefficient — lower inequality = higher score)
+%%   20% soft constraint score (compactness + day spread)
+%%   10% room utilization
 %%
 fitness_function(Chromosome, Fitness) :-
     chromosome_to_matrix(Chromosome, Matrix),
     % Hard constraint score
     hard_constraint_score(Matrix, HardScore),
-    % Soft constraint score (simplified: use schedule compactness + workload balance)
+    % Workload spread: penalise Gini inequality across teachers
+    workload_spread_score(Matrix, SpreadScore),
+    % Soft scores
     workload_balance_score(Matrix, WorkloadScore),
     schedule_compactness_score(Matrix, CompactnessScore),
     SoftScore is (WorkloadScore + CompactnessScore) / 2.0,
-    % Room utilization score
+    % Room utilization
     room_utilization_score(Matrix, RoomScore),
-    % Combined fitness
-    Fitness is HardScore * 0.5 + SoftScore * 0.3 + RoomScore * 0.2.
+    % Combined fitness — workload spread is now 30%
+    Fitness is HardScore * 0.40 + SpreadScore * 0.30 +
+               SoftScore * 0.20 + RoomScore  * 0.10.
+
+%% workload_spread_score/2 - Score based on how evenly work is distributed
+%% Uses a Gini-like coefficient: 1.0 = perfectly equal, 0.0 = one teacher does all
+workload_spread_score(Matrix, Score) :-
+    get_all_assignments(Matrix, Assignments),
+    get_all_teachers(Teachers),
+    findall(Load,
+        (member(teacher(TID,_,_,_,_), Teachers),
+         findall(1, member(assigned(_,_,_,TID,_), Assignments), Ones),
+         length(Ones, Load)),
+        Loads),
+    (Loads = [] -> Score = 1.0 ;
+        sum_list(Loads, Total),
+        length(Loads, N),
+        (Total =:= 0 -> Score = 1.0 ;
+            Mean is Total / N,
+            findall(D, (member(L, Loads), D is abs(L - Mean)), Devs),
+            sum_list(Devs, SumDev),
+            Gini is SumDev / (2.0 * N * Mean),
+            Score is 1.0 - Gini
+        )
+    ).
 
 %% ============================================================================
 %% chromosome_to_matrix/2 - Convert chromosome to timetable matrix

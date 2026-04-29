@@ -515,64 +515,53 @@ select_variable_degree(Sessions, Domains, Matrix, Selected, Remaining) :-
     select(Selected, Sessions, Remaining).
 
 % ----------------------------------------------------------------------------
-% order_domain_values/4: Order values using LCV heuristic
+% order_domain_values/4: Order values using load-balanced LCV heuristic
 % ----------------------------------------------------------------------------
 % Format: order_domain_values(Domain, Session, Matrix, OrderedDomain)
 %
-% Implements the Least Constraining Value (LCV) heuristic.
-% Orders domain values by how many values they eliminate from other domains.
-% Values that eliminate fewer options are tried first.
+% Real LCV implementation that sorts candidate values by:
+%   Primary key  : teacher's current assignment count (ascending)
+%                  → least-loaded teacher is tried first → workload spread
+%   Secondary key: number of conflicts introduced (ascending)
+%                  → least constraining value for remaining sessions
 %
-% @param Domain Original domain values
-% @param Session session being assigned
-% @param Matrix Current timetable matrix
-% @param OrderedDomain Output ordered domain values
-% @return true if ordering successful
+% This directly fixes the "Vaishali 16/16, everyone else 0" problem.
 %
-% Requirements: 6.7, 18.3
-%
-order_domain_values(Domain, Session, Matrix, OrderedDomain) :-
-    findall(Count-Value,
+order_domain_values(Domain, _Session, Matrix, OrderedDomain) :-
+    get_all_assignments(Matrix, CurrentAssignments),
+    findall(Load-Conflicts-Value,
             (member(Value, Domain),
-             count_eliminated_values(Session, Value, Matrix, Count)),
-            Pairs),
-    sort(Pairs, SortedPairs),
-    pairs_values(SortedPairs, OrderedDomain).
+             Value = value(TeacherID, _, _),
+             % Primary: how many sessions is this teacher already assigned?
+             count_teacher_load(TeacherID, CurrentAssignments, Load),
+             % Secondary: how many future domain values does this eliminate?
+             count_eliminated_values(_Session, Value, Matrix, Conflicts)),
+            Triples),
+    sort(Triples, SortedTriples),   % ascending: least loaded first
+    pairs_values_triple(SortedTriples, OrderedDomain).
+
+% count_teacher_load/3: Count how many sessions a teacher is already assigned
+count_teacher_load(TeacherID, Assignments, Load) :-
+    findall(1, member(assigned(_, _, _, TeacherID, _), Assignments), Ones),
+    length(Ones, Load).
+
+% pairs_values_triple/2: Extract values from Load-Conflicts-Value triples
+pairs_values_triple([], []).
+pairs_values_triple([_-_-Value|Rest], [Value|Values]) :-
+    pairs_values_triple(Rest, Values).
 
 % ----------------------------------------------------------------------------
 % pairs_values/2: Extract values from Count-Value pairs
 % ----------------------------------------------------------------------------
-% Format: pairs_values(Pairs, Values)
-%
-% Helper predicate to extract values from a list of Count-Value pairs.
-%
-% @param Pairs List of Count-Value pairs
-% @param Values Output list of values
-% @return true always
-%
 pairs_values([], []).
 pairs_values([_-Value|Rest], [Value|Values]) :-
     pairs_values(Rest, Values).
 
 % ----------------------------------------------------------------------------
-% count_constraints/4: Count constraints on a variable
+% count_constraints/4: Count constraints on a variable (Degree heuristic)
 % ----------------------------------------------------------------------------
-% Format: count_constraints(Session, AllSessions, Matrix, Count)
-%
-% Counts how many constraints a session has with other unassigned sessions.
-% Used by the Degree heuristic for tie-breaking.
-%
-% @param Session session to count constraints for
-% @param AllSessions List of all unassigned sessions
-% @param Matrix Current timetable matrix
-% @param Count Output constraint count
-% @return true always
-%
-% Requirements: 18.4
-%
 count_constraints(Session, AllSessions, _, Count) :-
     session(ClassID, _SubjectID) = Session,
-    % Count sessions that share the same class (same students)
     findall(S,
             (member(S, AllSessions),
              S = session(ClassID, _),
@@ -581,26 +570,19 @@ count_constraints(Session, AllSessions, _, Count) :-
     length(SameClassSessions, Count).
 
 % ----------------------------------------------------------------------------
-% count_eliminated_values/4: Count values eliminated by an assignment
+% count_eliminated_values/4: Count values eliminated by an assignment (LCV)
 % ----------------------------------------------------------------------------
-% Format: count_eliminated_values(Session, Value, Matrix, Count)
+% Counts how many (teacher, slot) pairs in the remaining domain would be
+% blocked if this value is chosen — i.e. same teacher at same slot, or
+% same room at same slot.
 %
-% Counts how many values would be eliminated from other domains if this
-% value is assigned. Used by the LCV heuristic.
-%
-% @param Session session being assigned
-% @param Value value being considered
-% @param Matrix Current timetable matrix
-% @param Count Output count of eliminated values
-% @return true always
-%
-% Requirements: 18.4
-%
-count_eliminated_values(_, value(_TeacherID, _RoomID, _SlotID), _, Count) :-
-    % Count how many potential assignments use this teacher/room/slot
-    % Simplified: count conflicts with this specific combination
-    % In a full implementation, would check all remaining domains
-    Count = 1.  % Simplified placeholder
+count_eliminated_values(_, value(TeacherID, RoomID, SlotID), Matrix, Count) :-
+    get_all_assignments(Matrix, Assignments),
+    findall(1,
+        (member(assigned(_, _, _, TeacherID, SlotID), Assignments) ;
+         member(assigned(RoomID, _, _, _, SlotID), Assignments)),
+        Ones),
+    length(Ones, Count).
 
 % ============================================================================
 % END OF MODULE
