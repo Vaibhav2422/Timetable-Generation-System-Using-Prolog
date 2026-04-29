@@ -14,6 +14,7 @@
     <header>
         <div class="container">
             <h1>AI-Based Timetable Generation System</h1>
+            <button id="dark-mode-toggle" class="btn btn-secondary btn-sm" onclick="toggleDarkMode()" title="Toggle dark mode" style="position:absolute;top:1rem;right:1rem;">🌙 Dark Mode</button>
             <nav>
                 <button class="nav-btn active" data-section="resources">Resources</button>
                 <button class="nav-btn" data-section="generate">Generate</button>
@@ -34,6 +35,10 @@
                 <button class="nav-btn" data-section="complexity">Complexity</button>
                 <button class="nav-btn" data-section="nl-query">NL Query</button>
                 <button class="nav-btn" data-section="versions">Versions</button>
+                <button class="nav-btn" data-section="teacher-view">Teacher View</button>
+                <button class="nav-btn" data-section="free-slots">Free Slots</button>
+                <button class="nav-btn" data-section="class-view">Class View</button>
+                <button class="nav-btn" data-section="room-view">Room View</button>
             </nav>
         </div>
     </header>
@@ -522,6 +527,14 @@
                         <button id="export-json-btn" class="btn btn-secondary" disabled>
                             <span class="btn-icon">📋</span>
                             Export as JSON
+                        </button>
+                        <button id="export-aids-a-btn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">📑</span>
+                            Export AIDS-A
+                        </button>
+                        <button id="export-aids-b-btn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">📑</span>
+                            Export AIDS-B
                         </button>
                     </div>
                 </div>
@@ -1495,6 +1508,66 @@
                 </div>
                 <div id="version-diff-result" class="version-diff-result" style="display:none;"></div>
             </div>
+        </section>
+
+        <!-- ===================== TEACHER VIEW ===================== -->
+        <section id="teacher-view-section" class="section">
+            <h2>Teacher Schedule View</h2>
+            <p class="section-description">See the full weekly timetable for any individual teacher.</p>
+            <div class="filter-bar" style="display:flex;gap:1rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;">
+                <select id="teacher-view-select" class="form-control" style="min-width:220px;">
+                    <option value="">— Select a Teacher —</option>
+                </select>
+                <button class="btn btn-primary" onclick="renderTeacherView()">View Schedule</button>
+                <button class="btn btn-secondary" onclick="printTeacherView()">🖨 Print / Save PDF</button>
+            </div>
+            <div id="teacher-view-grid"></div>
+        </section>
+
+        <!-- ===================== FREE SLOTS ===================== -->
+        <section id="free-slots-section" class="section">
+            <h2>Free Slot Finder</h2>
+            <p class="section-description">Identify unoccupied time slots across the timetable — useful for scheduling extra sessions or makeup classes.</p>
+            <div class="filter-bar" style="display:flex;gap:1rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;">
+                <select id="free-slots-filter" class="form-control" style="min-width:180px;">
+                    <option value="all">All Resources</option>
+                    <option value="teacher">By Teacher</option>
+                    <option value="room">By Room</option>
+                </select>
+                <select id="free-slots-resource" class="form-control" style="min-width:220px;">
+                    <option value="">— Select —</option>
+                </select>
+                <button class="btn btn-primary" onclick="renderFreeSlots()">Find Free Slots</button>
+            </div>
+            <div id="free-slots-result"></div>
+        </section>
+
+        <!-- ===================== CLASS VIEW ===================== -->
+        <section id="class-view-section" class="section">
+            <h2>Class / Division View</h2>
+            <p class="section-description">Full timetable from the perspective of a single class or batch.</p>
+            <div class="filter-bar" style="display:flex;gap:1rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;">
+                <select id="class-view-select" class="form-control" style="min-width:220px;">
+                    <option value="">— Select a Class —</option>
+                </select>
+                <button class="btn btn-primary" onclick="renderClassView()">View Timetable</button>
+                <button class="btn btn-secondary" onclick="printClassView()">🖨 Print / Save PDF</button>
+            </div>
+            <div id="class-view-grid"></div>
+        </section>
+
+        <!-- ===================== ROOM VIEW ===================== -->
+        <section id="room-view-section" class="section">
+            <h2>Room Occupancy View</h2>
+            <p class="section-description">See what is scheduled in each room across the week.</p>
+            <div class="filter-bar" style="display:flex;gap:1rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;">
+                <select id="room-view-select" class="form-control" style="min-width:220px;">
+                    <option value="">— Select a Room —</option>
+                </select>
+                <button class="btn btn-primary" onclick="renderRoomView()">View Schedule</button>
+                <button class="btn btn-secondary" onclick="printRoomView()">🖨 Print / Save PDF</button>
+            </div>
+            <div id="room-view-grid"></div>
         </section>
 
     </main>

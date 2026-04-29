@@ -507,6 +507,70 @@ main {
     font-size: 1.05rem;
 }
 
+/* ============================================
+   Timetable Table (tt-table) Styles
+   ============================================ */
+.tt-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    table-layout: auto;
+}
+.tt-table th,
+.tt-table td {
+    border: 1px solid var(--border-color, #ddd);
+    padding: 6px 8px;
+    vertical-align: top;
+}
+.tt-day-header,
+.tt-period-header {
+    background: var(--primary-color, #2c3e50);
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 0.78rem;
+}
+.tt-day-cell {
+    font-weight: 700;
+    background: #f5f6fa;
+    white-space: nowrap;
+    color: var(--primary-color, #2c3e50);
+}
+.tt-empty {
+    color: #ccc;
+    text-align: center;
+}
+.tt-cell {
+    background: #fff;
+}
+.tt-entry {
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+.tt-entry strong {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--primary-color, #2c3e50);
+}
+.tt-subject {
+    font-size: 0.75rem;
+    color: #555;
+}
+.tt-teacher,
+.tt-room {
+    font-size: 0.7rem;
+    color: #888;
+    display: block;
+}
+.tt-time-range {
+    font-size: 0.68rem;
+    color: #e67e22;
+    font-weight: 600;
+    margin-bottom: 3px;
+    display: block;
+}
+
 /* No-timetable banner */
 .no-timetable-banner {
     display: flex;
@@ -4944,4 +5008,95 @@ footer p {
     display: block;
     color: #95a5a6;
     font-size: 0.72rem;
+}
+
+/* ============================================
+   Dark Mode
+   ============================================ */
+body.dark-mode {
+    --primary-color: #90caf9;
+    --secondary-color: #80cbc4;
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --border-color: #333;
+    --text-color: #e0e0e0;
+    --hover-bg: #2a2a2a;
+    --shadow: 0 2px 8px rgba(0,0,0,0.6);
+    background-color: #121212;
+    color: #e0e0e0;
+}
+body.dark-mode header {
+    background: #1a237e;
+}
+body.dark-mode .form-card,
+body.dark-mode .analytics-card,
+body.dark-mode .timetable-container,
+body.dark-mode .export-panel,
+body.dark-mode .reliability-panel,
+body.dark-mode .quality-panel,
+body.dark-mode .conflicts-panel,
+body.dark-mode .suggestions-panel,
+body.dark-mode .scenario-config-card,
+body.dark-mode .result-card {
+    background: #1e1e1e;
+    border-color: #333;
+    color: #e0e0e0;
+}
+body.dark-mode .nav-btn {
+    background: #263238;
+    color: #cfd8dc;
+    border-color: #37474f;
+}
+body.dark-mode .nav-btn.active,
+body.dark-mode .nav-btn:hover {
+    background: #1565c0;
+    color: #fff;
+}
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+    background: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #444;
+}
+body.dark-mode .tt-table th {
+    background: #1a237e;
+    color: #fff;
+}
+body.dark-mode .tt-table td {
+    background: #1e1e1e;
+    color: #e0e0e0;
+    border-color: #333;
+}
+body.dark-mode .tt-day-cell {
+    background: #263238;
+    color: #90caf9;
+}
+body.dark-mode .tt-empty {
+    color: #555;
+}
+body.dark-mode .tt-subject { color: #b0bec5; }
+body.dark-mode .tt-teacher,
+body.dark-mode .tt-room    { color: #78909c; }
+body.dark-mode .section    { background: #121212; }
+body.dark-mode .btn-secondary {
+    background: #263238;
+    color: #cfd8dc;
+    border-color: #37474f;
+}
+body.dark-mode .analytics-bar-track { background: #333; }
+body.dark-mode .no-timetable-banner {
+    background: #1a237e;
+    color: #e0e0e0;
+}
+
+/* ============================================
+   Filter bar (new view sections)
+   ============================================ */
+.filter-bar {
+    background: var(--card-bg, #fff);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow, 0 2px 6px rgba(0,0,0,0.08));
+    border: 1px solid var(--border-color, #ddd);
 }

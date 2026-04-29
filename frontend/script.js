@@ -321,23 +321,23 @@ function clearAllForms() {
 const _exampleCounters = { teacher: 0, subject: 0, room: 0, timeslot: 0, class: 0 };
 const _exampleData = {
     teacher: [
-        { name: 'Prof. Vaishali Baviskar', subjects: 's3,s4,s1,s2',    maxload: 35, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
-        { name: 'Prof. Minal Barhate',     subjects: 's5,s6,s7,s9',    maxload: 35, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
-        { name: 'Prof. Swati Joshi',       subjects: 's1,s2,s4,s6',    maxload: 35, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
-        { name: 'Prof. Gopal Upadhye',     subjects: 's7,s9,s10,s11',  maxload: 35, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
-        { name: 'Prof. Shital Dongre',     subjects: 's8,s10,s11,s7',  maxload: 35, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
-        { name: 'Prof. Milind Kulkarni',   subjects: 's7,s8,s9,s11',   maxload: 35, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
-        { name: 'Prof. Viomesh Singh',     subjects: 's1,s2,s3,s5',    maxload: 35, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
-        { name: 'Prof. Sonali Deshmukh',   subjects: 's2,s4,s6,s1,s3', maxload: 35, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
-        { name: 'Prof. Bhagwan Thorat',    subjects: 's2,s4,s6,s5,s3', maxload: 35, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' }
+        { name: 'Prof. Vaishali Baviskar', subjects: 's3,s4,s1,s2',    maxload: 20, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
+        { name: 'Prof. Minal Barhate',     subjects: 's5,s6,s7,s9',    maxload: 20, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
+        { name: 'Prof. Swati Joshi',       subjects: 's1,s2,s4,s6',    maxload: 20, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
+        { name: 'Prof. Gopal Upadhye',     subjects: 's7,s9,s10,s11',  maxload: 20, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
+        { name: 'Prof. Shital Dongre',     subjects: 's8,s10,s11,s7',  maxload: 20, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
+        { name: 'Prof. Milind Kulkarni',   subjects: 's7,s8,s9,s11',   maxload: 20, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
+        { name: 'Prof. Viomesh Singh',     subjects: 's1,s2,s3,s5',    maxload: 20, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
+        { name: 'Prof. Sonali Deshmukh',   subjects: 's2,s4,s6,s1,s3', maxload: 20, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' },
+        { name: 'Prof. Bhagwan Thorat',    subjects: 's2,s4,s6,s5,s3', maxload: 20, availability: 'slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10,slot11,slot12,slot13,slot14,slot15,slot16,slot17,slot18,slot19,slot20,slot21,slot22,slot23,slot24,slot25,slot26,slot27,slot28,slot29,slot30,slot31,slot32,slot33,slot34,slot35,slot36,slot37,slot38,slot39,slot40,slot41,slot42,slot43,slot44,slot45' }
     ],
     subject: [
         { name: 'OOPs',        hours: 2, type: 'theory',   duration: 1 },
-        { name: 'OOPs Lab',    hours: 2, type: 'lab',      duration: 2 },
+        { name: 'OOPs Lab',    hours: 4, type: 'lab',      duration: 2 },
         { name: 'MFAI',        hours: 2, type: 'theory',   duration: 1 },
-        { name: 'MFAI Lab',    hours: 1, type: 'lab',      duration: 2 },
+        { name: 'MFAI Lab',    hours: 2, type: 'lab',      duration: 2 },
         { name: 'CN',          hours: 2, type: 'theory',   duration: 1 },
-        { name: 'CN Lab',      hours: 1, type: 'lab',      duration: 2 },
+        { name: 'CN Lab',      hours: 2, type: 'lab',      duration: 2 },
         { name: 'PAAS',        hours: 2, type: 'theory',   duration: 1 },
         { name: 'DT Tutorial', hours: 1, type: 'tutorial', duration: 1 },
         { name: 'RAAD',        hours: 1, type: 'theory',   duration: 1 },
@@ -409,23 +409,23 @@ function fillExample(type) {
 function loadExampleDataset() {
     resourceData = {
         teachers: [
-            { id: 't1', name: 'Prof. Vaishali Baviskar', subjects: ['s3','s4','s1','s2'],       maxload: 35, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
-            { id: 't2', name: 'Prof. Minal Barhate',     subjects: ['s5','s6','s7','s9'],       maxload: 35, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
-            { id: 't3', name: 'Prof. Swati Joshi',       subjects: ['s1','s2','s4','s6'],       maxload: 35, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
-            { id: 't4', name: 'Prof. Gopal Upadhye',     subjects: ['s7','s9','s10','s11'],     maxload: 35, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
-            { id: 't5', name: 'Prof. Shital Dongre',     subjects: ['s8','s10','s11','s7'],     maxload: 35, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
-            { id: 't6', name: 'Prof. Milind Kulkarni',   subjects: ['s7','s8','s9','s11'],      maxload: 35, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
-            { id: 't7', name: 'Prof. Viomesh Singh',     subjects: ['s1','s2','s3','s5'],       maxload: 35, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
-            { id: 't8', name: 'Prof. Sonali Deshmukh',   subjects: ['s2','s4','s6','s1','s3'],  maxload: 35, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
-            { id: 't9', name: 'Prof. Bhagwan Thorat',    subjects: ['s2','s4','s6','s5','s3'],  maxload: 35, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] }
+            { id: 't1', name: 'Prof. Vaishali Baviskar', subjects: ['s3','s4','s1','s2'],       maxload: 20, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
+            { id: 't2', name: 'Prof. Minal Barhate',     subjects: ['s5','s6','s7','s9'],       maxload: 20, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
+            { id: 't3', name: 'Prof. Swati Joshi',       subjects: ['s1','s2','s4','s6'],       maxload: 20, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
+            { id: 't4', name: 'Prof. Gopal Upadhye',     subjects: ['s7','s9','s10','s11'],     maxload: 20, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
+            { id: 't5', name: 'Prof. Shital Dongre',     subjects: ['s8','s10','s11','s7'],     maxload: 20, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
+            { id: 't6', name: 'Prof. Milind Kulkarni',   subjects: ['s7','s8','s9','s11'],      maxload: 20, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
+            { id: 't7', name: 'Prof. Viomesh Singh',     subjects: ['s1','s2','s3','s5'],       maxload: 20, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
+            { id: 't8', name: 'Prof. Sonali Deshmukh',   subjects: ['s2','s4','s6','s1','s3'],  maxload: 20, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] },
+            { id: 't9', name: 'Prof. Bhagwan Thorat',    subjects: ['s2','s4','s6','s5','s3'],  maxload: 20, availability: ['slot1','slot2','slot3','slot4','slot5','slot6','slot7','slot8','slot9','slot10','slot11','slot12','slot13','slot14','slot15','slot16','slot17','slot18','slot19','slot20','slot21','slot22','slot23','slot24','slot25','slot26','slot27','slot28','slot29','slot30','slot31','slot32','slot33','slot34','slot35','slot36','slot37','slot38','slot39','slot40','slot41','slot42','slot43','slot44','slot45'] }
         ],
         subjects: [
             { id: 's1',  name: 'OOPs',        hours: 2, type: 'theory',   duration: 1 },
-            { id: 's2',  name: 'OOPs Lab',    hours: 2, type: 'lab',      duration: 2 },
+            { id: 's2',  name: 'OOPs Lab',    hours: 4, type: 'lab',      duration: 2 },
             { id: 's3',  name: 'MFAI',        hours: 2, type: 'theory',   duration: 1 },
-            { id: 's4',  name: 'MFAI Lab',    hours: 1, type: 'lab',      duration: 2 },
+            { id: 's4',  name: 'MFAI Lab',    hours: 2, type: 'lab',      duration: 2 },
             { id: 's5',  name: 'CN',          hours: 2, type: 'theory',   duration: 1 },
-            { id: 's6',  name: 'CN Lab',      hours: 1, type: 'lab',      duration: 2 },
+            { id: 's6',  name: 'CN Lab',      hours: 2, type: 'lab',      duration: 2 },
             { id: 's7',  name: 'PAAS',        hours: 2, type: 'theory',   duration: 1 },
             { id: 's8',  name: 'DT Tutorial', hours: 1, type: 'tutorial', duration: 1 },
             { id: 's9',  name: 'RAAD',        hours: 1, type: 'theory',   duration: 1 },
@@ -467,61 +467,68 @@ function loadExampleDataset() {
             { id: 'r30', name: '2205',   capacity: 72, type: 'classroom' }
         ],
         timeslots: [
-            { id: 'slot1',  day: 'monday',    period: 1, start: '08:00', duration: 1 },
-            { id: 'slot2',  day: 'monday',    period: 2, start: '09:00', duration: 1 },
-            { id: 'slot3',  day: 'monday',    period: 3, start: '10:00', duration: 1 },
-            { id: 'slot4',  day: 'monday',    period: 4, start: '11:00', duration: 1 },
-            { id: 'slot5',  day: 'monday',    period: 5, start: '12:00', duration: 1 },
-            { id: 'slot6',  day: 'monday',    period: 6, start: '14:00', duration: 1 },
-            { id: 'slot7',  day: 'monday',    period: 7, start: '15:00', duration: 1 },
-            { id: 'slot8',  day: 'monday',    period: 8, start: '16:00', duration: 1 },
-            { id: 'slot9',  day: 'monday',    period: 9, start: '17:00', duration: 1 },
-            { id: 'slot10', day: 'tuesday',   period: 1, start: '08:00', duration: 1 },
-            { id: 'slot11', day: 'tuesday',   period: 2, start: '09:00', duration: 1 },
-            { id: 'slot12', day: 'tuesday',   period: 3, start: '10:00', duration: 1 },
-            { id: 'slot13', day: 'tuesday',   period: 4, start: '11:00', duration: 1 },
-            { id: 'slot14', day: 'tuesday',   period: 5, start: '12:00', duration: 1 },
-            { id: 'slot15', day: 'tuesday',   period: 6, start: '14:00', duration: 1 },
-            { id: 'slot16', day: 'tuesday',   period: 7, start: '15:00', duration: 1 },
-            { id: 'slot17', day: 'tuesday',   period: 8, start: '16:00', duration: 1 },
-            { id: 'slot18', day: 'tuesday',   period: 9, start: '17:00', duration: 1 },
-            { id: 'slot19', day: 'wednesday', period: 1, start: '08:00', duration: 1 },
-            { id: 'slot20', day: 'wednesday', period: 2, start: '09:00', duration: 1 },
-            { id: 'slot21', day: 'wednesday', period: 3, start: '10:00', duration: 1 },
-            { id: 'slot22', day: 'wednesday', period: 4, start: '11:00', duration: 1 },
-            { id: 'slot23', day: 'wednesday', period: 5, start: '12:00', duration: 1 },
-            { id: 'slot24', day: 'wednesday', period: 6, start: '14:00', duration: 1 },
-            { id: 'slot25', day: 'wednesday', period: 7, start: '15:00', duration: 1 },
-            { id: 'slot26', day: 'wednesday', period: 8, start: '16:00', duration: 1 },
-            { id: 'slot27', day: 'wednesday', period: 9, start: '17:00', duration: 1 },
-            { id: 'slot28', day: 'thursday',  period: 1, start: '08:00', duration: 1 },
-            { id: 'slot29', day: 'thursday',  period: 2, start: '09:00', duration: 1 },
-            { id: 'slot30', day: 'thursday',  period: 3, start: '10:00', duration: 1 },
-            { id: 'slot31', day: 'thursday',  period: 4, start: '11:00', duration: 1 },
-            { id: 'slot32', day: 'thursday',  period: 5, start: '12:00', duration: 1 },
-            { id: 'slot33', day: 'thursday',  period: 6, start: '14:00', duration: 1 },
-            { id: 'slot34', day: 'thursday',  period: 7, start: '15:00', duration: 1 },
-            { id: 'slot35', day: 'thursday',  period: 8, start: '16:00', duration: 1 },
-            { id: 'slot36', day: 'thursday',  period: 9, start: '17:00', duration: 1 },
-            { id: 'slot37', day: 'friday',    period: 1, start: '08:00', duration: 1 },
-            { id: 'slot38', day: 'friday',    period: 2, start: '09:00', duration: 1 },
-            { id: 'slot39', day: 'friday',    period: 3, start: '10:00', duration: 1 },
-            { id: 'slot40', day: 'friday',    period: 4, start: '11:00', duration: 1 },
-            { id: 'slot41', day: 'friday',    period: 5, start: '12:00', duration: 1 },
-            { id: 'slot42', day: 'friday',    period: 6, start: '14:00', duration: 1 },
-            { id: 'slot43', day: 'friday',    period: 7, start: '15:00', duration: 1 },
-            { id: 'slot44', day: 'friday',    period: 8, start: '16:00', duration: 1 },
-            { id: 'slot45', day: 'friday',    period: 9, start: '17:00', duration: 1 }
+            // Each slot is 1 hour. Labs occupy 2 consecutive slots (duration:2 in subject).
+            // Time shown as start–end range in the timetable header.
+            { id: 'slot1',  day: 'monday',    period: 1, start: '08:00', end: '09:00', duration: 1 },
+            { id: 'slot2',  day: 'monday',    period: 2, start: '09:00', end: '10:00', duration: 1 },
+            { id: 'slot3',  day: 'monday',    period: 3, start: '10:00', end: '11:00', duration: 1 },
+            { id: 'slot4',  day: 'monday',    period: 4, start: '11:00', end: '12:00', duration: 1 },
+            { id: 'slot5',  day: 'monday',    period: 5, start: '12:00', end: '13:00', duration: 1 },
+            { id: 'slot6',  day: 'monday',    period: 6, start: '14:00', end: '15:00', duration: 1 },
+            { id: 'slot7',  day: 'monday',    period: 7, start: '15:00', end: '16:00', duration: 1 },
+            { id: 'slot8',  day: 'monday',    period: 8, start: '16:00', end: '17:00', duration: 1 },
+            { id: 'slot9',  day: 'monday',    period: 9, start: '17:00', end: '18:00', duration: 1 },
+            { id: 'slot10', day: 'tuesday',   period: 1, start: '08:00', end: '09:00', duration: 1 },
+            { id: 'slot11', day: 'tuesday',   period: 2, start: '09:00', end: '10:00', duration: 1 },
+            { id: 'slot12', day: 'tuesday',   period: 3, start: '10:00', end: '11:00', duration: 1 },
+            { id: 'slot13', day: 'tuesday',   period: 4, start: '11:00', end: '12:00', duration: 1 },
+            { id: 'slot14', day: 'tuesday',   period: 5, start: '12:00', end: '13:00', duration: 1 },
+            { id: 'slot15', day: 'tuesday',   period: 6, start: '14:00', end: '15:00', duration: 1 },
+            { id: 'slot16', day: 'tuesday',   period: 7, start: '15:00', end: '16:00', duration: 1 },
+            { id: 'slot17', day: 'tuesday',   period: 8, start: '16:00', end: '17:00', duration: 1 },
+            { id: 'slot18', day: 'tuesday',   period: 9, start: '17:00', end: '18:00', duration: 1 },
+            { id: 'slot19', day: 'wednesday', period: 1, start: '08:00', end: '09:00', duration: 1 },
+            { id: 'slot20', day: 'wednesday', period: 2, start: '09:00', end: '10:00', duration: 1 },
+            { id: 'slot21', day: 'wednesday', period: 3, start: '10:00', end: '11:00', duration: 1 },
+            { id: 'slot22', day: 'wednesday', period: 4, start: '11:00', end: '12:00', duration: 1 },
+            { id: 'slot23', day: 'wednesday', period: 5, start: '12:00', end: '13:00', duration: 1 },
+            { id: 'slot24', day: 'wednesday', period: 6, start: '14:00', end: '15:00', duration: 1 },
+            { id: 'slot25', day: 'wednesday', period: 7, start: '15:00', end: '16:00', duration: 1 },
+            { id: 'slot26', day: 'wednesday', period: 8, start: '16:00', end: '17:00', duration: 1 },
+            { id: 'slot27', day: 'wednesday', period: 9, start: '17:00', end: '18:00', duration: 1 },
+            { id: 'slot28', day: 'thursday',  period: 1, start: '08:00', end: '09:00', duration: 1 },
+            { id: 'slot29', day: 'thursday',  period: 2, start: '09:00', end: '10:00', duration: 1 },
+            { id: 'slot30', day: 'thursday',  period: 3, start: '10:00', end: '11:00', duration: 1 },
+            { id: 'slot31', day: 'thursday',  period: 4, start: '11:00', end: '12:00', duration: 1 },
+            { id: 'slot32', day: 'thursday',  period: 5, start: '12:00', end: '13:00', duration: 1 },
+            { id: 'slot33', day: 'thursday',  period: 6, start: '14:00', end: '15:00', duration: 1 },
+            { id: 'slot34', day: 'thursday',  period: 7, start: '15:00', end: '16:00', duration: 1 },
+            { id: 'slot35', day: 'thursday',  period: 8, start: '16:00', end: '17:00', duration: 1 },
+            { id: 'slot36', day: 'thursday',  period: 9, start: '17:00', end: '18:00', duration: 1 },
+            { id: 'slot37', day: 'friday',    period: 1, start: '08:00', end: '09:00', duration: 1 },
+            { id: 'slot38', day: 'friday',    period: 2, start: '09:00', end: '10:00', duration: 1 },
+            { id: 'slot39', day: 'friday',    period: 3, start: '10:00', end: '11:00', duration: 1 },
+            { id: 'slot40', day: 'friday',    period: 4, start: '11:00', end: '12:00', duration: 1 },
+            { id: 'slot41', day: 'friday',    period: 5, start: '12:00', end: '13:00', duration: 1 },
+            { id: 'slot42', day: 'friday',    period: 6, start: '14:00', end: '15:00', duration: 1 },
+            { id: 'slot43', day: 'friday',    period: 7, start: '15:00', end: '16:00', duration: 1 },
+            { id: 'slot44', day: 'friday',    period: 8, start: '16:00', end: '17:00', duration: 1 },
+            { id: 'slot45', day: 'friday',    period: 9, start: '17:00', end: '18:00', duration: 1 }
         ],
         classes: [
-            { id: 'c1', name: 'AIDS-A', subjects: ['s1','s3','s5','s7','s9','s10'] },
-            { id: 'c2', name: 'AIDS-B', subjects: ['s1','s3','s5','s7','s9','s10'] },
-            { id: 'c3', name: 'A1',     subjects: ['s2','s4','s6','s8','s11'] },
-            { id: 'c4', name: 'A2',     subjects: ['s2','s4','s6','s8','s11'] },
-            { id: 'c5', name: 'A3',     subjects: ['s2','s4','s6','s8','s11'] },
-            { id: 'c6', name: 'B1',     subjects: ['s2','s4','s6','s8','s11'] },
-            { id: 'c7', name: 'B2',     subjects: ['s2','s4','s6','s8','s11'] },
-            { id: 'c8', name: 'B3',     subjects: ['s2','s4','s6','s8','s11'] }
+            // Full classes — theory lectures for the entire division
+            { id: 'c1', name: 'AIDS-A', subjects: ['s1','s3','s5','s7','s9','s10'], type: 'division' },
+            { id: 'c2', name: 'AIDS-B', subjects: ['s1','s3','s5','s7','s9','s10'], type: 'division' },
+            // Lab batches of AIDS-A — each batch attends labs separately (2hr slots)
+            // While one batch is in lab, the other two batches have free/self-study
+            // Lab slots for batches must NOT overlap with theory slots of parent AIDS-A
+            { id: 'c3', name: 'A1', subjects: ['s2','s4','s6'], type: 'batch', parent: 'c1', batch_of: 'AIDS-A' },
+            { id: 'c4', name: 'A2', subjects: ['s2','s4','s6'], type: 'batch', parent: 'c1', batch_of: 'AIDS-A' },
+            { id: 'c5', name: 'A3', subjects: ['s2','s4','s6'], type: 'batch', parent: 'c1', batch_of: 'AIDS-A' },
+            // Lab batches of AIDS-B
+            { id: 'c6', name: 'B1', subjects: ['s2','s4','s6'], type: 'batch', parent: 'c2', batch_of: 'AIDS-B' },
+            { id: 'c7', name: 'B2', subjects: ['s2','s4','s6'], type: 'batch', parent: 'c2', batch_of: 'AIDS-B' },
+            { id: 'c8', name: 'B3', subjects: ['s2','s4','s6'], type: 'batch', parent: 'c2', batch_of: 'AIDS-B' }
         ]
     };
     updateResourceCounts();
@@ -729,12 +736,16 @@ async function generateTimetable() {
             renderTimetable(currentTimetable);
             updateReliabilityDisplay(currentReliability);
             checkAndHighlightConflicts();
-            const exportPdf  = document.getElementById('export-pdf-btn');
-            const exportCsv  = document.getElementById('export-csv-btn');
-            const exportJson = document.getElementById('export-json-btn');
-            if (exportPdf)  exportPdf.disabled  = false;
-            if (exportCsv)  exportCsv.disabled  = false;
-            if (exportJson) exportJson.disabled = false;
+            const exportPdf    = document.getElementById('export-pdf-btn');
+            const exportCsv    = document.getElementById('export-csv-btn');
+            const exportJson   = document.getElementById('export-json-btn');
+            const exportAidsA  = document.getElementById('export-aids-a-btn');
+            const exportAidsB  = document.getElementById('export-aids-b-btn');
+            if (exportPdf)   exportPdf.disabled   = false;
+            if (exportCsv)   exportCsv.disabled   = false;
+            if (exportJson)  exportJson.disabled  = false;
+            if (exportAidsA) exportAidsA.disabled = false;
+            if (exportAidsB) exportAidsB.disabled = false;
             // Auto-load quality score and search stats
             if (typeof loadQualityScore === 'function') loadQualityScore();
             setTimeout(() => { if (typeof loadSearchStatistics === 'function') loadSearchStatistics(); }, 2000);
@@ -763,9 +774,11 @@ async function generateTimetable() {
 
 function initializeVisualizationSection() {
     const safe = (id, fn) => { const el = document.getElementById(id); if (el) fn(el); };
-    safe('export-pdf-btn',  el => el.addEventListener('click', () => exportTimetable('pdf')));
-    safe('export-csv-btn',  el => el.addEventListener('click', () => exportTimetable('csv')));
-    safe('export-json-btn', el => el.addEventListener('click', () => exportTimetable('json')));
+    safe('export-pdf-btn',    el => el.addEventListener('click', () => exportTimetable('pdf')));
+    safe('export-csv-btn',    el => el.addEventListener('click', () => exportTimetable('csv')));
+    safe('export-json-btn',   el => el.addEventListener('click', () => exportTimetable('json')));
+    safe('export-aids-a-btn', el => el.addEventListener('click', () => exportTimetable('aids-a')));
+    safe('export-aids-b-btn', el => el.addEventListener('click', () => exportTimetable('aids-b')));
 }
 
 /**
@@ -818,37 +831,79 @@ function renderTimetable(timetable) {
         assignBySlot[a.slot_id].push(a);
     });
 
-    // Get time labels for period headers
+    // Get time labels for period headers — show "08:00–09:00" not "P1"
     const periodTimes = {};
     usedPeriods.forEach(p => {
         const slot = slots.find(s => s.period === p);
-        periodTimes[p] = slot ? (slot.start_time || slot.start || `P${p}`) : `P${p}`;
+        if (slot) {
+            const start = slot.start_time || slot.start || '';
+            const end   = slot.end   || '';
+            periodTimes[p] = end ? `${start}–${end}` : start || `${p}`;
+        } else {
+            periodTimes[p] = `${p}`;
+        }
     });
 
-    // Build table HTML
+    // Build table HTML — no P1/P2, just time ranges
     let html = '<table class="tt-table"><thead><tr>';
-    html += '<th class="tt-day-header">Day / Time</th>';
+    html += '<th class="tt-day-header">Day</th>';
     usedPeriods.forEach(p => {
-        html += `<th class="tt-period-header"><div>P${p}</div><small>${periodTimes[p]}</small></th>`;
+        html += `<th class="tt-period-header">${periodTimes[p]}</th>`;
     });
     html += '</tr></thead><tbody>';
 
     usedDays.forEach(day => {
         html += `<tr><td class="tt-day-cell">${day.charAt(0).toUpperCase() + day.slice(1)}</td>`;
+        const skipPeriods = new Set(); // periods already covered by a colspan
         usedPeriods.forEach(p => {
+            if (skipPeriods.has(p)) return; // this column is merged into previous lab cell
+
             const slot = slotByDayPeriod[`${day}__${p}`];
             const cellAssignments = slot ? (assignBySlot[slot.id] || []) : [];
+
             if (cellAssignments.length === 0) {
                 html += '<td class="tt-empty">—</td>';
             } else {
-                html += '<td class="tt-cell">';
+                // Check if any assignment is a 2hr lab — if so, colspan=2 and skip next period
+                const hasLab = cellAssignments.some(a => {
+                    const subjObj = (resourceData.subjects || []).find(x => x.id === a.subject_id);
+                    return subjObj && subjObj.duration >= 2;
+                });
+
+                let colspan = 1;
+                let timeRange = periodTimes[p];
+                if (hasLab) {
+                    const nextP = usedPeriods[usedPeriods.indexOf(p) + 1];
+                    if (nextP !== undefined) {
+                        // Compute end time from the next slot
+                        const nextSlot = slots.find(s => s.period === nextP);
+                        const endTime  = nextSlot ? (nextSlot.end || nextSlot.start || '') : '';
+                        const startTime = slot ? (slot.start_time || slot.start || '') : '';
+                        timeRange = endTime ? `${startTime}–${endTime}` : timeRange;
+                        colspan = 2;
+                        skipPeriods.add(nextP);
+                    }
+                }
+
+                const colspanAttr = colspan > 1 ? ` colspan="${colspan}"` : '';
+                html += `<td class="tt-cell"${colspanAttr}>`;
+                if (hasLab) {
+                    html += `<div class="tt-time-range">${timeRange}</div>`;
+                }
                 cellAssignments.forEach(a => {
-                    const cls     = resolveName('classes',  a.class_id);
+                    const clsObj  = (resourceData.classes || []).find(x => x.id === a.class_id);
+                    const clsName = clsObj ? clsObj.name : (a.class_id || '—');
+                    const clsLabel = (clsObj && clsObj.parent)
+                        ? `${clsObj.batch_of || clsObj.parent} › ${clsName}`
+                        : clsName;
                     const subj    = resolveName('subjects', a.subject_id);
                     const teacher = resolveName('teachers', a.teacher_id);
                     const room    = resolveName('rooms',    a.room_id);
-                    html += `<div class="tt-entry">
-                        <strong>${cls}</strong>
+                    const subjObj = (resourceData.subjects || []).find(x => x.id === a.subject_id);
+                    const isLab   = subjObj && subjObj.type === 'lab';
+                    const entryStyle = isLab ? 'border-left:3px solid #f39c12;padding-left:4px;' : '';
+                    html += `<div class="tt-entry" style="${entryStyle}">
+                        <strong>${clsLabel}</strong>
                         <div class="tt-subject">${subj}</div>
                         <small class="tt-teacher">${teacher}</small>
                         <small class="tt-room">${room}</small>
@@ -1129,6 +1184,8 @@ function exportTimetable(format) {
     if (format === 'json') _exportJSON();
     else if (format === 'csv') _exportCSV();
     else if (format === 'pdf') _exportPDF();
+    else if (format === 'aids-a') _exportClassPDF('AIDS-A');
+    else if (format === 'aids-b') _exportClassPDF('AIDS-B');
 }
 
 function _downloadBlob(content, filename, mimeType) {
@@ -1171,33 +1228,225 @@ function _exportCSV() {
 }
 
 function _exportPDF() {
-    // Remove any leftover print style from a previous call
-    const existing = document.getElementById('__print_style__');
-    if (existing) existing.remove();
+    // Build a standalone HTML page with just the timetable grid and print it
+    const gridEl = document.getElementById('timetable-grid');
+    if (!gridEl || !gridEl.innerHTML.trim() || gridEl.querySelector('.empty-state')) {
+        showNotification('error', 'No timetable to export. Generate one first.');
+        return;
+    }
 
-    const printStyle = document.createElement('style');
-    printStyle.id = '__print_style__';
-    printStyle.textContent = `
-        @media print {
-            body > * { display: none !important; }
-            #visualize-section { display: block !important; }
-            .nav-btn, .export-panel, .reliability-panel,
-            .conflicts-panel, .suggestions-panel, .quality-panel { display: none !important; }
-            .timetable-container { display: block !important; }
-            header, footer, .notification-container { display: none !important; }
-        }`;
-    document.head.appendChild(printStyle);
+    // Grab the current stylesheet so the printed page looks right
+    const styleSheets = Array.from(document.styleSheets).map(ss => {
+        try { return Array.from(ss.cssRules).map(r => r.cssText).join('\n'); }
+        catch(e) { return ''; }
+    }).join('\n');
 
-    // Clean up after printing using the afterprint event (reliable across browsers)
-    const cleanup = () => {
-        const s = document.getElementById('__print_style__');
-        if (s) s.remove();
-        window.removeEventListener('afterprint', cleanup);
+    const printContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Timetable</title>
+<style>
+${styleSheets}
+body { background: #fff; color: #000; font-family: Arial, sans-serif; margin: 16px; }
+.tt-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.tt-table th, .tt-table td { border: 1px solid #ccc; padding: 5px 6px; vertical-align: top; }
+.tt-table th { background: #e8eaf6; font-weight: bold; text-align: center; white-space: nowrap; }
+.tt-day-header, .tt-day-cell { text-align: left; font-weight: bold; background: #f5f5f5; }
+.tt-period-header { font-size: 10px; }
+.tt-entry { margin-bottom: 4px; line-height: 1.4; }
+.tt-entry strong { display: block; font-size: 11px; }
+.tt-subject { font-size: 10px; color: #333; }
+.tt-teacher, .tt-room { font-size: 9px; color: #666; display: block; }
+.tt-empty { color: #bbb; text-align: center; }
+.tt-time-range { font-size: 9px; color: #888; margin-bottom: 3px; }
+</style>
+</head>
+<body>
+<h2 style="margin-bottom:12px;">Timetable</h2>
+${gridEl.innerHTML}
+</body>
+</html>`;
+
+    const printWin = window.open('', '_blank', 'width=900,height=700');
+    if (!printWin) {
+        showNotification('error', 'Pop-up blocked. Please allow pop-ups and try again.');
+        return;
+    }
+    printWin.document.write(printContent);
+    printWin.document.close();
+    printWin.focus();
+    printWin.onload = () => {
+        printWin.print();
+        printWin.close();
     };
-    window.addEventListener('afterprint', cleanup);
-
-    window.print();
     showNotification('success', 'Print dialog opened — save as PDF');
+}
+
+/**
+ * Export the timetable from the POV of a division (AIDS-A or AIDS-B).
+ * Shows:
+ *   Part 1 — Theory/Tutorial lectures for the whole division
+ *   Part 2 — Lab slots split by batch (A1/A2/A3 or B1/B2/B3), each in a separate row
+ * Batch lab slots are scheduled in different time slots so they never clash
+ * with the parent division's theory slots.
+ * @param {string} className - 'AIDS-A' or 'AIDS-B'
+ */
+function _exportClassPDF(className) {
+    if (!currentTimetable) { showNotification('error', 'No timetable to export.'); return; }
+
+    const allSlots = {};
+    (currentTimetable.timeslots || currentTimetable.slots || []).forEach(s => { allSlots[s.id] = s; });
+    const allAssignments = currentTimetable.assignments || [];
+
+    // Find the division class object
+    const divisionObj = resourceData.classes.find(c => c.name === className);
+    if (!divisionObj) { showNotification('error', `Class "${className}" not found.`); return; }
+
+    // Find batch objects that belong to this division
+    const batchObjs = resourceData.classes.filter(c => c.parent === divisionObj.id);
+
+    // Assignments for the division (theory/tutorial)
+    const divAssignments = allAssignments.filter(a => a.class_id === divisionObj.id);
+
+    // Assignments per batch (labs)
+    const batchAssignments = {};
+    batchObjs.forEach(b => {
+        batchAssignments[b.id] = allAssignments.filter(a => a.class_id === b.id);
+    });
+
+    const dayOrder = ['monday','tuesday','wednesday','thursday','friday'];
+    const usedPeriods = [...new Set(Object.values(allSlots).map(s => s.period))].sort((a,b) => a - b);
+
+    // Helper: build a day×period lookup from an assignment list
+    function buildGrid(assignments) {
+        const grid = {};
+        assignments.forEach(a => {
+            const slot = allSlots[a.slot_id] || {};
+            const key = `${(slot.day||'').toLowerCase()}__${slot.period}`;
+            if (!grid[key]) grid[key] = [];
+            grid[key].push(a);
+        });
+        return grid;
+    }
+
+    // Compute time range label for a period (handles 2hr labs)
+    function timeLabel(p, isLabRow) {
+        const slot = Object.values(allSlots).find(s => s.period === p);
+        if (!slot) return `${p}`;
+        const start = slot.start_time || slot.start || '';
+        if (isLabRow) {
+            // For lab rows show start–end spanning 2hrs
+            const nextP = usedPeriods[usedPeriods.indexOf(p) + 1];
+            const nextSlot = nextP !== undefined ? Object.values(allSlots).find(s => s.period === nextP) : null;
+            const end = nextSlot ? (nextSlot.end || nextSlot.start || '') : (slot.end || '');
+            return end ? `${start}–${end}` : start;
+        }
+        return slot.end ? `${start}–${slot.end}` : start;
+    }
+
+    // Helper: render a single timetable table
+    function buildTable(grid, headerBg, labMode) {
+        // For lab mode, collapse consecutive period pairs into single columns
+        const displayPeriods = labMode
+            ? usedPeriods.filter((p, i) => i % 2 === 0) // show only start of each 2hr block
+            : usedPeriods;
+
+        let t = `<table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px;">
+<thead><tr>
+<th style="border:1px solid #bbb;padding:6px 8px;background:${headerBg};min-width:80px;text-align:left;">Day</th>`;
+        displayPeriods.forEach(p => {
+            const label = timeLabel(p, labMode);
+            const span  = labMode ? ' colspan="1"' : '';
+            t += `<th style="border:1px solid #bbb;padding:5px 6px;background:${headerBg};text-align:center;white-space:nowrap;"${span}>${label}</th>`;
+        });
+        t += '</tr></thead><tbody>';
+
+        dayOrder.forEach((day, di) => {
+            const rowBg = di % 2 === 0 ? '#fff' : '#fafafa';
+            t += `<tr><td style="border:1px solid #bbb;padding:5px 8px;font-weight:bold;background:${rowBg};">${day.charAt(0).toUpperCase()+day.slice(1)}</td>`;
+            displayPeriods.forEach(p => {
+                const cell = grid[`${day}__${p}`] || [];
+                if (cell.length === 0) {
+                    t += `<td style="border:1px solid #bbb;padding:4px;color:#ccc;text-align:center;background:${rowBg};">—</td>`;
+                } else {
+                    const cellBg = labMode ? '#fff8e1' : '#f1f8ff';
+                    t += `<td style="border:1px solid #bbb;padding:5px;background:${cellBg};">`;
+                    cell.forEach(a => {
+                        const subj    = _resolveId('subjects', a.subject_id);
+                        const teacher = _resolveId('teachers', a.teacher_id);
+                        const room    = _resolveId('rooms',    a.room_id);
+                        const subjObj = resourceData.subjects.find(x => x.id === a.subject_id);
+                        const dur     = subjObj && subjObj.duration >= 2 ? ' (2 hrs)' : '';
+                        t += `<div style="margin-bottom:4px;line-height:1.4;">
+                            <strong style="font-size:11px;display:block;">${subj}${dur}</strong>
+                            <span style="font-size:10px;color:#333;">${teacher}</span><br>
+                            <span style="font-size:9px;color:#666;">${room}</span>
+                        </div>`;
+                    });
+                    t += `</td>`;
+                }
+            });
+            t += '</tr>';
+        });
+        t += '</tbody></table>';
+        return t;
+    }
+
+    // Part 1 — Theory/Tutorial for the whole division
+    const divGrid = buildGrid(divAssignments);
+    const part1 = buildTable(divGrid, '#dce8ff', false);
+
+    // Part 2 — Lab slots per batch (each batch gets its own row-set)
+    let part2 = '';
+    const batchColors = ['#fff3e0','#f3e5f5','#e8f5e9'];
+    batchObjs.forEach((b, i) => {
+        const grid = buildGrid(batchAssignments[b.id] || []);
+        const bg = batchColors[i % batchColors.length];
+        part2 += `<h4 style="margin:10px 0 4px;color:#444;font-size:12px;">Batch: ${b.name}</h4>`;
+        part2 += buildTable(grid, bg, true);
+    });
+
+    if (!part2) part2 = '<p style="color:#888;">No lab batch assignments found.</p>';
+
+    const printContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>${className} Timetable</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; color: #000; font-size: 12px; }
+  h2   { margin-bottom: 4px; }
+  h3   { margin: 18px 0 6px; border-bottom: 2px solid #333; padding-bottom: 4px; }
+  h4   { margin: 10px 0 4px; }
+  .note { font-size: 10px; color: #666; margin-bottom: 8px; }
+  @media print { body { margin: 10px; } }
+</style>
+</head>
+<body>
+<h2>${className} — Full Timetable</h2>
+
+<h3>Part 1 — Theory &amp; Tutorial (Whole Division)</h3>
+<p class="note">All students of ${className} attend these sessions together.</p>
+${part1}
+
+<h3>Part 2 — Lab Sessions (By Batch)</h3>
+<p class="note">
+  ${className} is split into ${batchObjs.length} batches for lab sessions.
+  Each batch attends a 2-hour lab in a different time slot — no overlap with theory above.
+  While one batch is in the lab, the other batches have free/self-study time.
+</p>
+${part2}
+</body>
+</html>`;
+
+    const printWin = window.open('', '_blank', 'width=1000,height=750');
+    if (!printWin) { showNotification('error', 'Pop-up blocked. Please allow pop-ups and try again.'); return; }
+    printWin.document.write(printContent);
+    printWin.document.close();
+    printWin.focus();
+    printWin.onload = () => { printWin.print(); printWin.close(); };
+    showNotification('success', `${className} timetable (2-part view) opened — save as PDF`);
 }
 
 // ============================================
@@ -1474,7 +1723,10 @@ function renderTeacherWorkload(data) {
     }
     const max = Math.max(...data.map(t => t.hours || t.sessions || 0), 1);
     el.innerHTML = data.map(t => {
-        const name    = t.name || t.teacher_id || t.id || 'Unknown';
+        // Resolve real teacher name from resourceData if backend only returns an ID
+        const rawId = t.teacher_id || t.id;
+        const resolved = rawId ? resourceData.teachers.find(r => r.id === rawId) : null;
+        const name    = resolved ? resolved.name : (t.name || rawId || 'Unknown');
         const hours   = t.hours || t.sessions || 0;
         const maxload = t.max_load || t.maxload || max;
         const pct     = Math.min(100, Math.round((hours / maxload) * 100));
@@ -1496,7 +1748,10 @@ function renderRoomUtilization(data) {
         el.innerHTML = '<p class="empty-state">No room data.</p>'; return;
     }
     el.innerHTML = data.map(r => {
-        const name  = r.name || r.room_id || r.id || 'Unknown';
+        // Resolve real room name from resourceData if backend only returns an ID
+        const rawId = r.room_id || r.id;
+        const resolved = rawId ? resourceData.rooms.find(rm => rm.id === rawId) : null;
+        const name  = resolved ? resolved.name : (r.name || rawId || 'Unknown');
         const used  = r.used_slots || r.sessions || 0;
         const total = r.total_slots || r.capacity || 45;
         const pct   = Math.min(100, Math.round((used / total) * 100));
@@ -5942,3 +6197,383 @@ function renderVersionDiff(diff) {
 // ============================================================================
 const loadVersions = loadVersionList;
 const updateWhatIfDashboard = (typeof runWhatIfAnalysis === 'function') ? runWhatIfAnalysis : function() {};
+
+
+// ============================================================================
+// NEW FEATURE 1: Dark Mode Toggle
+// ============================================================================
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const btn = document.getElementById('dark-mode-toggle');
+    const isDark = document.body.classList.contains('dark-mode');
+    if (btn) btn.textContent = isDark ? '☀ Light Mode' : '🌙 Dark Mode';
+    localStorage.setItem('darkMode', isDark ? '1' : '0');
+}
+
+// Restore dark mode preference on load
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === '1') {
+        document.body.classList.add('dark-mode');
+        const btn = document.getElementById('dark-mode-toggle');
+        if (btn) btn.textContent = '☀ Light Mode';
+    }
+});
+
+// ============================================================================
+// NEW FEATURE 2: Teacher Schedule View
+// ============================================================================
+
+/** Populate the teacher-view dropdown whenever the section is opened */
+function _populateTeacherViewSelect() {
+    const sel = document.getElementById('teacher-view-select');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">— Select a Teacher —</option>';
+    resourceData.teachers.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t.id;
+        opt.textContent = t.name || t.id;
+        sel.appendChild(opt);
+    });
+}
+
+function renderTeacherView() {
+    const sel   = document.getElementById('teacher-view-select');
+    const grid  = document.getElementById('teacher-view-grid');
+    if (!sel || !grid) return;
+
+    const teacherId = sel.value;
+    if (!teacherId) { showNotification('warning', 'Please select a teacher first.'); return; }
+    if (!currentTimetable) { showNotification('error', 'Generate a timetable first.'); return; }
+
+    const teacher = resourceData.teachers.find(t => t.id === teacherId);
+    const teacherName = teacher ? teacher.name : teacherId;
+
+    const slots = {};
+    (currentTimetable.timeslots || currentTimetable.slots || []).forEach(s => { slots[s.id] = s; });
+    const assignments = (currentTimetable.assignments || []).filter(a => a.teacher_id === teacherId);
+
+    grid.innerHTML = _buildFilteredTimetableHTML(assignments, slots, `${teacherName} — Weekly Schedule`, false);
+}
+
+function printTeacherView() {
+    const sel = document.getElementById('teacher-view-select');
+    if (!sel || !sel.value) { showNotification('warning', 'Select a teacher first.'); return; }
+    const teacher = resourceData.teachers.find(t => t.id === sel.value);
+    const name = teacher ? teacher.name : sel.value;
+    _printHTML(document.getElementById('teacher-view-grid').innerHTML, `${name} — Timetable`);
+}
+
+// ============================================================================
+// NEW FEATURE 3: Free Slot Finder
+// ============================================================================
+
+function _populateFreeSlotResource() {
+    const filter = document.getElementById('free-slots-filter');
+    const resSel = document.getElementById('free-slots-resource');
+    if (!filter || !resSel) return;
+    resSel.innerHTML = '<option value="">— Select —</option>';
+    const type = filter.value;
+    if (type === 'teacher') {
+        resourceData.teachers.forEach(t => {
+            const o = document.createElement('option');
+            o.value = t.id; o.textContent = t.name || t.id;
+            resSel.appendChild(o);
+        });
+    } else if (type === 'room') {
+        resourceData.rooms.forEach(r => {
+            const o = document.createElement('option');
+            o.value = r.id; o.textContent = r.name || r.id;
+            resSel.appendChild(o);
+        });
+    }
+}
+
+function renderFreeSlots() {
+    const filter  = document.getElementById('free-slots-filter');
+    const resSel  = document.getElementById('free-slots-resource');
+    const result  = document.getElementById('free-slots-result');
+    if (!result) return;
+    if (!currentTimetable) { showNotification('error', 'Generate a timetable first.'); return; }
+
+    const type = filter ? filter.value : 'all';
+    const resId = resSel ? resSel.value : '';
+
+    const slots = {};
+    (currentTimetable.timeslots || currentTimetable.slots || []).forEach(s => { slots[s.id] = s; });
+    const allAssignments = currentTimetable.assignments || [];
+
+    // Determine which slot IDs are occupied for the selected resource
+    let occupiedSlotIds = new Set();
+    if (type === 'teacher' && resId) {
+        allAssignments.filter(a => a.teacher_id === resId).forEach(a => occupiedSlotIds.add(a.slot_id));
+    } else if (type === 'room' && resId) {
+        allAssignments.filter(a => a.room_id === resId).forEach(a => occupiedSlotIds.add(a.slot_id));
+    } else {
+        allAssignments.forEach(a => occupiedSlotIds.add(a.slot_id));
+    }
+
+    const freeSlots = Object.values(slots).filter(s => !occupiedSlotIds.has(s.id));
+    const dayOrder  = ['monday','tuesday','wednesday','thursday','friday'];
+
+    if (freeSlots.length === 0) {
+        result.innerHTML = '<p class="empty-state">No free slots found — the timetable is fully packed!</p>';
+        return;
+    }
+
+    // Group by day
+    const byDay = {};
+    freeSlots.forEach(s => {
+        const d = (s.day || 'unknown').toLowerCase();
+        if (!byDay[d]) byDay[d] = [];
+        byDay[d].push(s);
+    });
+
+    let html = `<p style="margin-bottom:1rem;color:#555;">${freeSlots.length} free slot(s) found.</p>`;
+    html += '<div style="display:flex;flex-wrap:wrap;gap:1rem;">';
+    dayOrder.forEach(day => {
+        if (!byDay[day]) return;
+        html += `<div style="background:#f9f9f9;border:1px solid #ddd;border-radius:8px;padding:12px;min-width:160px;">
+            <strong style="display:block;margin-bottom:8px;color:#2c3e50;">${day.charAt(0).toUpperCase()+day.slice(1)}</strong>`;
+        byDay[day].sort((a,b) => a.period - b.period).forEach(s => {
+            const start = s.start_time || s.start || '';
+            const end   = s.end || '';
+            const label = end ? `${start}–${end}` : start;
+            html += `<span style="display:inline-block;background:#e8f5e9;color:#2e7d32;border-radius:4px;padding:2px 8px;margin:2px;font-size:0.8rem;">${label}</span>`;
+        });
+        html += '</div>';
+    });
+    html += '</div>';
+    result.innerHTML = html;
+}
+
+// Wire up the filter change
+document.addEventListener('DOMContentLoaded', () => {
+    const f = document.getElementById('free-slots-filter');
+    if (f) f.addEventListener('change', _populateFreeSlotResource);
+});
+
+// ============================================================================
+// NEW FEATURE 4: Class / Division View
+// ============================================================================
+
+function _populateClassViewSelect() {
+    const sel = document.getElementById('class-view-select');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">— Select a Class —</option>';
+    resourceData.classes.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = c.name + (c.type === 'batch' ? ` (batch of ${c.batch_of || ''})` : '');
+        sel.appendChild(opt);
+    });
+}
+
+function renderClassView() {
+    const sel  = document.getElementById('class-view-select');
+    const grid = document.getElementById('class-view-grid');
+    if (!sel || !grid) return;
+    const classId = sel.value;
+    if (!classId) { showNotification('warning', 'Please select a class first.'); return; }
+    if (!currentTimetable) { showNotification('error', 'Generate a timetable first.'); return; }
+
+    const cls = resourceData.classes.find(c => c.id === classId);
+    const clsName = cls ? cls.name : classId;
+
+    const slots = {};
+    (currentTimetable.timeslots || currentTimetable.slots || []).forEach(s => { slots[s.id] = s; });
+    const assignments = (currentTimetable.assignments || []).filter(a => a.class_id === classId);
+
+    grid.innerHTML = _buildFilteredTimetableHTML(assignments, slots, `${clsName} — Class Timetable`, true);
+}
+
+function printClassView() {
+    const sel = document.getElementById('class-view-select');
+    if (!sel || !sel.value) { showNotification('warning', 'Select a class first.'); return; }
+    const cls = resourceData.classes.find(c => c.id === sel.value);
+    const name = cls ? cls.name : sel.value;
+    _printHTML(document.getElementById('class-view-grid').innerHTML, `${name} — Timetable`);
+}
+
+// ============================================================================
+// NEW FEATURE 5: Room Occupancy View
+// ============================================================================
+
+function _populateRoomViewSelect() {
+    const sel = document.getElementById('room-view-select');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">— Select a Room —</option>';
+    resourceData.rooms.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = r.id;
+        opt.textContent = `${r.name} (${r.type}, cap: ${r.capacity})`;
+        sel.appendChild(opt);
+    });
+}
+
+function renderRoomView() {
+    const sel  = document.getElementById('room-view-select');
+    const grid = document.getElementById('room-view-grid');
+    if (!sel || !grid) return;
+    const roomId = sel.value;
+    if (!roomId) { showNotification('warning', 'Please select a room first.'); return; }
+    if (!currentTimetable) { showNotification('error', 'Generate a timetable first.'); return; }
+
+    const room = resourceData.rooms.find(r => r.id === roomId);
+    const roomName = room ? room.name : roomId;
+
+    const slots = {};
+    (currentTimetable.timeslots || currentTimetable.slots || []).forEach(s => { slots[s.id] = s; });
+    const assignments = (currentTimetable.assignments || []).filter(a => a.room_id === roomId);
+
+    grid.innerHTML = _buildFilteredTimetableHTML(assignments, slots, `Room ${roomName} — Occupancy Schedule`, false);
+}
+
+function printRoomView() {
+    const sel = document.getElementById('room-view-select');
+    if (!sel || !sel.value) { showNotification('warning', 'Select a room first.'); return; }
+    const room = resourceData.rooms.find(r => r.id === sel.value);
+    const name = room ? room.name : sel.value;
+    _printHTML(document.getElementById('room-view-grid').innerHTML, `Room ${name} — Schedule`);
+}
+
+// ============================================================================
+// Shared helpers for new view features
+// ============================================================================
+
+/**
+ * Build a day×time timetable HTML table filtered to a specific set of assignments.
+ * @param {Array}  assignments - filtered assignment list
+ * @param {Object} slots       - slot id → slot object map
+ * @param {string} title       - heading shown above the table
+ * @param {boolean} showClass  - whether to show the class/batch label in each cell
+ */
+function _buildFilteredTimetableHTML(assignments, slots, title, showClass) {
+    if (assignments.length === 0) {
+        return `<p class="empty-state">No assignments found.</p>`;
+    }
+
+    const dayOrder   = ['monday','tuesday','wednesday','thursday','friday'];
+    const allPeriods = [...new Set(Object.values(slots).map(s => s.period))].sort((a,b) => a - b);
+
+    // Build day+period → assignment list
+    const grid = {};
+    assignments.forEach(a => {
+        const s = slots[a.slot_id] || {};
+        const key = `${(s.day||'').toLowerCase()}__${s.period}`;
+        if (!grid[key]) grid[key] = [];
+        grid[key].push(a);
+    });
+
+    // Time label helper
+    function tlabel(p) {
+        const s = Object.values(slots).find(x => x.period === p);
+        if (!s) return `${p}`;
+        const start = s.start_time || s.start || '';
+        const end   = s.end || '';
+        return end ? `${start}–${end}` : start;
+    }
+
+    let html = `<h3 style="margin-bottom:1rem;color:var(--primary-color,#2c3e50);">${title}</h3>`;
+    html += '<div style="overflow-x:auto;"><table class="tt-table"><thead><tr>';
+    html += '<th class="tt-day-header">Day</th>';
+    allPeriods.forEach(p => {
+        html += `<th class="tt-period-header">${tlabel(p)}</th>`;
+    });
+    html += '</tr></thead><tbody>';
+
+    const skipMap = {};
+    dayOrder.forEach(day => {
+        html += `<tr><td class="tt-day-cell">${day.charAt(0).toUpperCase()+day.slice(1)}</td>`;
+        const skipped = new Set();
+        allPeriods.forEach(p => {
+            if (skipped.has(p)) return;
+            const cell = grid[`${day}__${p}`] || [];
+            if (cell.length === 0) {
+                html += '<td class="tt-empty">—</td>';
+            } else {
+                // Check for 2hr lab
+                const hasLab = cell.some(a => {
+                    const subj = resourceData.subjects.find(x => x.id === a.subject_id);
+                    return subj && subj.duration >= 2;
+                });
+                let colspan = 1;
+                if (hasLab) {
+                    const nextP = allPeriods[allPeriods.indexOf(p) + 1];
+                    if (nextP !== undefined) { colspan = 2; skipped.add(nextP); }
+                }
+                const colAttr = colspan > 1 ? ` colspan="${colspan}"` : '';
+                html += `<td class="tt-cell"${colAttr}>`;
+                cell.forEach(a => {
+                    const subj    = _resolveId('subjects', a.subject_id);
+                    const teacher = _resolveId('teachers', a.teacher_id);
+                    const room    = _resolveId('rooms',    a.room_id);
+                    const cls     = _resolveId('classes',  a.class_id);
+                    const subjObj = resourceData.subjects.find(x => x.id === a.subject_id);
+                    const isLab   = subjObj && subjObj.type === 'lab';
+                    const border  = isLab ? 'border-left:3px solid #f39c12;padding-left:4px;' : '';
+                    html += `<div class="tt-entry" style="${border}">
+                        ${showClass ? `<strong>${cls}</strong>` : ''}
+                        <div class="tt-subject">${subj}${isLab ? ' <span style="font-size:9px;color:#e67e22;">(2hr lab)</span>' : ''}</div>
+                        <small class="tt-teacher">${teacher}</small>
+                        <small class="tt-room">${room}</small>
+                    </div>`;
+                });
+                html += '</td>';
+            }
+        });
+        html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    return html;
+}
+
+/**
+ * Open a print window with the given HTML content.
+ */
+function _printHTML(bodyHTML, title) {
+    if (!bodyHTML || bodyHTML.includes('empty-state')) {
+        showNotification('warning', 'Nothing to print yet — generate a view first.');
+        return;
+    }
+    const win = window.open('', '_blank', 'width=1000,height=750');
+    if (!win) { showNotification('error', 'Pop-up blocked. Allow pop-ups and try again.'); return; }
+    win.document.write(`<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>${title}</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; color: #000; font-size: 12px; }
+  h3   { margin-bottom: 12px; color: #2c3e50; }
+  table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  th, td { border: 1px solid #ccc; padding: 5px 7px; vertical-align: top; }
+  th { background: #e8eaf6; font-weight: bold; text-align: center; white-space: nowrap; }
+  .tt-day-cell { font-weight: bold; background: #f5f5f5; }
+  .tt-empty { color: #ccc; text-align: center; }
+  .tt-subject { font-size: 10px; color: #333; }
+  .tt-teacher, .tt-room { font-size: 9px; color: #666; display: block; }
+  @media print { body { margin: 8px; } }
+</style></head>
+<body>${bodyHTML}</body></html>`);
+    win.document.close();
+    win.focus();
+    win.onload = () => { win.print(); win.close(); };
+    showNotification('success', `${title} — print dialog opened`);
+}
+
+// Hook new sections into the auto-load map and populate dropdowns on section switch
+const _origSwitchSection = switchSection;
+// Extend switchSection to populate dropdowns for new sections
+const _newSectionInit = {
+    'teacher-view': _populateTeacherViewSelect,
+    'free-slots':   _populateFreeSlotResource,
+    'class-view':   _populateClassViewSelect,
+    'room-view':    _populateRoomViewSelect,
+};
+// Patch switchSection to call init for new sections
+(function() {
+    const orig = window.switchSection || switchSection;
+    window.switchSection = function(name) {
+        orig(name);
+        if (_newSectionInit[name]) {
+            try { _newSectionInit[name](); } catch(e) { console.warn('Init failed for', name, e); }
+        }
+    };
+})();
