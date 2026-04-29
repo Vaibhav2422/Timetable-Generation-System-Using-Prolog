@@ -168,9 +168,13 @@ reply_json_with_cors(Data, Options) :-
     ).
 
 %% reply_cors_preflight(+Request)
-%% Reply to OPTIONS preflight
-reply_cors_preflight(Request) :-
-    cors_enable(Request, [methods([get,post,options])]),
+%% Reply to OPTIONS preflight with explicit CORS headers
+reply_cors_preflight(_Request) :-
+    format('Access-Control-Allow-Origin: *~n'),
+    format('Access-Control-Allow-Methods: GET, POST, OPTIONS~n'),
+    format('Access-Control-Allow-Headers: Content-Type, Authorization~n'),
+    format('Access-Control-Max-Age: 86400~n'),
+    format('Content-Type: text/plain~n'),
     format('~n').
 
 %% ============================================================================
