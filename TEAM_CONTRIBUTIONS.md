@@ -260,3 +260,101 @@
 
 *Document prepared by Vaibhav Hade (Group Leader)*
 *AI-Based Timetable Generation System — End Semester Review 2025-26*
+
+
+---
+
+## PPT Slide Distribution (End Semester Review)
+
+> Total: 15 slides distributed across 5 members based on their module ownership.
+
+---
+
+### Vaibhav Hade — Group Leader
+**Slides: 1, 2, 3, 6**
+
+| Slide | Topic | Reason |
+|-------|-------|--------|
+| Slide 1 | Title Slide | Group leader presents the project |
+| Slide 2 | Problem Statement | System design and critical thinking |
+| Slide 3 | Objectives | Project scope and planning |
+| Slide 6 | System Architecture / Methodology | Owns the full system design and API layer |
+
+**Speaking points:** Introduce the team, explain the problem, present the architecture diagram, walk through the API flow.
+
+---
+
+### Omkar Ghanure — Assistant Group Leader
+**Slides: 7, 8, 10**
+
+| Slide | Topic | Reason |
+|-------|-------|--------|
+| Slide 7 | Constraint Modeling | Owns `constraints.pl` and CSP solver |
+| Slide 8 | Prolog Code Walkthrough | Owns `csp_solver.pl`, `knowledge_base.pl`, `timetable_generator.pl` |
+| Slide 10 | Challenges Faced | Faced and solved core CSP challenges |
+
+**Speaking points:** Explain hard vs soft constraints, walk through the backtracking code, explain MRV/Degree/LCV heuristics, discuss domain initialization and empty domain detection.
+
+---
+
+### Satyajeet Ghadge — Member
+**Slides: 5, 12**
+
+| Slide | Topic | Reason |
+|-------|-------|--------|
+| Slide 5 | Technology Used | Owns probability and AI modules — can justify Prolog choice |
+| Slide 12 | Mathematical Foundation | Owns probability module, CSP formulation, FOL predicates |
+
+**Speaking points:** Explain why Prolog was chosen over GA/IP/Greedy, present the CSP formulation (variables, domains, constraints), explain SLD resolution and unification, present the FOL predicate mappings.
+
+---
+
+### Aaryan Giri — Member
+**Slides: 9, 11**
+
+| Slide | Topic | Reason |
+|-------|-------|--------|
+| Slide 9 | Sample Output / Results | Owns multi-solution generator and scenario simulator — can show results |
+| Slide 11 | Comparison with Other Methods | Owns advanced features — can compare approaches |
+
+**Speaking points:** Show the generated timetable output, explain the JSON API response, compare Prolog CSP vs Genetic Algorithm vs Integer Programming, highlight correctness guarantees.
+
+---
+
+### Onkar Gawade — Member
+**Slides: 4, 13, 14, 15**
+
+| Slide | Topic | Reason |
+|-------|-------|--------|
+| Slide 4 | Literature Survey | Frontend developer — presents research context |
+| Slide 13 | Future Scope | Owns frontend — can speak to UI/UX improvements |
+| Slide 14 | Conclusion | Summarizes the full system |
+| Slide 15 | References | Closes the presentation |
+
+**Speaking points:** Present the 4 base papers and their gaps, explain future enhancements (GUI, hybrid AI, NLP), summarize key achievements, present all references.
+
+---
+
+### Quick Reference Table
+
+| Slide | Topic | Presenter |
+|-------|-------|-----------|
+| 1 | Title Slide | Vaibhav Hade |
+| 2 | Problem Statement | Vaibhav Hade |
+| 3 | Objectives | Vaibhav Hade |
+| 4 | Literature Survey | Onkar Gawade |
+| 5 | Technology Used | Satyajeet Ghadge |
+| 6 | System Architecture | Vaibhav Hade |
+| 7 | Constraint Modeling | Omkar Ghanure |
+| 8 | Prolog Code Walkthrough | Omkar Ghanure |
+| 9 | Sample Output / Results | Aaryan Giri |
+| 10 | Challenges Faced | Omkar Ghanure |
+| 11 | Comparison with Other Methods | Aaryan Giri |
+| 12 | Mathematical Foundation | Satyajeet Ghadge |
+| 13 | Future Scope | Onkar Gawade |
+| 14 | Conclusion | Onkar Gawade |
+| 15 | References | Onkar Gawade |
+
+---
+
+*PPT distribution aligned with module ownership — each member presents what they built.*
