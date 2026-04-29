@@ -247,7 +247,7 @@ handle_static_js(_Request) :-
 :- http_handler(root(api/constraint_graph), handle_constraint_graph, [cors([methods([get,options]), origin('*')])]).
 :- http_handler(root(api/complexity_analysis), handle_complexity_analysis, [cors([methods([get,options]), origin('*')])]).
 :- http_handler(root(api/nl_query), handle_nl_query, [cors([methods([post,options]), origin('*')])]).
-:- http_handler(root(api/predict_conflicts), handle_predict_conflicts, [method(post)]).
+:- http_handler(root(api/predict_conflicts), handle_predict_conflicts, [cors([methods([post,options]), origin('*')])]).
 :- http_handler(root(api/save_version), handle_save_version, [cors([methods([post,options]), origin('*')])]).
 :- http_handler(root(api/versions), handle_list_versions, [cors([methods([get,options]), origin('*')])]).
 :- http_handler(root(api/version), handle_load_version, [cors([methods([get,options]), origin('*')])]).
@@ -2507,7 +2507,7 @@ handle_nl_query_error(Error) :-
 %%     "bottlenecks": [...],
 %%     "suggestions": [...] }
 handle_predict_conflicts(Request) :-
-    cors_headers,
+    cors_enable(Request, [methods([post, options])]),
     member(method(post), Request),
     !,
     catch(
@@ -2531,7 +2531,7 @@ handle_predict_conflicts(Request) :-
             maplist(action_to_json, Actions, ActionsJSON),
             atom_string(RiskLevel, RiskLevelStr),
             log_info('Conflict prediction completed'),
-            reply_json_dict(_{
+            reply_json_with_cors(_{
                 status: success,
                 risk_level: RiskLevelStr,
                 conflict_probability: Probability,
@@ -2544,20 +2544,20 @@ handle_predict_conflicts(Request) :-
         (
             format_user_error(Error, ErrorMsg),
             log_error(ErrorMsg),
-            reply_json_dict(_{status: error, message: ErrorMsg}, [status(500)])
+            reply_json_with_cors(_{status: error, message: ErrorMsg}, [status(500)])
         )
     ).
 
 handle_predict_conflicts(Request) :-
-    cors_headers,
+    cors_enable(Request, [methods([post, options])]),
     member(method(options), Request),
     !,
-    reply_json_dict(_{status: success}).
+    format('~n').
 
-handle_predict_conflicts(_) :-
-    cors_headers,
+handle_predict_conflicts(Request) :-
+    cors_enable(Request, [methods([post, options])]),
     format_user_error('Use POST /api/predict_conflicts with optional {sessions: [...]}', Msg),
-    reply_json_dict(_{status: error, message: Msg}, [status(400)]).
+    reply_json_with_cors(_{status: error, message: Msg}, [status(400)]).
 
 %% json_session_to_prolog(+JSONDict, -session(ClassID, SubjectID))
 %% Convert a JSON session dict to a Prolog session/2 term.

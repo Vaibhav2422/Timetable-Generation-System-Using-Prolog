@@ -282,12 +282,10 @@ bottleneck(Sessions, timeslot_bottleneck(Demand, Supply)) :-
 suggest_preventive_actions(Sessions, Actions) :-
     log_info('Generating preventive action suggestions'),
     resolve_sessions(Sessions, ResolvedSessions),
-    identify_bottleneck_resources(ResolvedSessions, Bottlenecks),
-    predict_conflicts(ResolvedSessions, Risks),
-    findall(Action,
-            (   generate_action(Bottlenecks, Risks, Action)
-            ),
-            AllActions),
+    % Use internal helpers directly to avoid recursive call back into predict_conflicts
+    findall(B, bottleneck(ResolvedSessions, B), Bottlenecks),
+    findall(Risk, predict_risk(ResolvedSessions, Risk), Risks),
+    findall(Action, generate_action(Bottlenecks, Risks, Action), AllActions),
     sort(AllActions, Actions).  % deduplicate
 
 %% generate_action(+Bottlenecks, +Risks, -Action)
@@ -370,7 +368,10 @@ risk_assessment(Sessions, RiskLevel) :-
     log_info('Performing risk assessment'),
     resolve_sessions(Sessions, ResolvedSessions),
     calculate_conflict_probability(ResolvedSessions, Probability),
-    suggest_preventive_actions(ResolvedSessions, Actions),
+    findall(B, bottleneck(ResolvedSessions, B), Bottlenecks),
+    findall(Risk, predict_risk(ResolvedSessions, Risk), Risks),
+    findall(Action, generate_action(Bottlenecks, Risks, Action), AllActions),
+    sort(AllActions, Actions),
     determine_risk_level(Probability, Actions, RiskLevel).
 
 %% determine_risk_level(+Probability, +Actions, -Level)

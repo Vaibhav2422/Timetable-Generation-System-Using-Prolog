@@ -14,7 +14,7 @@ Write-Host ""
 $expected = @{
     teachers  = 9
     subjects  = 11
-    rooms     = 28
+    rooms     = 30
     timeslots = 45
     classes   = 8
 }

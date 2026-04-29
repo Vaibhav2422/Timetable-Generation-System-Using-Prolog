@@ -147,7 +147,9 @@ generate_domain(Session, Domain) :-
             (member(teacher(TeacherID, _, QualSubjects, _, Avail), AllTeachers),
              member(SubjectID, QualSubjects),
              member(room(RoomID, _, _, RoomType), AllRooms),
-             (Type = theory, RoomType = classroom ; Type = lab, RoomType = lab),
+             (Type = theory, RoomType = classroom ;
+              Type = tutorial, RoomType = classroom ;
+              Type = lab, RoomType = lab),
              member(timeslot(SlotID, _, _, _, _), AllSlots),
              member(SlotID, Avail)),
             Domain),

@@ -433,34 +433,38 @@ function loadExampleDataset() {
             { id: 's11', name: 'IP Tutorial', hours: 1, type: 'tutorial', duration: 1 }
         ],
         rooms: [
+            // Labs: 18 needed (c3-c8 each have s2,s4,s6 = 3 lab sessions × 6 classes)
             { id: 'r1',  name: '2101-A', capacity: 24, type: 'lab' },
             { id: 'r2',  name: '2101-B', capacity: 24, type: 'lab' },
             { id: 'r3',  name: '2101-C', capacity: 24, type: 'lab' },
-            { id: 'r4',  name: '2102',   capacity: 72, type: 'classroom' },
-            { id: 'r5',  name: '2103',   capacity: 72, type: 'classroom' },
-            { id: 'r6',  name: '2104',   capacity: 72, type: 'classroom' },
-            { id: 'r7',  name: '2105',   capacity: 72, type: 'classroom' },
-            { id: 'r8',  name: '2106',   capacity: 72, type: 'classroom' },
-            { id: 'r9',  name: '2107',   capacity: 72, type: 'classroom' },
-            { id: 'r10', name: '2108',   capacity: 72, type: 'classroom' },
-            { id: 'r11', name: '2201',   capacity: 72, type: 'classroom' },
-            { id: 'r12', name: '2202',   capacity: 72, type: 'classroom' },
-            { id: 'r13', name: '2203',   capacity: 72, type: 'classroom' },
-            { id: 'r14', name: '2204',   capacity: 72, type: 'classroom' },
-            { id: 'r15', name: '2205',   capacity: 72, type: 'classroom' },
-            { id: 'r16', name: '2206',   capacity: 72, type: 'classroom' },
-            { id: 'r17', name: '2207-A', capacity: 24, type: 'lab' },
-            { id: 'r18', name: '2207-B', capacity: 24, type: 'lab' },
-            { id: 'r19', name: '2207-C', capacity: 24, type: 'lab' },
-            { id: 'r20', name: '2208',   capacity: 72, type: 'classroom' },
-            { id: 'r21', name: '2301',   capacity: 72, type: 'classroom' },
-            { id: 'r22', name: '2302',   capacity: 72, type: 'classroom' },
-            { id: 'r23', name: '2303',   capacity: 72, type: 'classroom' },
-            { id: 'r24', name: '2304',   capacity: 72, type: 'classroom' },
-            { id: 'r25', name: '2305',   capacity: 72, type: 'classroom' },
-            { id: 'r26', name: '2306',   capacity: 72, type: 'classroom' },
-            { id: 'r27', name: '2307',   capacity: 72, type: 'classroom' },
-            { id: 'r28', name: '2308',   capacity: 72, type: 'classroom' }
+            { id: 'r4',  name: '2101-D', capacity: 24, type: 'lab' },
+            { id: 'r5',  name: '2101-E', capacity: 24, type: 'lab' },
+            { id: 'r6',  name: '2101-F', capacity: 24, type: 'lab' },
+            { id: 'r7',  name: '2207-A', capacity: 24, type: 'lab' },
+            { id: 'r8',  name: '2207-B', capacity: 24, type: 'lab' },
+            { id: 'r9',  name: '2207-C', capacity: 24, type: 'lab' },
+            { id: 'r10', name: '2207-D', capacity: 24, type: 'lab' },
+            { id: 'r11', name: '2207-E', capacity: 24, type: 'lab' },
+            { id: 'r12', name: '2207-F', capacity: 24, type: 'lab' },
+            { id: 'r13', name: '2301-A', capacity: 24, type: 'lab' },
+            { id: 'r14', name: '2301-B', capacity: 24, type: 'lab' },
+            { id: 'r15', name: '2301-C', capacity: 24, type: 'lab' },
+            { id: 'r16', name: '2301-D', capacity: 24, type: 'lab' },
+            { id: 'r17', name: '2301-E', capacity: 24, type: 'lab' },
+            { id: 'r18', name: '2301-F', capacity: 24, type: 'lab' },
+            // Classrooms: 12 needed (c1+c2 each have s1,s3,s5,s7,s9,s10 = 6 theory × 2)
+            { id: 'r19', name: '2102',   capacity: 72, type: 'classroom' },
+            { id: 'r20', name: '2103',   capacity: 72, type: 'classroom' },
+            { id: 'r21', name: '2104',   capacity: 72, type: 'classroom' },
+            { id: 'r22', name: '2105',   capacity: 72, type: 'classroom' },
+            { id: 'r23', name: '2106',   capacity: 72, type: 'classroom' },
+            { id: 'r24', name: '2107',   capacity: 72, type: 'classroom' },
+            { id: 'r25', name: '2108',   capacity: 72, type: 'classroom' },
+            { id: 'r26', name: '2201',   capacity: 72, type: 'classroom' },
+            { id: 'r27', name: '2202',   capacity: 72, type: 'classroom' },
+            { id: 'r28', name: '2203',   capacity: 72, type: 'classroom' },
+            { id: 'r29', name: '2204',   capacity: 72, type: 'classroom' },
+            { id: 'r30', name: '2205',   capacity: 72, type: 'classroom' }
         ],
         timeslots: [
             { id: 'slot1',  day: 'monday',    period: 1, start: '08:00', duration: 1 },
@@ -5320,6 +5324,28 @@ async function autoFixIssues() {
  * Calls POST /api/predict_conflicts and renders the risk assessment report.
  */
 async function checkConflicts() {
+    // Auto-submit resources if data is loaded but not yet sent to backend
+    if (!_resourcesSubmittedToBackend) {
+        const types = ['teachers','subjects','rooms','timeslots','classes'];
+        const hasData = types.every(t => resourceData[t].length > 0);
+        if (!hasData) {
+            showNotification('error', 'Please load or add resources first before checking for conflicts.');
+            return;
+        }
+        try {
+            const r = await fetch(`${API_BASE_URL}/resources`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(resourceData)
+            });
+            if (!r.ok) throw new Error('Failed to submit resources');
+            _resourcesSubmittedToBackend = true;
+        } catch (e) {
+            showNotification('error', `Could not submit resources: ${e.message}`);
+            return;
+        }
+    }
+
     const loading = document.getElementById('risk-loading');
     const report  = document.getElementById('risk-report');
     const checkBtn = document.getElementById('check-conflicts-btn');
@@ -5331,7 +5357,8 @@ async function checkConflicts() {
     try {
         const response = await fetch(`${API_BASE_URL}/predict_conflicts`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})   // required for POST (Req 3.1)
         });
 
         if (!response.ok) {

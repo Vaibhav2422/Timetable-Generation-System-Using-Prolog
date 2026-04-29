@@ -242,67 +242,6 @@
             <h2>Generate Timetable</h2>
             <p class="section-description">Create a valid timetable using AI-powered constraint satisfaction</p>
 
-            <!-- Risk Assessment Panel (Feature 19) -->
-            <div id="risk-assessment-panel" class="risk-assessment-panel">
-                <div class="risk-assessment-header">
-                    <h3>
-                        <span class="risk-assessment-icon">🔮</span>
-                        AI Conflict Prediction
-                    </h3>
-                    <button id="check-conflicts-btn" class="btn btn-secondary">
-                        <span class="btn-icon">🔍</span>
-                        Check for Conflicts
-                    </button>
-                </div>
-                <p class="risk-assessment-description">
-                    Analyse your resources before generation to predict potential conflicts and get preventive suggestions.
-                </p>
-
-                <!-- Risk Report (hidden until check runs) -->
-                <div id="risk-report" style="display:none;">
-                    <!-- Risk Level + Probability -->
-                    <div class="risk-summary">
-                        <div class="risk-level-display">
-                            <span class="risk-summary-label">Risk Level</span>
-                            <span id="risk-level-badge" class="risk-level-badge">--</span>
-                        </div>
-                        <div class="risk-probability-display">
-                            <span class="risk-summary-label">Conflict Probability</span>
-                            <span id="risk-probability-value" class="risk-probability-value">--</span>
-                        </div>
-                    </div>
-
-                    <!-- Bottleneck Resources -->
-                    <div id="risk-bottlenecks-section" class="risk-section" style="display:none;">
-                        <h4 class="risk-section-title">⚠ Bottleneck Resources</h4>
-                        <ul id="risk-bottlenecks-list" class="risk-bottlenecks-list"></ul>
-                    </div>
-
-                    <!-- Preventive Suggestions -->
-                    <div id="risk-suggestions-section" class="risk-section" style="display:none;">
-                        <h4 class="risk-section-title">💡 Preventive Actions</h4>
-                        <ul id="risk-suggestions-list" class="risk-suggestions-list"></ul>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="risk-actions">
-                        <button id="generate-anyway-btn" class="btn btn-warning">
-                            <span class="btn-icon">🚀</span>
-                            Generate Anyway
-                        </button>
-                        <button id="fix-issues-btn" class="btn btn-primary">
-                            <span class="btn-icon">🔧</span>
-                            Fix Issues First
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Loading state -->
-                <div id="risk-loading" class="loading-indicator" style="display:none;">
-                    <div class="spinner"></div>
-                    <p>Analysing resources…</p>
-                </div>
-            </div>
 
             <!-- Resource Summary + Quick Edit Panel -->
             <div id="gen-resource-panel" class="gen-resource-panel">
