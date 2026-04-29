@@ -3,7 +3,7 @@
 % Server Configuration
 % Port number for HTTP server (default: 8080)
 :- dynamic server_port/1.
-server_port(8080).
+server_port(8081).
 
 % Logging Configuration
 % Log levels: debug, info, warning, error

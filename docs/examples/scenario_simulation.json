@@ -1,0 +1,40 @@
+{
+  "status": "ok",
+  "scenario": "teacher_absence",
+  "parameters": {
+    "teacher_id": "t1",
+    "teacher_name": "Dr. Alice Johnson"
+  },
+  "original_reliability": 0.3759,
+  "affected_sessions": [
+    {"class_id": "c1", "subject_id": "s2", "slot_id": "slot1",
+     "description": "CS-A / Algorithms / Monday 09:00"},
+    {"class_id": "c1", "subject_id": "s1", "slot_id": "slot12",
+     "description": "CS-A / Data Structures / Tuesday 15:00"},
+    {"class_id": "c3", "subject_id": "s1", "slot_id": "slot13",
+     "description": "CS-C / Data Structures / Wednesday 09:00"}
+  ],
+  "reassigned": [
+    {
+      "session": "CS-A / Algorithms",
+      "original_teacher": "t1",
+      "new_teacher": "t5",
+      "new_teacher_name": "Ms. Emma Davis",
+      "new_slot": "slot3",
+      "new_slot_description": "Monday 11:00"
+    }
+  ],
+  "unresolvable": [
+    {
+      "session": "CS-A / Data Structures",
+      "reason": "No qualified teacher available at remaining slots"
+    },
+    {
+      "session": "CS-C / Data Structures",
+      "reason": "Ms. Emma Davis already assigned at conflicting slots"
+    }
+  ],
+  "simulated_reliability": 0.2812,
+  "reliability_change": -0.0947,
+  "impact_summary": "3 sessions affected, 1 reassigned, 2 unresolvable. Reliability drops from 37.6% to 28.1%."
+}

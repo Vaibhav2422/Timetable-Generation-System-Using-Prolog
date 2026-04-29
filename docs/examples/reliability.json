@@ -1,0 +1,13 @@
+{
+  "status": "ok",
+  "reliability": 0.3759,
+  "risk_category": "critical",
+  "expected_disruptions": 7.4898,
+  "total_assignments": 12,
+  "interpretation": {
+    "low": "reliability >= 0.95 (very robust schedule)",
+    "medium": "reliability 0.85-0.95 (minor disruption risk)",
+    "high": "reliability 0.70-0.85 (moderate disruption risk)",
+    "critical": "reliability < 0.70 (high disruption risk)"
+  }
+}

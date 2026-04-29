@@ -1,0 +1,21 @@
+=============================================================
+  AI-Based Timetable Generation System - Example Output
+=============================================================
+
+Class                         Subject                  Teacher             Room           Slot
+----------------------------------------------------------------------------------------------------
+CS-A                          Algorithms               Dr. Alice Johnson   Room 101       monday P1 09:00
+CS-C                          Computer Networks        Dr. Carol Williams  Room 101       monday P2 10:00
+CS-B                          Operating Systems        Prof. Bob Smith     Room 101       tuesday P4 12:00
+CS-C                          Software Engineering     Dr. Carol Williams  Room 101       tuesday P5 14:00
+CS-A                          Data Structures          Dr. Alice Johnson   Room 101       tuesday P6 15:00
+CS-C                          Data Structures          Dr. Alice Johnson   Room 101       wednesday P1 09:00
+CS-A                          Database Systems         Prof. Bob Smith     Room 101       wednesday P2 10:00
+CS-B                          Database Systems         Prof. Bob Smith     Room 101       wednesday P3 11:00
+CS-B                          Computer Networks        Dr. Carol Williams  Room 101       thursday P1 09:00
+CS-A                          Database Lab             Mr. David Brown     Lab A          tuesday P4 12:00
+CS-B                          Networks Lab             Mr. David Brown     Lab A          tuesday P5 14:00
+CS-C                          Database Lab             Mr. David Brown     Lab A          tuesday P6 15:00
+
+====================================================================================================
+Total assignments: 12

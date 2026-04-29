@@ -1,0 +1,8 @@
+{
+  "dataset": "data/dataset.pl",
+  "teachers": 5,
+  "subjects": 8,
+  "rooms": 6,
+  "timeslots": 30,
+  "classes": 3
+}

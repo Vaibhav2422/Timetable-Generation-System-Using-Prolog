@@ -1,0 +1,13 @@
+Class,Subject,Teacher,Room,Day,Period,StartTime
+"CS-A","Algorithms","Dr. Alice Johnson","Room 101","monday",1,"09:00"
+"CS-C","Computer Networks","Dr. Carol Williams","Room 101","monday",2,"10:00"
+"CS-B","Operating Systems","Prof. Bob Smith","Room 101","tuesday",4,"12:00"
+"CS-C","Software Engineering","Dr. Carol Williams","Room 101","tuesday",5,"14:00"
+"CS-A","Data Structures","Dr. Alice Johnson","Room 101","tuesday",6,"15:00"
+"CS-C","Data Structures","Dr. Alice Johnson","Room 101","wednesday",1,"09:00"
+"CS-A","Database Systems","Prof. Bob Smith","Room 101","wednesday",2,"10:00"
+"CS-B","Database Systems","Prof. Bob Smith","Room 101","wednesday",3,"11:00"
+"CS-B","Computer Networks","Dr. Carol Williams","Room 101","thursday",1,"09:00"
+"CS-A","Database Lab","Mr. David Brown","Lab A","tuesday",4,"12:00"
+"CS-B","Networks Lab","Mr. David Brown","Lab A","tuesday",5,"14:00"
+"CS-C","Database Lab","Mr. David Brown","Lab A","tuesday",6,"15:00"

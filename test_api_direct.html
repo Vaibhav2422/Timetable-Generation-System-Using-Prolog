@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .test { background: white; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { border-left: 4px solid green; }
+        .error { border-left: 4px solid red; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f0f0f0; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>API Connection Test</h1>
+    
+    <div class="test">
+        <h3>Backend Status</h3>
+        <button onclick="testBackend()">Test Backend</button>
+        <div id="backend-result"></div>
+    </div>
+
+    <div class="test">
+        <h3>Submit Test Resources</h3>
+        <button onclick="submitTestData()">Submit Test Data</button>
+        <div id="submit-result"></div>
+    </div>
+
+    <div class="test">
+        <h3>Generate Timetable</h3>
+        <button onclick="generateTimetable()">Generate</button>
+        <div id="generate-result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080/api';
+
+        async function testBackend() {
+            const result = document.getElementById('backend-result');
+            result.innerHTML = '<p>Testing...</p>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/timetable`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                result.innerHTML = `
+                    <p style="color: green;">✓ Backend is responding!</p>
+                    <p>Status: ${response.status}</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                result.innerHTML = `
+                    <p style="color: red;">✗ Error: ${error.message}</p>
+                    <p>This means the backend is not accessible from the browser.</p>
+                `;
+            }
+        }
+
+        async function submitTestData() {
+            const result = document.getElementById('submit-result');
+            result.innerHTML = '<p>Submitting...</p>';
+            
+            const testData = {
+                teachers: [{
+                    id: 't1',
+                    name: 'Dr. Test',
+                    subjects: ['math'],
+                    maxload: 20,
+                    availability: ['slot1', 'slot2', 'slot3']
+                }],
+                subjects: [{
+                    id: 's1',
+                    name: 'Mathematics',
+                    hours: 3,
+                    type: 'theory',
+                    duration: 1
+                }],
+                rooms: [{
+                    id: 'r1',
+                    name: 'Room 101',
+                    capacity: 30,
+                    type: 'classroom'
+                }],
+                timeslots: [{
+                    id: 'slot1',
+                    day: 'monday',
+                    period: 1,
+                    start: '09:00',
+                    duration: 1
+                }],
+                classes: [{
+                    id: 'c1',
+                    name: 'CS-101',
+                    subjects: ['math']
+                }]
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/resources`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                const data = await response.json();
+                result.innerHTML = `
+                    <p style="color: green;">✓ Resources submitted!</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                result.innerHTML = `
+                    <p style="color: red;">✗ Error: ${error.message}</p>
+                `;
+            }
+        }
+
+        async function generateTimetable() {
+            const result = document.getElementById('generate-result');
+            result.innerHTML = '<p>Generating... (this may take 10-30 seconds)</p>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/generate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                result.innerHTML = `
+                    <p style="color: green;">✓ Timetable generated!</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                result.innerHTML = `
+                    <p style="color: red;">✗ Error: ${error.message}</p>
+                `;
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            setTimeout(testBackend, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Timetable Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <div class="container">
+            <h1>AI-Based Timetable Generation System</h1>
+            <nav>
+                <button class="nav-btn active" data-section="resources">Resources</button>
+                <button class="nav-btn" data-section="generate">Generate</button>
+                <button class="nav-btn" data-section="visualize">Visualize</button>
+                <button class="nav-btn" data-section="scenarios">Scenarios</button>
+                <button class="nav-btn" data-section="analytics">Analytics</button>
+                <button class="nav-btn" data-section="recommendations">Recommendations</button>
+                <button class="nav-btn" data-section="heatmap">Heatmap</button>
+                <button class="nav-btn" data-section="search-stats">AI Search</button>
+                <button class="nav-btn" data-section="multi-solutions">Multi Solutions</button>
+                <button class="nav-btn" data-section="constraints">Constraints</button>
+                <button class="nav-btn" data-section="ga">GA Optimize</button>
+                <button class="nav-btn" data-section="drag-edit">Drag &amp; Edit</button>
+                <button class="nav-btn" data-section="learning">Learning</button>
+                <button class="nav-btn" data-section="pattern-discovery">Pattern Discovery</button>
+                <button class="nav-btn" data-section="whatif-dashboard">What-If Dashboard</button>
+                <button class="nav-btn" data-section="constraint-graph">Constraint Graph</button>
+                <button class="nav-btn" data-section="complexity">Complexity</button>
+                <button class="nav-btn" data-section="nl-query">NL Query</button>
+                <button class="nav-btn" data-section="versions">Versions</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Resources Section -->
+        <section id="resources-section" class="section active">
+            <h2>Resource Management</h2>
+            <p class="section-description">Enter scheduling resources to build the knowledge base</p>
+
+            <div class="forms-grid">
+                <!-- Teacher Form -->
+                <div class="form-card">
+                    <h3>Add Teacher</h3>
+                    <form id="teacher-form">
+                        <div class="form-group">
+                            <label for="teacher-name">Name <span class="required">*</span></label>
+                            <input type="text" id="teacher-name" name="name" required 
+                                   placeholder="e.g., Dr. Smith" pattern="[A-Za-z\s\.]+" 
+                                   title="Letters, spaces, and periods only">
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-subjects">Qualified Subjects <span class="required">*</span></label>
+                            <input type="text" id="teacher-subjects" name="subjects" required 
+                                   placeholder="e.g., math,physics,chemistry" 
+                                   title="Comma-separated subject IDs">
+                            <small>Comma-separated subject IDs</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-maxload">Max Weekly Load (hours) <span class="required">*</span></label>
+                            <input type="number" id="teacher-maxload" name="maxload" required 
+                                   min="1" max="40" value="20" 
+                                   title="Maximum hours per week (1-40)">
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-availability">Availability (slot IDs) <span class="required">*</span></label>
+                            <input type="text" id="teacher-availability" name="availability" required 
+                                   placeholder="e.g., slot1,slot2,slot3" 
+                                   title="Comma-separated time slot IDs">
+                            <small>Comma-separated time slot IDs</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Teacher</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="fillExample('teacher')">Fill Example</button>
+                    </form>
+                </div>
+
+                <!-- Subject Form -->
+                <div class="form-card">
+                    <h3>Add Subject</h3>
+                    <form id="subject-form">
+                        <div class="form-group">
+                            <label for="subject-name">Name <span class="required">*</span></label>
+                            <input type="text" id="subject-name" name="name" required 
+                                   placeholder="e.g., Mathematics" pattern="[A-Za-z\s]+" 
+                                   title="Letters and spaces only">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject-hours">Weekly Hours <span class="required">*</span></label>
+                            <input type="number" id="subject-hours" name="hours" required 
+                                   min="1" max="20" value="3" 
+                                   title="Required hours per week (1-20)">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject-type">Type <span class="required">*</span></label>
+                            <select id="subject-type" name="type" required>
+                                <option value="">Select type...</option>
+                                <option value="theory">Theory</option>
+                                <option value="lab">Lab</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject-duration">Duration (hours) <span class="required">*</span></label>
+                            <input type="number" id="subject-duration" name="duration" required 
+                                   min="1" max="4" value="1" step="0.5" 
+                                   title="Session duration in hours (1-4)">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Subject</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="fillExample('subject')">Fill Example</button>
+                    </form>
+                </div>
+
+                <!-- Room Form -->
+                <div class="form-card">
+                    <h3>Add Room</h3>
+                    <form id="room-form">
+                        <div class="form-group">
+                            <label for="room-name">Name <span class="required">*</span></label>
+                            <input type="text" id="room-name" name="name" required 
+                                   placeholder="e.g., Room 101" pattern="[A-Za-z0-9\s]+" 
+                                   title="Letters, numbers, and spaces only">
+                        </div>
+                        <div class="form-group">
+                            <label for="room-capacity">Capacity <span class="required">*</span></label>
+                            <input type="number" id="room-capacity" name="capacity" required 
+                                   min="10" max="200" value="30" 
+                                   title="Room capacity (10-200 students)">
+                        </div>
+                        <div class="form-group">
+                            <label for="room-type">Type <span class="required">*</span></label>
+                            <select id="room-type" name="type" required>
+                                <option value="">Select type...</option>
+                                <option value="classroom">Classroom</option>
+                                <option value="lab">Lab</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Room</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="fillExample('room')">Fill Example</button>
+                    </form>
+                </div>
+
+                <!-- Time Slot Form -->
+                <div class="form-card">
+                    <h3>Add Time Slot</h3>
+                    <form id="timeslot-form">
+                        <div class="form-group">
+                            <label for="timeslot-day">Day <span class="required">*</span></label>
+                            <select id="timeslot-day" name="day" required>
+                                <option value="">Select day...</option>
+                                <option value="monday">Monday</option>
+                                <option value="tuesday">Tuesday</option>
+                                <option value="wednesday">Wednesday</option>
+                                <option value="thursday">Thursday</option>
+                                <option value="friday">Friday</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="timeslot-period">Period <span class="required">*</span></label>
+                            <input type="number" id="timeslot-period" name="period" required 
+                                   min="1" max="10" value="1" 
+                                   title="Period number (1-10)">
+                        </div>
+                        <div class="form-group">
+                            <label for="timeslot-start">Start Time <span class="required">*</span></label>
+                            <input type="time" id="timeslot-start" name="start" required 
+                                   value="09:00" 
+                                   title="Session start time">
+                        </div>
+                        <div class="form-group">
+                            <label for="timeslot-duration">Duration (hours) <span class="required">*</span></label>
+                            <input type="number" id="timeslot-duration" name="duration" required 
+                                   min="0.5" max="4" value="1" step="0.5" 
+                                   title="Slot duration in hours (0.5-4)">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Time Slot</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="fillExample('timeslot')">Fill Example</button>
+                    </form>
+                </div>
+
+                <!-- Class Form -->
+                <div class="form-card">
+                    <h3>Add Class</h3>
+                    <form id="class-form">
+                        <div class="form-group">
+                            <label for="class-name">Name <span class="required">*</span></label>
+                            <input type="text" id="class-name" name="name" required 
+                                   placeholder="e.g., CS-101" pattern="[A-Za-z0-9\-]+" 
+                                   title="Letters, numbers, and hyphens only">
+                        </div>
+                        <div class="form-group">
+                            <label for="class-subjects">Subject List <span class="required">*</span></label>
+                            <input type="text" id="class-subjects" name="subjects" required 
+                                   placeholder="e.g., s1,s2,s3" 
+                                   title="Comma-separated subject IDs">
+                            <small>Comma-separated subject IDs (must match IDs added above)</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Class</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="fillExample('class')">Fill Example</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Resource Summary Panel -->
+            <div class="resource-summary-panel">
+                <h3>📋 Resources Added</h3>
+                <div class="resource-counts">
+                    <div class="resource-count-item">
+                        <span class="resource-count-label">👨‍🏫 Teachers</span>
+                        <span class="resource-count-badge" id="count-teachers">0</span>
+                    </div>
+                    <div class="resource-count-item">
+                        <span class="resource-count-label">📚 Subjects</span>
+                        <span class="resource-count-badge" id="count-subjects">0</span>
+                    </div>
+                    <div class="resource-count-item">
+                        <span class="resource-count-label">🏫 Rooms</span>
+                        <span class="resource-count-badge" id="count-rooms">0</span>
+                    </div>
+                    <div class="resource-count-item">
+                        <span class="resource-count-label">🕐 Time Slots</span>
+                        <span class="resource-count-badge" id="count-timeslots">0</span>
+                    </div>
+                    <div class="resource-count-item">
+                        <span class="resource-count-label">🎓 Classes</span>
+                        <span class="resource-count-badge" id="count-classes">0</span>
+                    </div>
+                </div>
+                <div id="resource-list-preview" class="resource-list-preview"></div>
+            </div>
+
+            <div class="action-bar">
+                <button id="load-example-btn" class="btn btn-secondary">Load Example Dataset</button>
+                <button id="submit-resources-btn" class="btn btn-success">Submit All Resources to Backend</button>
+                <button id="clear-resources-btn" class="btn btn-danger">Clear All</button>
+            </div>
+        </section>
+
+        <!-- Generate Section -->
+        <section id="generate-section" class="section">
+            <h2>Generate Timetable</h2>
+            <p class="section-description">Create a valid timetable using AI-powered constraint satisfaction</p>
+
+            <!-- Risk Assessment Panel (Feature 19) -->
+            <div id="risk-assessment-panel" class="risk-assessment-panel">
+                <div class="risk-assessment-header">
+                    <h3>
+                        <span class="risk-assessment-icon">🔮</span>
+                        AI Conflict Prediction
+                    </h3>
+                    <button id="check-conflicts-btn" class="btn btn-secondary">
+                        <span class="btn-icon">🔍</span>
+                        Check for Conflicts
+                    </button>
+                </div>
+                <p class="risk-assessment-description">
+                    Analyse your resources before generation to predict potential conflicts and get preventive suggestions.
+                </p>
+
+                <!-- Risk Report (hidden until check runs) -->
+                <div id="risk-report" style="display:none;">
+                    <!-- Risk Level + Probability -->
+                    <div class="risk-summary">
+                        <div class="risk-level-display">
+                            <span class="risk-summary-label">Risk Level</span>
+                            <span id="risk-level-badge" class="risk-level-badge">--</span>
+                        </div>
+                        <div class="risk-probability-display">
+                            <span class="risk-summary-label">Conflict Probability</span>
+                            <span id="risk-probability-value" class="risk-probability-value">--</span>
+                        </div>
+                    </div>
+
+                    <!-- Bottleneck Resources -->
+                    <div id="risk-bottlenecks-section" class="risk-section" style="display:none;">
+                        <h4 class="risk-section-title">⚠ Bottleneck Resources</h4>
+                        <ul id="risk-bottlenecks-list" class="risk-bottlenecks-list"></ul>
+                    </div>
+
+                    <!-- Preventive Suggestions -->
+                    <div id="risk-suggestions-section" class="risk-section" style="display:none;">
+                        <h4 class="risk-section-title">💡 Preventive Actions</h4>
+                        <ul id="risk-suggestions-list" class="risk-suggestions-list"></ul>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="risk-actions">
+                        <button id="generate-anyway-btn" class="btn btn-warning">
+                            <span class="btn-icon">🚀</span>
+                            Generate Anyway
+                        </button>
+                        <button id="fix-issues-btn" class="btn btn-primary">
+                            <span class="btn-icon">🔧</span>
+                            Fix Issues First
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading state -->
+                <div id="risk-loading" class="loading-indicator" style="display:none;">
+                    <div class="spinner"></div>
+                    <p>Analysing resources…</p>
+                </div>
+            </div>
+
+            <!-- Resource Summary + Quick Edit Panel -->
+            <div id="gen-resource-panel" class="gen-resource-panel">
+                <div class="gen-resource-header">
+                    <h3>📋 Resources Ready</h3>
+                    <button id="gen-edit-toggle-btn" class="btn btn-secondary btn-sm" onclick="toggleGenEdit()">✏️ Edit Resources</button>
+                </div>
+                <div class="gen-resource-counts">
+                    <span class="gen-count-badge">👨‍🏫 <strong id="gen-count-teachers">0</strong> Teachers</span>
+                    <span class="gen-count-badge">📚 <strong id="gen-count-subjects">0</strong> Subjects</span>
+                    <span class="gen-count-badge">🏫 <strong id="gen-count-rooms">0</strong> Rooms</span>
+                    <span class="gen-count-badge">🕐 <strong id="gen-count-timeslots">0</strong> Slots</span>
+                    <span class="gen-count-badge">🎓 <strong id="gen-count-classes">0</strong> Classes</span>
+                </div>
+
+                <!-- Inline Edit Panel (collapsed by default) -->
+                <div id="gen-edit-panel" class="gen-edit-panel" style="display:none;">
+                    <div class="gen-edit-tabs">
+                        <button class="gen-tab-btn active" onclick="switchGenTab('teachers')">👨‍🏫 Teachers</button>
+                        <button class="gen-tab-btn" onclick="switchGenTab('subjects')">📚 Subjects</button>
+                        <button class="gen-tab-btn" onclick="switchGenTab('rooms')">🏫 Rooms</button>
+                        <button class="gen-tab-btn" onclick="switchGenTab('timeslots')">🕐 Slots</button>
+                        <button class="gen-tab-btn" onclick="switchGenTab('classes')">🎓 Classes</button>
+                    </div>
+                    <div id="gen-edit-content" class="gen-edit-content"></div>
+                    <p class="gen-edit-hint">Click a row to remove it. Changes take effect immediately. Re-submit to backend after editing.</p>
+                    <button class="btn btn-success btn-sm" onclick="resubmitResources()">🔄 Re-submit to Backend</button>
+                </div>
+            </div>
+
+            <div class="generate-container">
+                <div class="generate-info">
+                    <h3>Generation Settings</h3>
+                    <p>The system will use CSP solving with backtracking, forward checking, and intelligent heuristics (MRV, Degree, LCV) to generate a valid timetable.</p>
+                    
+                    <div class="info-box">
+                        <h4>Hard Constraints Enforced:</h4>
+                        <ul>
+                            <li>No teacher double-booking</li>
+                            <li>No room double-booking</li>
+                            <li>Teacher qualifications</li>
+                            <li>Room type compatibility</li>
+                            <li>Room capacity requirements</li>
+                            <li>Teacher availability</li>
+                            <li>Weekly hours requirements</li>
+                            <li>Consecutive lab sessions</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Soft Constraints Optimized:</h4>
+                        <ul>
+                            <li>Balanced teacher workload</li>
+                            <li>Avoid late afternoon theory classes</li>
+                            <li>Minimize student schedule gaps</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="generate-actions">
+                    <button id="generate-btn" class="btn btn-primary btn-large">
+                        <span class="btn-icon">🚀</span>
+                        Generate Timetable
+                    </button>
+                    
+                    <div id="loading-indicator" class="loading-indicator" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Generating timetable...</p>
+                        <small>This may take a few moments</small>
+                    </div>
+
+                    <div id="generation-result" class="result-box" style="display: none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Genetic Algorithm Section -->
+        <section id="ga-section" class="section">
+            <h2>Genetic Algorithm Optimization</h2>
+            <p class="section-description">Evolve an optimized timetable using a bio-inspired Genetic Algorithm</p>
+
+            <div class="ga-container">
+                <div class="ga-config-panel">
+                    <h3>GA Configuration</h3>
+                    <div class="form-group">
+                        <label for="ga-population-size">Population Size</label>
+                        <input type="number" id="ga-population-size" value="20" min="5" max="100" step="5">
+                        <small>Number of timetables per generation (5–100)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="ga-generations">Generations</label>
+                        <input type="number" id="ga-generations" value="50" min="10" max="500" step="10">
+                        <small>Number of evolution cycles (10–500)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="ga-mutation-rate">Mutation Rate</label>
+                        <input type="number" id="ga-mutation-rate" value="0.1" min="0.01" max="0.5" step="0.01">
+                        <small>Probability of random gene mutation (0.01–0.5)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="ga-crossover-rate">Crossover Rate</label>
+                        <input type="number" id="ga-crossover-rate" value="0.8" min="0.1" max="1.0" step="0.05">
+                        <small>Probability of crossover between parents (0.1–1.0)</small>
+                    </div>
+
+                    <button id="ga-optimize-btn" class="btn btn-primary btn-large">
+                        <span class="btn-icon">🧬</span>
+                        Generate Optimized Timetable (GA)
+                    </button>
+
+                    <div id="ga-loading" class="loading-indicator" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Evolving timetable...</p>
+                        <small>Running genetic algorithm — this may take a moment</small>
+                    </div>
+                </div>
+
+                <div class="ga-results-panel">
+                    <h3>Evolution Progress</h3>
+                    <div id="ga-progress" class="ga-progress" style="display: none;">
+                        <div class="ga-stat">
+                            <span class="ga-stat-label">Best Fitness</span>
+                            <span id="ga-best-fitness" class="ga-stat-value">--</span>
+                        </div>
+                        <div class="ga-stat">
+                            <span class="ga-stat-label">Reliability</span>
+                            <span id="ga-reliability" class="ga-stat-value">--</span>
+                        </div>
+                    </div>
+
+                    <div id="ga-chart-container" style="display: none;">
+                        <h4>Fitness History</h4>
+                        <canvas id="ga-fitness-chart" width="600" height="250"></canvas>
+                    </div>
+
+                    <div id="ga-comparison" class="ga-comparison" style="display: none;">
+                        <h4>CSP vs GA Comparison</h4>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>CSP Solution</th>
+                                    <th>GA Solution</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ga-comparison-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div id="ga-result" class="result-box" style="display: none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualize Section -->
+        <section id="visualize-section" class="section">
+            <h2>Timetable Visualization</h2>
+            <p class="section-description">View and analyze the generated timetable</p>
+
+            <div class="visualization-container">
+                <!-- Reliability Display -->
+                <div class="reliability-panel">
+                    <h3>Schedule Reliability</h3>
+                    <div id="reliability-display" class="reliability-display">
+                        <div class="reliability-score">
+                            <span class="score-value" id="reliability-score">--</span>
+                            <span class="score-label">Reliability Score</span>
+                        </div>
+                        <div class="reliability-bar">
+                            <div id="reliability-bar-fill" class="reliability-bar-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="risk-category">
+                            <span class="risk-label">Risk Level:</span>
+                            <span id="risk-level" class="risk-badge">Unknown</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timetable Grid -->
+                <div class="timetable-container">
+                    <h3>Timetable Grid</h3>
+                    <div id="timetable-grid" class="timetable-grid">
+                        <p class="empty-state">No timetable generated yet. Go to Generate section to create one.</p>
+                    </div>
+                </div>
+
+                <!-- Conflicts Display -->
+                <div id="conflicts-panel" class="conflicts-panel" style="display: none;">
+                    <h3>Detected Conflicts</h3>
+                    <div id="conflicts-list" class="conflicts-list"></div>
+                </div>
+
+                <!-- Conflict Suggestions Panel -->
+                <div id="suggestions-panel" class="suggestions-panel" style="display: none;">
+                    <div class="suggestions-header">
+                        <h3>Smart Fix Suggestions</h3>
+                        <button id="load-suggestions-btn" class="btn btn-secondary">
+                            <span class="btn-icon">💡</span>
+                            Load Suggestions
+                        </button>
+                    </div>
+                    <p class="suggestions-description">
+                        AI-generated suggestions to resolve detected conflicts with minimal changes.
+                    </p>
+                    <div id="suggestions-list" class="suggestions-list"></div>
+                </div>
+
+                <!-- Quality Score Panel -->
+                <div id="quality-panel" class="quality-panel" style="display: none;">
+                    <div class="quality-panel-header">
+                        <h3>Timetable Quality Score</h3>
+                        <button id="refresh-quality-btn" class="btn btn-secondary btn-sm">
+                            <span class="btn-icon">↻</span> Refresh
+                        </button>
+                    </div>
+                    <div class="quality-body">
+                        <!-- Circular score indicator -->
+                        <div class="quality-circle-wrap">
+                            <svg class="quality-circle" viewBox="0 0 120 120" aria-hidden="true">
+                                <circle class="quality-circle-bg" cx="60" cy="60" r="50"/>
+                                <circle id="quality-circle-fill" class="quality-circle-fill" cx="60" cy="60" r="50"
+                                        stroke-dasharray="314" stroke-dashoffset="314"/>
+                            </svg>
+                            <div class="quality-circle-label">
+                                <span id="quality-overall-value" class="quality-overall-value">--</span>
+                                <span class="quality-overall-unit">/100</span>
+                            </div>
+                        </div>
+                        <!-- Breakdown bars -->
+                        <div class="quality-breakdown">
+                            <div class="quality-metric">
+                                <span class="quality-metric-label">Hard Constraints</span>
+                                <div class="quality-bar-track">
+                                    <div id="qbar-hard" class="quality-bar-fill" style="width:0%"></div>
+                                </div>
+                                <span id="qval-hard" class="quality-metric-value">--</span>
+                            </div>
+                            <div class="quality-metric">
+                                <span class="quality-metric-label">Workload Balance</span>
+                                <div class="quality-bar-track">
+                                    <div id="qbar-workload" class="quality-bar-fill" style="width:0%"></div>
+                                </div>
+                                <span id="qval-workload" class="quality-metric-value">--</span>
+                            </div>
+                            <div class="quality-metric">
+                                <span class="quality-metric-label">Room Utilization</span>
+                                <div class="quality-bar-track">
+                                    <div id="qbar-room" class="quality-bar-fill" style="width:0%"></div>
+                                </div>
+                                <span id="qval-room" class="quality-metric-value">--</span>
+                            </div>
+                            <div class="quality-metric">
+                                <span class="quality-metric-label">Schedule Compactness</span>
+                                <div class="quality-bar-track">
+                                    <div id="qbar-compact" class="quality-bar-fill" style="width:0%"></div>
+                                </div>
+                                <span id="qval-compact" class="quality-metric-value">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Options -->
+                <div class="export-panel">
+                    <h3>Export Timetable</h3>
+                    <div class="export-buttons">
+                        <button id="export-pdf-btn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">📄</span>
+                            Export as PDF
+                        </button>
+                        <button id="export-csv-btn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">📊</span>
+                            Export as CSV
+                        </button>
+                        <button id="export-json-btn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">📋</span>
+                            Export as JSON
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scenarios Section -->
+        <section id="scenarios-section" class="section">
+            <h2>Scenario Simulation</h2>
+            <p class="section-description">Explore how the timetable changes under different conditions</p>
+
+            <div class="scenarios-container">
+                <!-- Scenario Selector -->
+                <div class="scenario-config-card">
+                    <h3>Configure Scenario</h3>
+                    <div class="form-group">
+                        <label for="scenario-type">Scenario Type</label>
+                        <select id="scenario-type">
+                            <option value="teacher_absence">Teacher Absence</option>
+                            <option value="room_maintenance">Room Maintenance</option>
+                            <option value="extra_class">Extra Class</option>
+                            <option value="exam_week">Exam Week</option>
+                        </select>
+                    </div>
+
+                    <!-- Teacher Absence Params -->
+                    <div id="params-teacher_absence" class="scenario-params">
+                        <div class="form-group">
+                            <label for="scenario-teacher-id">Teacher ID</label>
+                            <input type="text" id="scenario-teacher-id" placeholder="e.g., t1">
+                        </div>
+                    </div>
+
+                    <!-- Room Maintenance Params -->
+                    <div id="params-room_maintenance" class="scenario-params" style="display:none;">
+                        <div class="form-group">
+                            <label for="scenario-room-id">Room ID</label>
+                            <input type="text" id="scenario-room-id" placeholder="e.g., r101">
+                        </div>
+                    </div>
+
+                    <!-- Extra Class Params -->
+                    <div id="params-extra_class" class="scenario-params" style="display:none;">
+                        <div class="form-group">
+                            <label for="scenario-class-id">Class ID</label>
+                            <input type="text" id="scenario-class-id" placeholder="e.g., cs1a">
+                        </div>
+                        <div class="form-group">
+                            <label for="scenario-subject-id">Subject ID</label>
+                            <input type="text" id="scenario-subject-id" placeholder="e.g., math101">
+                        </div>
+                    </div>
+
+                    <!-- Exam Week Params -->
+                    <div id="params-exam_week" class="scenario-params" style="display:none;">
+                        <div class="form-group">
+                            <label for="scenario-exam-slots">Exam Slot IDs (comma-separated)</label>
+                            <input type="text" id="scenario-exam-slots" placeholder="e.g., slot1,slot2,slot3">
+                            <small>Sessions in these slots will be removed</small>
+                        </div>
+                    </div>
+
+                    <div class="scenario-actions">
+                        <button id="run-scenario-btn" class="btn btn-primary">
+                            <span class="btn-icon">▶</span> Run Scenario
+                        </button>
+                        <button id="compare-scenarios-btn" class="btn btn-secondary">
+                            <span class="btn-icon">⇄</span> Compare with Original
+                        </button>
+                    </div>
+
+                    <div id="scenario-loading" class="loading-indicator" style="display:none;">
+                        <div class="spinner"></div>
+                        <p>Running simulation...</p>
+                    </div>
+                </div>
+
+                <!-- Scenario Results -->
+                <div id="scenario-results" class="scenario-results" style="display:none;">
+                    <div class="scenario-reliability-bar">
+                        <h4>Simulated Reliability</h4>
+                        <div class="reliability-bar">
+                            <div id="scenario-reliability-fill" class="reliability-bar-fill" style="width:0%"></div>
+                        </div>
+                        <span id="scenario-reliability-value" class="score-value">--</span>
+                    </div>
+
+                    <div id="scenario-changes" class="scenario-changes">
+                        <h4>Changes Applied</h4>
+                        <ul id="scenario-changes-list" class="changes-list"></ul>
+                    </div>
+
+                    <h4>Simulated Timetable</h4>
+                    <div id="scenario-timetable-grid" class="timetable-grid"></div>
+                </div>
+
+                <!-- Side-by-side Comparison -->
+                <div id="scenario-comparison" class="scenario-comparison" style="display:none;">
+                    <h3>Comparison: Original vs Simulated</h3>
+                    <div class="comparison-stats">
+                        <div class="comparison-stat">
+                            <span class="stat-label">Reliability Delta</span>
+                            <span id="comparison-delta" class="stat-value">--</span>
+                        </div>
+                        <div class="comparison-stat">
+                            <span class="stat-label">Sessions Added</span>
+                            <span id="comparison-added-count" class="stat-value">0</span>
+                        </div>
+                        <div class="comparison-stat">
+                            <span class="stat-label">Sessions Removed</span>
+                            <span id="comparison-removed-count" class="stat-value">0</span>
+                        </div>
+                    </div>
+                    <div class="comparison-grids">
+                        <div class="comparison-grid-panel">
+                            <h4>Original Timetable</h4>
+                            <div id="comparison-original-grid" class="timetable-grid timetable-grid--compact"></div>
+                        </div>
+                        <div class="comparison-grid-panel">
+                            <h4>Simulated Timetable</h4>
+                            <div id="comparison-simulated-grid" class="timetable-grid timetable-grid--compact"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics-section" class="section">            <h2>Analytics & Statistics</h2>
+            <p class="section-description">Resource utilization and scheduling metrics</p>
+
+            <div class="analytics-container">
+                <!-- Teacher Workload -->
+                <div class="analytics-card">
+                    <h3>Teacher Workload</h3>
+                    <div id="teacher-workload" class="analytics-content">
+                        <p class="empty-state">No data available</p>
+                    </div>
+                </div>
+
+                <!-- Room Utilization -->
+                <div class="analytics-card">
+                    <h3>Room Utilization</h3>
+                    <div id="room-utilization" class="analytics-content">
+                        <p class="empty-state">No data available</p>
+                    </div>
+                </div>
+
+                <!-- Schedule Density -->
+                <div class="analytics-card">
+                    <h3>Schedule Density</h3>
+                    <div id="schedule-density" class="analytics-content">
+                        <p class="empty-state">No data available</p>
+                    </div>
+                </div>
+
+                <!-- Constraint Satisfaction -->
+                <div class="analytics-card">
+                    <h3>Constraint Satisfaction</h3>
+                    <div id="constraint-satisfaction" class="analytics-content">
+                        <p class="empty-state">No data available</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations Section -->
+        <section id="recommendations-section" class="section">
+            <h2>AI Recommendations</h2>
+            <p class="section-description">AI-generated suggestions to improve your timetable quality</p>
+
+            <div class="recommendations-container">
+                <div class="recommendations-toolbar">
+                    <button id="load-recommendations-btn" class="btn btn-primary">
+                        <span class="btn-icon">&#x1F916;</span>
+                        Analyse &amp; Get Recommendations
+                    </button>
+                    <div id="recommendations-loading" class="loading-indicator" style="display:none;">
+                        <div class="spinner"></div>
+                        <p>Analysing timetable&#x2026;</p>
+                    </div>
+                </div>
+                <div id="recommendations-list" class="recommendations-list">
+                    <p class="empty-state">Generate a timetable first, then click the button above to get recommendations.</p>
+                </div>
+            </div>
+
+            <!-- Before/After Preview Modal -->
+            <div id="rec-preview-modal" class="modal">
+                <div class="modal-content modal-content--wide">
+                    <div class="modal-header">
+                        <h3>Before / After Preview</h3>
+                        <button class="modal-close" id="rec-preview-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="rec-preview-grids">
+                            <div class="rec-preview-panel">
+                                <h4>Before</h4>
+                                <div id="rec-preview-before" class="timetable-grid timetable-grid--compact"></div>
+                            </div>
+                            <div class="rec-preview-panel">
+                                <h4>After</h4>
+                                <div id="rec-preview-after" class="timetable-grid timetable-grid--compact"></div>
+                            </div>
+                        </div>
+                        <div id="rec-preview-reliability" class="rec-preview-reliability"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="rec-preview-confirm" class="btn btn-primary">Apply This Change</button>
+                        <button id="rec-preview-cancel" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </section>
+
+        <!-- Heatmap Section -->
+        <section id="heatmap-section" class="section">
+            <h2>Visual Heatmap</h2>
+            <p class="section-description">Visualize resource utilization intensity across teachers, rooms, and time slots</p>
+
+            <div class="heatmap-container">
+                <!-- Heatmap Type Selector -->
+                <div class="heatmap-toolbar">
+                    <div class="heatmap-type-selector">
+                        <button class="heatmap-type-btn active" data-type="teacher">
+                            <span class="btn-icon">👨‍🏫</span> Teachers
+                        </button>
+                        <button class="heatmap-type-btn" data-type="room">
+                            <span class="btn-icon">🏫</span> Rooms
+                        </button>
+                        <button class="heatmap-type-btn" data-type="timeslot">
+                            <span class="btn-icon">🕐</span> Time Slots
+                        </button>
+                    </div>
+                    <button id="load-heatmap-btn" class="btn btn-primary">
+                        <span class="btn-icon">🔥</span> Load Heatmap
+                    </button>
+                </div>
+
+                <!-- Legend -->
+                <div class="heatmap-legend">
+                    <span class="heatmap-legend-label">Low</span>
+                    <div class="heatmap-legend-gradient"></div>
+                    <span class="heatmap-legend-label">High</span>
+                </div>
+
+                <!-- Loading indicator -->
+                <div id="heatmap-loading" class="loading-indicator" style="display:none;">
+                    <div class="spinner"></div>
+                    <p>Generating heatmap…</p>
+                </div>
+
+                <!-- Heatmap Grid -->
+                <div id="heatmap-grid" class="heatmap-grid">
+                    <p class="empty-state">Generate a timetable first, then click "Load Heatmap" to visualize utilization.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Search Visualization Section -->
+        <section id="search-stats-section" class="section">
+            <h2>AI Search Visualization</h2>
+            <p class="section-description">Visualize the CSP backtracking search algorithm's behavior and performance metrics</p>
+
+            <div class="search-stats-container">
+                <!-- Toolbar -->
+                <div class="search-stats-toolbar">
+                    <button id="load-search-stats-btn" class="btn btn-primary">
+                        <span class="btn-icon">🔍</span> Load Search Statistics
+                    </button>
+                    <div id="search-stats-loading" class="loading-indicator" style="display:none;">
+                        <div class="spinner"></div>
+                        <p>Loading statistics…</p>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div id="search-stats-cards" class="search-stats-cards" style="display:none;">
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="stat-nodes">0</div>
+                        <div class="stat-card-label">Nodes Explored</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="stat-backtracks">0</div>
+                        <div class="stat-card-label">Backtracks</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="stat-heuristics">0</div>
+                        <div class="stat-card-label">Heuristic Applications</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="stat-prunings">0</div>
+                        <div class="stat-card-label">Domain Prunings</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="stat-assignments">0</div>
+                        <div class="stat-card-label">Assignments Made</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="stat-checks">0</div>
+                        <div class="stat-card-label">Constraint Checks</div>
+                    </div>
+                </div>
+
+                <!-- Bar Chart Canvas -->
+                <div id="search-chart-container" class="search-chart-container" style="display:none;">
+                    <h3>Search Metrics Bar Chart</h3>
+                    <canvas id="search-stats-canvas" width="700" height="320"
+                            aria-label="Bar chart of CSP search statistics"
+                            role="img"></canvas>
+                </div>
+
+                <p id="search-stats-empty" class="empty-state">
+                    Generate a timetable first, then click "Load Search Statistics" to visualize the AI search process.
+                </p>
+            </div>
+        </section>
+
+        <!-- Multiple Solutions Section -->
+        <section id="multi-solutions-section" class="section">
+            <h2>Multiple Timetable Generation</h2>
+            <p class="section-description">Generate and compare several alternative timetables ranked by quality and reliability</p>
+
+            <div class="multi-solutions-container">
+                <!-- Controls -->
+                <div class="multi-solutions-toolbar">
+                    <div class="form-group form-group--inline">
+                        <label for="solution-count">Number of solutions (2–10):</label>
+                        <input type="number" id="solution-count" min="2" max="10" value="3"
+                               title="How many timetable variants to generate">
+                    </div>
+                    <button id="generate-multiple-btn" class="btn btn-primary">
+                        <span class="btn-icon">🔀</span> Generate Multiple Timetables
+                    </button>
+                    <div id="multi-solutions-loading" class="loading-indicator" style="display:none;">
+                        <div class="spinner"></div>
+                        <p>Generating solutions…</p>
+                    </div>
+                </div>
+
+                <!-- Results list -->
+                <div id="multi-solutions-list" class="multi-solutions-list">
+                    <p class="empty-state">Click the button above to generate multiple timetable alternatives.</p>
+                </div>
+            </div>
+
+            <!-- Preview Modal for a single solution -->
+            <div id="solution-preview-modal" class="modal">
+                <div class="modal-content modal-content--wide">
+                    <div class="modal-header">
+                        <h3 id="solution-preview-title">Timetable Preview</h3>
+                        <button class="modal-close" id="solution-preview-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="solution-preview-badges" class="solution-badges"></div>
+                        <div id="solution-preview-grid" class="timetable-grid timetable-grid--compact"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="solution-preview-select" class="btn btn-primary">Use This Timetable</button>
+                        <button id="solution-preview-cancel" class="btn btn-secondary">Close</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Constraint Importance Slider Section -->
+        <section id="constraints-section" class="section">            <h2>Constraint Importance Sliders</h2>
+            <p class="section-description">Adjust the importance of each soft constraint to customise timetable generation priorities</p>
+
+            <div class="constraints-container">
+                <!-- Sliders Panel -->
+                <div class="constraints-sliders-card">
+                    <h3>Soft Constraint Weights</h3>
+                    <p class="constraints-hint">
+                        Drag each slider to set how strongly the system should optimise for that preference.
+                        0% = ignore, 100% = highest priority.
+                    </p>
+
+                    <div class="constraint-sliders">
+                        <!-- Workload Balance -->
+                        <div class="constraint-slider-row">
+                            <div class="constraint-slider-header">
+                                <label for="slider-workload_balance" class="constraint-label">
+                                    <span class="constraint-icon">⚖️</span>
+                                    Balanced Teacher Workload
+                                </label>
+                                <span class="constraint-value-display" id="val-workload_balance">80%</span>
+                            </div>
+                            <p class="constraint-description">Distribute teaching hours evenly across the week</p>
+                            <input type="range" id="slider-workload_balance"
+                                   class="constraint-slider" data-constraint="workload_balance"
+                                   min="0" max="100" value="80" step="5"
+                                   aria-label="Workload balance importance">
+                        </div>
+
+                        <!-- Avoid Late Theory -->
+                        <div class="constraint-slider-row">
+                            <div class="constraint-slider-header">
+                                <label for="slider-avoid_late_theory" class="constraint-label">
+                                    <span class="constraint-icon">🌅</span>
+                                    Avoid Late Theory Classes
+                                </label>
+                                <span class="constraint-value-display" id="val-avoid_late_theory">70%</span>
+                            </div>
+                            <p class="constraint-description">Prefer scheduling theory sessions in morning/early afternoon slots</p>
+                            <input type="range" id="slider-avoid_late_theory"
+                                   class="constraint-slider" data-constraint="avoid_late_theory"
+                                   min="0" max="100" value="70" step="5"
+                                   aria-label="Avoid late theory importance">
+                        </div>
+
+                        <!-- Minimize Gaps -->
+                        <div class="constraint-slider-row">
+                            <div class="constraint-slider-header">
+                                <label for="slider-minimize_gaps" class="constraint-label">
+                                    <span class="constraint-icon">📅</span>
+                                    Minimize Schedule Gaps
+                                </label>
+                                <span class="constraint-value-display" id="val-minimize_gaps">60%</span>
+                            </div>
+                            <p class="constraint-description">Reduce empty periods between sessions in student schedules</p>
+                            <input type="range" id="slider-minimize_gaps"
+                                   class="constraint-slider" data-constraint="minimize_gaps"
+                                   min="0" max="100" value="60" step="5"
+                                   aria-label="Minimize gaps importance">
+                        </div>
+
+                        <!-- Teacher Preference -->
+                        <div class="constraint-slider-row">
+                            <div class="constraint-slider-header">
+                                <label for="slider-teacher_preference" class="constraint-label">
+                                    <span class="constraint-icon">👨‍🏫</span>
+                                    Teacher Time Preferences
+                                </label>
+                                <span class="constraint-value-display" id="val-teacher_preference">50%</span>
+                            </div>
+                            <p class="constraint-description">Honour teacher preferred time slot requests</p>
+                            <input type="range" id="slider-teacher_preference"
+                                   class="constraint-slider" data-constraint="teacher_preference"
+                                   min="0" max="100" value="50" step="5"
+                                   aria-label="Teacher preference importance">
+                        </div>
+
+                        <!-- Room Optimization -->
+                        <div class="constraint-slider-row">
+                            <div class="constraint-slider-header">
+                                <label for="slider-room_optimization" class="constraint-label">
+                                    <span class="constraint-icon">🏫</span>
+                                    Room Utilisation
+                                </label>
+                                <span class="constraint-value-display" id="val-room_optimization">50%</span>
+                            </div>
+                            <p class="constraint-description">Maximise efficient use of available rooms</p>
+                            <input type="range" id="slider-room_optimization"
+                                   class="constraint-slider" data-constraint="room_optimization"
+                                   min="0" max="100" value="50" step="5"
+                                   aria-label="Room optimisation importance">
+                        </div>
+
+                        <!-- Student Compact -->
+                        <div class="constraint-slider-row">
+                            <div class="constraint-slider-header">
+                                <label for="slider-student_compact" class="constraint-label">
+                                    <span class="constraint-icon">🎓</span>
+                                    Compact Student Schedules
+                                </label>
+                                <span class="constraint-value-display" id="val-student_compact">60%</span>
+                            </div>
+                            <p class="constraint-description">Keep student daily schedules as compact as possible</p>
+                            <input type="range" id="slider-student_compact"
+                                   class="constraint-slider" data-constraint="student_compact"
+                                   min="0" max="100" value="60" step="5"
+                                   aria-label="Student compact importance">
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="constraints-actions">
+                        <button id="apply-weights-btn" class="btn btn-primary">
+                            <span class="btn-icon">✓</span> Apply Weights
+                        </button>
+                        <button id="regenerate-with-weights-btn" class="btn btn-success">
+                            <span class="btn-icon">🚀</span> Regenerate with These Weights
+                        </button>
+                        <button id="reset-weights-btn" class="btn btn-secondary">
+                            <span class="btn-icon">↺</span> Reset to Defaults
+                        </button>
+                    </div>
+
+                    <!-- Status feedback -->
+                    <div id="constraints-status" class="constraints-status" style="display:none;"></div>
+
+                    <!-- Loading indicator -->
+                    <div id="constraints-loading" class="loading-indicator" style="display:none;">
+                        <div class="spinner"></div>
+                        <p>Generating timetable with custom weights…</p>
+                    </div>
+                </div>
+
+                <!-- Current Weights Summary -->
+                <div class="constraints-summary-card">
+                    <h3>Active Weights Summary</h3>
+                    <div id="weights-summary" class="weights-summary">
+                        <p class="empty-state">Click "Apply Weights" to sync with the server.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Drag-and-Drop Interactive Editing Section -->
+        <section id="drag-edit-section" class="section">
+            <h2>Interactive Drag-and-Drop Editing</h2>
+            <p class="section-description">Manually rearrange timetable assignments by dragging cells. Constraint violations are validated in real time.</p>
+
+            <div class="drag-edit-container">
+                <!-- Instructions panel -->
+                <div class="drag-edit-info-panel">
+                    <h3>How to Use</h3>
+                    <ul class="drag-edit-instructions">
+                        <li>Generate a timetable first, then return here.</li>
+                        <li>Drag any coloured cell to a new position.</li>
+                        <li>Green highlight = valid drop target.</li>
+                        <li>Red highlight = constraint violation.</li>
+                        <li>A warning modal will appear if the move violates a constraint.</li>
+                        <li>Suggested alternatives are shown when a move is invalid.</li>
+                    </ul>
+                    <button id="drag-edit-load-btn" class="btn btn-primary">
+                        <span class="btn-icon">📋</span> Load Current Timetable
+                    </button>
+                    <div id="drag-edit-loading" class="loading-indicator" style="display:none;">
+                        <div class="spinner"></div>
+                        <p>Loading timetable…</p>
+                    </div>
+                </div>
+
+                <!-- Editable timetable grid -->
+                <div class="drag-edit-grid-wrapper">
+                    <div id="drag-edit-status" class="drag-edit-status" style="display:none;"></div>
+                    <div id="drag-edit-grid" class="drag-edit-grid">
+                        <p class="empty-state">Load the current timetable to begin editing.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Dashboard Section -->
+        <section id="learning-section" class="section">
+            <h2>Historical Learning System</h2>
+            <p class="section-description">The system learns from previously generated timetables to improve future scheduling.</p>
+
+            <!-- Learning Controls -->
+            <div class="learning-controls card">
+                <h3>Learning Controls</h3>
+                <div class="learning-toggle-row">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="learning-enabled-toggle">
+                        <span class="toggle-slider"></span>
+                        Enable learning-based generation
+                    </label>
+                    <span class="toggle-hint">When enabled, learned preferences bias the CSP solver toward historically successful assignments.</span>
+                </div>
+                <div class="learning-btn-row">
+                    <button class="btn btn-primary" id="apply-learning-btn" onclick="applyLearning()">
+                        Learn from Current Timetable
+                    </button>
+                    <button class="btn btn-secondary" id="refresh-learning-btn" onclick="loadLearningStats()">
+                        Refresh Statistics
+                    </button>
+                    <button class="btn btn-danger" id="clear-history-btn" onclick="clearLearningHistory()">
+                        Clear History
+                    </button>
+                </div>
+            </div>
+
+            <!-- Learning Statistics -->
+            <div class="learning-stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="timetables-analysed">0</div>
+                    <div class="stat-label">Timetables Analysed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="patterns-discovered">0</div>
+                    <div class="stat-label">Patterns Discovered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="preferred-slots-count">0</div>
+                    <div class="stat-label">Preferred Slot Patterns</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="successful-assignments-count">0</div>
+                    <div class="stat-label">Successful Assignment Patterns</div>
+                </div>
+            </div>
+
+            <!-- Preferred Slots Panel -->
+            <div class="learning-panel card">
+                <h3>Preferred Time Slots per Teacher</h3>
+                <p class="panel-hint">Slots that teachers are most frequently assigned to across historical timetables.</p>
+                <div id="preferred-slots-container">
+                    <p class="empty-state">No preferred slot patterns learned yet. Generate and save some timetables first.</p>
+                </div>
+            </div>
+
+            <!-- Successful Assignments Panel -->
+            <div class="learning-panel card">
+                <h3>Successful Teacher-Subject Assignments</h3>
+                <p class="panel-hint">Teacher-subject pairings that appear most frequently in high-quality timetables.</p>
+                <div id="successful-assignments-container">
+                    <p class="empty-state">No successful assignment patterns learned yet.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pattern Discovery Section -->
+        <section id="pattern-discovery-section" class="section">
+            <h2>Automatic Constraint Discovery</h2>
+            <p class="section-description">Discover hidden scheduling patterns in your timetable and convert them into soft constraints</p>
+
+            <!-- Controls -->
+            <div class="card pattern-controls">
+                <h3>Discover Patterns</h3>
+                <p class="panel-hint">Analyse the current timetable to find recurring patterns such as time-of-day preferences, room usage trends, and teacher scheduling habits.</p>
+                <button class="btn btn-primary" id="discover-patterns-btn" onclick="discoverPatterns()">
+                    Discover Patterns
+                </button>
+                <span id="pattern-loading" class="loading-text" style="display:none;">Analysing timetable…</span>
+            </div>
+
+            <!-- Summary stats -->
+            <div class="learning-stats-grid" id="pattern-stats" style="display:none;">
+                <div class="stat-card">
+                    <div class="stat-value" id="pattern-count-temporal">0</div>
+                    <div class="stat-label">Temporal Patterns</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="pattern-count-resource">0</div>
+                    <div class="stat-label">Resource Patterns</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="pattern-count-teacher">0</div>
+                    <div class="stat-label">Teacher Patterns</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="pattern-count-accepted">0</div>
+                    <div class="stat-label">Accepted Constraints</div>
+                </div>
+            </div>
+
+            <!-- Pattern list -->
+            <div class="card" id="pattern-list-card" style="display:none;">
+                <h3>Discovered Patterns</h3>
+                <p class="panel-hint">Review each pattern and accept or reject it as a soft constraint for future timetable generation.</p>
+                <div id="pattern-list-container">
+                    <p class="empty-state">No patterns discovered yet.</p>
+                </div>
+            </div>
+
+            <!-- Accepted constraints -->
+            <div class="card" id="accepted-patterns-card" style="display:none;">
+                <h3>Accepted Soft Constraints</h3>
+                <div id="accepted-patterns-container">
+                    <p class="empty-state">No constraints accepted yet.</p>
+                </div>
+            </div>
+
+            <!-- Chart canvas -->
+            <div class="card" id="pattern-chart-card" style="display:none;">
+                <h3>Pattern Confidence Overview</h3>
+                <canvas id="pattern-chart" width="600" height="220"></canvas>
+            </div>
+        </section>
+
+        <!-- What-If Optimization Dashboard Section -->
+        <section id="whatif-dashboard-section" class="section">
+            <h2>What-If Optimization Dashboard</h2>
+            <p class="section-description">Compare multiple scheduling scenarios side-by-side and get AI-powered recommendations for the best option</p>
+
+            <!-- Scenario Builder -->
+            <div class="card whatif-builder-card">
+                <h3>Scenario Builder</h3>
+                <p class="panel-hint">Add scenarios to compare. Each scenario simulates a different scheduling condition.</p>
+
+                <div class="whatif-scenario-form">
+                    <div class="form-group">
+                        <label for="whatif-scenario-type">Scenario Type</label>
+                        <select id="whatif-scenario-type" class="form-control" onchange="updateWhatIfParams()">
+                            <option value="baseline">Baseline (Current Timetable)</option>
+                            <option value="teacher_absence">Teacher Absence</option>
+                            <option value="room_maintenance">Room Maintenance</option>
+                            <option value="extra_class">Extra Class</option>
+                            <option value="exam_week">Exam Week</option>
+                        </select>
+                    </div>
+
+                    <!-- Dynamic parameter fields -->
+                    <div id="whatif-params-container">
+                        <!-- Populated by updateWhatIfParams() -->
+                    </div>
+
+                    <button class="btn btn-secondary" onclick="addWhatIfScenario()">
+                        + Add Scenario
+                    </button>
+                </div>
+
+                <!-- Scenario queue -->
+                <div id="whatif-scenario-queue" class="whatif-scenario-queue" style="display:none;">
+                    <h4>Scenarios to Analyze (<span id="whatif-queue-count">0</span>)</h4>
+                    <ul id="whatif-queue-list" class="whatif-queue-list"></ul>
+                </div>
+
+                <div class="whatif-actions">
+                    <button class="btn btn-primary" id="whatif-analyze-btn" onclick="runWhatIfAnalysis()" disabled>
+                        Analyze Scenarios
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearWhatIfScenarios()">
+                        Clear All
+                    </button>
+                    <span id="whatif-loading" class="loading-text" style="display:none;">Analyzing scenarios&#8230;</span>
+                </div>
+            </div>
+
+            <!-- Results area (hidden until analysis runs) -->
+            <div id="whatif-results" style="display:none;">
+
+                <!-- AI Recommendation Banner -->
+                <div class="card whatif-recommendation-card" id="whatif-recommendation-card">
+                    <div class="whatif-recommendation-header">
+                        <span class="whatif-recommendation-icon">&#x2605;</span>
+                        <h3>AI Recommendation</h3>
+                    </div>
+                    <div id="whatif-recommendation-content">
+                        <p id="whatif-recommendation-name" class="whatif-rec-name"></p>
+                        <p id="whatif-recommendation-reason" class="whatif-rec-reason"></p>
+                        <div id="whatif-trade-offs" class="whatif-trade-offs"></div>
+                    </div>
+                </div>
+
+                <!-- Comparison Table -->
+                <div class="card">
+                    <h3>Scenario Comparison</h3>
+                    <div class="whatif-table-wrapper">
+                        <table class="whatif-comparison-table" id="whatif-comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Scenario</th>
+                                    <th>Quality</th>
+                                    <th>Reliability</th>
+                                    <th>Resource Usage</th>
+                                    <th>Changes</th>
+                                    <th>Combined Score</th>
+                                </tr>
+                            </thead>
+                            <tbody id="whatif-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bar Chart Visualization -->
+                <div class="card">
+                    <h3>Metrics Comparison</h3>
+                    <div class="whatif-chart-controls">
+                        <label>Metric:</label>
+                        <select id="whatif-chart-metric" onchange="renderWhatIfChart()" class="form-control form-control--sm">
+                            <option value="quality">Quality Score</option>
+                            <option value="reliability_pct">Reliability (%)</option>
+                            <option value="resource_usage_pct">Resource Usage (%)</option>
+                            <option value="changes_count">Number of Changes</option>
+                        </select>
+                    </div>
+                    <canvas id="whatif-chart" class="whatif-chart-canvas"></canvas>
+                </div>
+
+                <!-- Detailed Metrics Grid -->
+                <div class="card">
+                    <h3>Detailed Metrics Breakdown</h3>
+                    <div id="whatif-metrics-grid" class="whatif-metrics-grid"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Constraint Graph Section -->
+        <section id="constraint-graph-section" class="section">
+            <h2>Constraint Graph Visualization</h2>
+            <p class="section-description">Interactive graph showing relationships between scheduling resources and constraints</p>
+
+            <div class="card">
+                <div class="cg-toolbar">
+                    <button class="btn btn-primary" onclick="loadConstraintGraph()">Load Graph</button>
+                    <div class="cg-legend">
+                        <span class="cg-legend-item cg-teacher">Teacher</span>
+                        <span class="cg-legend-item cg-subject">Subject</span>
+                        <span class="cg-legend-item cg-room">Room</span>
+                        <span class="cg-legend-item cg-timeslot">Timeslot</span>
+                    </div>
+                </div>
+                <div id="cg-metrics" class="cg-metrics" style="display:none;"></div>
+                <div id="cg-container" class="cg-container">
+                    <p class="empty-state">Click "Load Graph" to visualize the constraint relationships.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Complexity Analysis Section -->
+        <section id="complexity-section" class="section">
+            <h2>AI Complexity Analysis</h2>
+            <p class="section-description">Analyze the computational complexity of the CSP solver — branching factor, search depth, constraint density, and Big-O estimation</p>
+
+            <div class="card">
+                <div class="complexity-toolbar">
+                    <button class="btn btn-primary" onclick="loadComplexityAnalysis()">Analyze Complexity</button>
+                    <button class="btn btn-secondary" onclick="exportComplexityReport()">Export Report</button>
+                </div>
+
+                <div id="complexity-loading" class="loading-indicator" style="display:none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing solver complexity...</p>
+                </div>
+
+                <!-- Metric Cards -->
+                <div id="complexity-metrics" class="complexity-metrics" style="display:none;">
+                    <div class="complexity-card">
+                        <div class="complexity-card-title">Branching Factor</div>
+                        <div id="cx-branching" class="complexity-card-value">--</div>
+                        <div class="complexity-card-desc">Avg domain size per variable</div>
+                    </div>
+                    <div class="complexity-card">
+                        <div class="complexity-card-title">Max Search Depth</div>
+                        <div id="cx-depth-max" class="complexity-card-value">--</div>
+                        <div class="complexity-card-desc">Total sessions to schedule</div>
+                    </div>
+                    <div class="complexity-card">
+                        <div class="complexity-card-title">Avg Search Depth</div>
+                        <div id="cx-depth-avg" class="complexity-card-value">--</div>
+                        <div class="complexity-card-desc">Effective depth reached</div>
+                    </div>
+                    <div class="complexity-card">
+                        <div class="complexity-card-title">Constraint Density</div>
+                        <div id="cx-density" class="complexity-card-value">--</div>
+                        <div class="complexity-card-desc">Constraints per variable</div>
+                    </div>
+                    <div class="complexity-card complexity-card--highlight">
+                        <div class="complexity-card-title">Big-O Complexity</div>
+                        <div id="cx-bigo" class="complexity-card-value complexity-bigo">--</div>
+                        <div class="complexity-card-desc">Theoretical worst case</div>
+                    </div>
+                    <div class="complexity-card">
+                        <div class="complexity-card-title">Nodes Explored</div>
+                        <div id="cx-nodes" class="complexity-card-value">--</div>
+                        <div class="complexity-card-desc">Actual vs theoretical</div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div id="complexity-charts" class="complexity-charts" style="display:none;">
+                    <div class="complexity-chart-wrap">
+                        <h4>Search Space Comparison</h4>
+                        <canvas id="cx-bar-chart" width="500" height="220"></canvas>
+                    </div>
+                    <div class="complexity-chart-wrap">
+                        <h4>Constraint Density Breakdown</h4>
+                        <canvas id="cx-density-chart" width="300" height="220"></canvas>
+                    </div>
+                </div>
+
+                <!-- Text Report -->
+                <div id="complexity-report" class="complexity-report" style="display:none;">
+                    <h4>Detailed Report</h4>
+                    <pre id="complexity-report-text"></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Natural Language Query Section (Feature 18) -->
+        <section id="nl-query-section" class="section">
+            <h2>Natural Language Query Interface</h2>
+            <p class="section-description">Ask questions about the timetable in plain English. Try asking about teacher schedules, room availability, subject details, or class timetables.</p>
+
+            <!-- Query Input -->
+            <div class="nl-query-input-container">
+                <div class="nl-query-input-wrapper">
+                    <span class="nl-query-search-icon">🔍</span>
+                    <input type="text" id="nl-query-input" class="nl-query-input"
+                           placeholder="e.g., Show Dr. Smith schedule, When is Lab 2 free?, Which teacher teaches Mathematics?"
+                           autocomplete="off">
+                    <button id="nl-query-submit" class="btn btn-primary nl-query-btn">Ask</button>
+                </div>
+            </div>
+
+            <!-- Example Queries -->
+            <div class="nl-example-queries">
+                <span class="nl-example-label">Try:</span>
+                <button class="nl-example-chip" data-query="Show Dr. Smith schedule">Show Dr. Smith schedule</button>
+                <button class="nl-example-chip" data-query="When is Lab 2 free?">When is Lab 2 free?</button>
+                <button class="nl-example-chip" data-query="Which teacher teaches Mathematics?">Which teacher teaches Mathematics?</button>
+                <button class="nl-example-chip" data-query="Show CS1 timetable">Show CS1 timetable</button>
+                <button class="nl-example-chip" data-query="What does Dr. Jones teach?">What does Dr. Jones teach?</button>
+                <button class="nl-example-chip" data-query="Is Room 101 available?">Is Room 101 available?</button>
+            </div>
+
+            <!-- Answer Display -->
+            <div id="nl-answer-container" class="nl-answer-container" style="display:none;">
+                <div class="nl-answer-header">
+                    <span class="nl-answer-icon">💬</span>
+                    <span class="nl-answer-title">Answer</span>
+                    <span id="nl-answer-intent-badge" class="nl-intent-badge"></span>
+                </div>
+                <div id="nl-answer-text" class="nl-answer-text"></div>
+            </div>
+
+            <!-- Query History -->
+            <div id="nl-history-container" class="nl-history-container" style="display:none;">
+                <div class="nl-history-header">
+                    <h4>Query History</h4>
+                    <button id="nl-clear-history" class="btn btn-secondary btn-sm">Clear History</button>
+                </div>
+                <ul id="nl-history-list" class="nl-history-list"></ul>
+            </div>
+        </section>
+
+        <!-- Timetable Versioning Section (Feature 20) -->
+        <section id="versions-section" class="section">
+            <h2>Timetable Versioning</h2>
+            <p class="section-description">Save snapshots of your timetable, compare versions, and roll back to any previous state.</p>
+
+            <!-- Save Version -->
+            <div class="version-save-panel card">
+                <h3>Save Current Version</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="version-author">Author</label>
+                        <input type="text" id="version-author" placeholder="e.g., Dr. Admin" value="user">
+                    </div>
+                    <div class="form-group">
+                        <label for="version-reason">Reason / Comment</label>
+                        <input type="text" id="version-reason" placeholder="e.g., After adding new teacher">
+                    </div>
+                    <button id="save-version-btn" class="btn btn-primary">💾 Save Version</button>
+                </div>
+            </div>
+
+            <!-- Version Timeline -->
+            <div class="version-history-panel card">
+                <div class="panel-header">
+                    <h3>Version History</h3>
+                    <button id="refresh-versions-btn" class="btn btn-secondary btn-sm">↻ Refresh</button>
+                </div>
+                <div id="version-timeline" class="version-timeline">
+                    <p class="empty-state">No versions saved yet. Generate a timetable and save it.</p>
+                </div>
+            </div>
+
+            <!-- Version Comparison -->
+            <div class="version-compare-panel card">
+                <h3>Compare Versions</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="compare-version-a">Version A</label>
+                        <select id="compare-version-a" class="version-select">
+                            <option value="">Select version...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="compare-version-b">Version B</label>
+                        <select id="compare-version-b" class="version-select">
+                            <option value="">Select version...</option>
+                        </select>
+                    </div>
+                    <button id="compare-versions-btn" class="btn btn-secondary">⚖ Compare</button>
+                </div>
+                <div id="version-diff-result" class="version-diff-result" style="display:none;"></div>
+            </div>
+        </section>
+
+    </main>
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- Drag-and-Drop Warning Modal -->    <div id="drag-warning-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚠ Constraint Violation</h3>
+                <button class="modal-close" id="drag-warning-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="drag-warning-message"></p>
+                <div id="drag-alternatives-panel" style="display:none;">
+                    <h4>Suggested Alternatives</h4>
+                    <ul id="drag-alternatives-list" class="drag-alternatives-list"></ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="drag-warning-ok">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Explanation Modal (enhanced with XAI) -->
+    <div id="explanation-modal" class="modal">
+        <div class="modal-content modal-content--wide">
+            <div class="modal-header">
+                <h3>Assignment Explanation</h3>
+                <button class="modal-close" id="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Summary -->
+                <div id="explanation-summary" class="xai-summary"></div>
+
+                <!-- Quality Score -->
+                <div id="xai-quality-panel" class="xai-quality-panel" style="display:none;">
+                    <h4>Assignment Quality</h4>
+                    <div class="xai-quality-score">
+                        <span id="xai-quality-value" class="xai-quality-value">--</span>
+                        <span class="xai-quality-label">Overall Quality</span>
+                    </div>
+                    <div id="xai-quality-breakdown" class="xai-quality-breakdown"></div>
+                </div>
+
+                <!-- Reasoning Steps -->
+                <div id="xai-steps-panel" class="xai-steps-panel" style="display:none;">
+                    <h4>Reasoning Steps</h4>
+                    <ol id="xai-steps-list" class="xai-steps-list"></ol>
+                </div>
+
+                <!-- Fallback plain text -->
+                <div id="explanation-content" class="explanation-content"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modal-ok-btn">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container is placed before the modals above -->
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 AI Timetable Generator | Demonstrating MFAI Concepts: Linear Algebra, FOL, CSP, Probabilistic Reasoning</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
