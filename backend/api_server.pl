@@ -328,6 +328,7 @@ store_resources(Data) :-
     catch(retractall(user:timeslot(_, _, _, _, _)), _, true),
     catch(retractall(user:class(_, _, _)), _, true),
     catch(retractall(user:class_size(_, _)), _, true),
+    catch(retractall(user:batch_of(_, _)), _, true),
     catch(retractall(knowledge_base:teacher(_, _, _, _, _)), _, true),
     catch(retractall(knowledge_base:subject(_, _, _, _, _)), _, true),
     catch(retractall(knowledge_base:room(_, _, _, _)), _, true),
@@ -383,7 +384,14 @@ store_resource_by_type(class, Data) :-
     get_dict(subjects, Data, Subjects0),
     to_atom(ID0, ID), to_atom(Name0, Name),
     maplist(to_atom, Subjects0, Subjects),
-    assertz(user:class(ID, Name, Subjects)).
+    assertz(user:class(ID, Name, Subjects)),
+    % If this class has a parent (it's a lab batch), record the batch_of relationship
+    (get_dict(parent, Data, ParentID0) ->
+        to_atom(ParentID0, ParentID),
+        catch(retractall(user:batch_of(ID, _)), _, true),
+        assertz(user:batch_of(ID, ParentID))
+    ;   true
+    ).
 
 %% to_atom(+Value, -Atom)
 %% Convert string or atom to atom

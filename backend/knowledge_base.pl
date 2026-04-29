@@ -49,6 +49,9 @@
 :- dynamic room/4.
 :- dynamic timeslot/5.
 :- dynamic class/3.
+% batch_of(BatchClassID, ParentClassID) — records that a batch is a subset of a division
+:- dynamic batch_of/2.
+:- multifile batch_of/2.
 
 :- multifile teacher/5.
 :- multifile subject/5.

@@ -32,17 +32,22 @@
     check_teacher_available/2,
     check_weekly_hours/3,
     check_consecutive_slots/2,
+    check_batch_parent_no_conflict/3,
+    check_max_sessions_per_day/3,
+    check_teacher_max_per_day/3,
     check_all_hard_constraints/6,
     
     % Soft constraint predicates
     soft_balanced_workload/3,
     soft_avoid_late_theory/3,
     soft_minimize_gaps/3,
+    soft_spread_across_days/3,
     calculate_soft_score/2,
     
     % Helper predicates
     group_by_day/2,
-    count_gaps/2
+    count_gaps/2,
+    classes_share_students/2
 ]).
 
 :- use_module(knowledge_base, [
@@ -71,6 +76,75 @@
 % ============================================================================
 % Hard constraints must be satisfied for a valid timetable.
 % Any violation makes the timetable invalid.
+
+% ----------------------------------------------------------------------------
+% check_batch_parent_no_conflict/3: Batch cannot clash with parent division
+% ----------------------------------------------------------------------------
+% Format: check_batch_parent_no_conflict(ClassID, SlotID, Matrix)
+%
+% A lab batch (e.g. A1, A2, A3) is a subset of a parent division (AIDS-A).
+% If a batch is scheduled at SlotID, the parent division must NOT have any
+% session at the same SlotID, and vice versa.
+%
+% @param ClassID  The class being assigned (could be batch or division)
+% @param SlotID   The time slot being checked
+% @param Matrix   The current timetable matrix
+%
+check_batch_parent_no_conflict(ClassID, SlotID, Matrix) :-
+    get_all_assignments(Matrix, Assignments),
+    % Collect all class IDs that conflict with ClassID at SlotID
+    \+ (
+        member(assigned(_, OtherClassID, _, _, SlotID), Assignments),
+        OtherClassID \= ClassID,
+        classes_share_students(ClassID, OtherClassID)
+    ).
+
+% classes_share_students/2: True if two class IDs share any students
+% A batch shares students with its parent division, and with sibling batches.
+classes_share_students(C1, C2) :-
+    C1 \= C2,
+    (   % C1 is a batch of C2 (C2 is the parent division)
+        (batch_of(C1, C2) ; user:batch_of(C1, C2) ; knowledge_base:batch_of(C1, C2))
+    ;   % C2 is a batch of C1 (C1 is the parent division)
+        (batch_of(C2, C1) ; user:batch_of(C2, C1) ; knowledge_base:batch_of(C2, C1))
+    ;   % Both are batches of the same parent
+        (batch_of(C1, Parent) ; user:batch_of(C1, Parent) ; knowledge_base:batch_of(C1, Parent)),
+        (batch_of(C2, Parent) ; user:batch_of(C2, Parent) ; knowledge_base:batch_of(C2, Parent))
+    ).
+
+% ----------------------------------------------------------------------------
+% check_max_sessions_per_day/3: No more than 6 sessions for a class per day
+% ----------------------------------------------------------------------------
+% Prevents hectic days — a class should not have more than 6 hours of
+% scheduled sessions on any single day.
+%
+check_max_sessions_per_day(ClassID, SlotID, Matrix) :-
+    % Find the day of the proposed slot
+    (timeslot(SlotID, Day, _, _, _) ; user:timeslot(SlotID, Day, _, _, _)),
+    get_all_assignments(Matrix, Assignments),
+    % Count existing sessions for this class on the same day
+    findall(S,
+        (member(assigned(_, ClassID, _, _, S), Assignments),
+         (timeslot(S, Day, _, _, _) ; user:timeslot(S, Day, _, _, _))),
+        DaySessions),
+    length(DaySessions, Count),
+    Count < 6.
+
+% ----------------------------------------------------------------------------
+% check_teacher_max_per_day/3: No more than 5 teaching hours per day
+% ----------------------------------------------------------------------------
+% Prevents teacher burnout — a teacher should not teach more than 5 hours
+% on any single day.
+%
+check_teacher_max_per_day(TeacherID, SlotID, Matrix) :-
+    (timeslot(SlotID, Day, _, _, _) ; user:timeslot(SlotID, Day, _, _, _)),
+    get_all_assignments(Matrix, Assignments),
+    findall(S,
+        (member(assigned(_, _, _, TeacherID, S), Assignments),
+         (timeslot(S, Day, _, _, _) ; user:timeslot(S, Day, _, _, _))),
+        DaySessions),
+    length(DaySessions, Count),
+    Count < 5.
 
 % ----------------------------------------------------------------------------
 % check_teacher_no_conflict/3: Verify no teacher double-booking
@@ -282,7 +356,10 @@ check_all_hard_constraints(RoomID, ClassID, SubjectID, TeacherID, SlotID, Matrix
     check_teacher_qualified(TeacherID, SubjectID),
     check_room_suitable(RoomID, SubjectID),
     check_room_capacity(RoomID, ClassID),
-    check_teacher_available(TeacherID, SlotID).
+    check_teacher_available(TeacherID, SlotID),
+    check_batch_parent_no_conflict(ClassID, SlotID, Matrix),
+    check_max_sessions_per_day(ClassID, SlotID, Matrix),
+    check_teacher_max_per_day(TeacherID, SlotID, Matrix).
 
 % ============================================================================
 % PART 2: SOFT CONSTRAINT SCORING PREDICATES
@@ -488,34 +565,83 @@ count_day_gaps(Day, SlotIDs, Gaps) :-
     ).
 
 % ----------------------------------------------------------------------------
-% calculate_soft_score/2: Calculate aggregate soft constraint score
+% soft_spread_across_days/3: Reward spreading sessions across all 5 days
 % ----------------------------------------------------------------------------
+% Format: soft_spread_across_days(ClassID, Matrix, Score)
+%
+% Penalises timetables that pile sessions on 2-3 days and leave others empty.
+% A class with sessions on all 5 days scores 1.0; fewer days = lower score.
+% This directly addresses the "Thursday empty / other days hectic" problem.
+%
+% @param ClassID The class to evaluate
+% @param Matrix  The current timetable matrix
+% @param Score   Output score (0.0 to 1.0)
+%
+soft_spread_across_days(ClassID, Matrix, Score) :-
+    get_all_assignments(Matrix, Assignments),
+    findall(Day,
+        (member(assigned(_, ClassID, _, _, SlotID), Assignments),
+         (timeslot(SlotID, Day, _, _, _) ; user:timeslot(SlotID, Day, _, _, _))),
+        Days),
+    sort(Days, UniqueDays),   % deduplicate
+    length(UniqueDays, NumDays),
+    Score is NumDays / 5.0.   % 5 working days = perfect score
+
+% ----------------------------------------------------------------------------
+% soft_avoid_consecutive_labs/3: Penalise back-to-back lab sessions
+% ----------------------------------------------------------------------------
+% Format: soft_avoid_consecutive_labs(ClassID, Matrix, Score)
+%
+% Two consecutive 2-hour labs = 4 hours straight in a lab. That is exhausting.
+% This soft constraint penalises such arrangements.
+%
+soft_avoid_consecutive_labs(ClassID, Matrix, Score) :-
+    get_all_assignments(Matrix, Assignments),
+    findall(Period-Day,
+        (member(assigned(_, ClassID, SubjID, _, SlotID), Assignments),
+         (subject(SubjID, _, _, lab, _) ; user:subject(SubjID, _, _, lab, _)),
+         (timeslot(SlotID, Day, Period, _, _) ; user:timeslot(SlotID, Day, Period, _, _))),
+        LabSlots),
+    % Count consecutive lab pairs on the same day
+    findall(1,
+        (member(P1-D, LabSlots),
+         P2 is P1 + 2,   % labs are 2hr so next lab would start 2 periods later
+         member(P2-D, LabSlots)),
+        Consecutive),
+    length(Consecutive, ConsCount),
+    (ConsCount =:= 0 -> Score = 1.0 ; Score is 1.0 / (1.0 + ConsCount)).
+
+
 % Format: calculate_soft_score(Matrix, TotalScore)
 %
-% Calculates the overall soft constraint satisfaction score for a timetable.
 % Combines all soft constraint scores into a single value (0.0 to 1.0).
-%
-% @param Matrix The timetable matrix to evaluate
-% @param TotalScore Output aggregate score (0.0 to 1.0)
-%
-% Requirements: 5.1, 5.2, 5.3, 5.5, 5.6
+% Weights:
+%   - Spread across days:     30%  (most important — prevents hectic days)
+%   - Balanced workload:      20%
+%   - Minimize gaps:          20%
+%   - Avoid consecutive labs: 15%
+%   - Avoid late theory:      15%
 %
 calculate_soft_score(Matrix, TotalScore) :-
     get_all_assignments(Matrix, Assignments),
-    % Collect all soft constraint scores
-    findall(Score,
-            (member(assigned(ClassID, SubjectID, TeacherID), Assignments),
-             (soft_balanced_workload(TeacherID, Matrix, Score) ;
-              soft_avoid_late_theory(SubjectID, _, Score) ;
-              soft_minimize_gaps(ClassID, Matrix, Score))),
-            Scores),
-    (Scores = [] ->
-        TotalScore = 1.0
-    ;
-        sum_list(Scores, Sum),
-        length(Scores, Count),
-        TotalScore is Sum / Count
-    ).
+    findall(ClassID, member(assigned(_, ClassID, _, _, _), Assignments), AllClasses),
+    sort(AllClasses, UniqueClasses),
+    findall(TeacherID, member(assigned(_, _, _, TeacherID, _), Assignments), AllTeachers),
+    sort(AllTeachers, UniqueTeachers),
+    findall(S, (member(C, UniqueClasses),  soft_spread_across_days(C, Matrix, S)),    SpreadScores),
+    findall(S, (member(T, UniqueTeachers), soft_balanced_workload(T, Matrix, S)),     WorkloadScores),
+    findall(S, (member(C, UniqueClasses),  soft_minimize_gaps(C, Matrix, S)),         GapScores),
+    findall(S, (member(C, UniqueClasses),  soft_avoid_consecutive_labs(C, Matrix, S)),LabScores),
+    avg_list(SpreadScores,   SpreadAvg,   0.0),
+    avg_list(WorkloadScores, WorkloadAvg, 0.0),
+    avg_list(GapScores,      GapAvg,      0.0),
+    avg_list(LabScores,      LabAvg,      0.0),
+    TotalScore is (SpreadAvg * 0.30) + (WorkloadAvg * 0.20) +
+                 (GapAvg    * 0.20) + (LabAvg      * 0.15) + 0.15.
+
+avg_list([], Default, Default) :- !.
+avg_list(List, Avg, _) :-
+    sum_list(List, Sum), length(List, Len), Len > 0, Avg is Sum / Len.
 
 % ============================================================================
 % END OF MODULE

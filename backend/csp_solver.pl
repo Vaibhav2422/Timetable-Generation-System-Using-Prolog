@@ -69,7 +69,8 @@
     get_all_assignments/2
 ]).
 :- use_module(constraints, [
-    check_all_hard_constraints/6
+    check_all_hard_constraints/6,
+    classes_share_students/2
 ]).
 :- use_module(logging, [
     log_info/1,
@@ -443,23 +444,16 @@ filter_domain(Domain, _, AssignedValue, FilteredDomain) :-
 % ----------------------------------------------------------------------------
 % conflicts_with/3: Check if two assignments conflict
 % ----------------------------------------------------------------------------
-% Format: conflicts_with(Value1, Session1, Value2)
-%
-% Checks if two values conflict with each other.
 % Conflicts occur when:
 % - Same teacher assigned at same time slot
 % - Same room assigned at same time slot
+% - One class is a batch of the other (students can't be in two places)
 %
-% @param Value1 value(TeacherID, RoomID, SlotID) to check
-% @param Session1 session for Value1 (unused but kept for interface)
-% @param Value2 value(TeacherID, RoomID, SlotID) to check against
-% @return true if values conflict, false otherwise
-%
-% Requirements: 6.5, 19.3, 19.4
-%
-conflicts_with(value(T1, R1, S1), _, value(T2, R2, S2)) :-
-    (T1 = T2, S1 = S2) ;  % Same teacher, same time
-    (R1 = R2, S1 = S2).   % Same room, same time
+conflicts_with(value(T1, R1, S1), session(C1, _), value(T2, R2, S2)) :-
+    (T1 = T2, S1 = S2) ;   % Same teacher, same time
+    (R1 = R2, S1 = S2) ;   % Same room, same time
+    (S1 = S2, classes_share_students(C1, _C2),  % batch/parent clash at same slot
+     \+ (C1 = _C2)).        % different classes sharing students
 
 % ============================================================================
 % PART 4: INTELLIGENT HEURISTICS
