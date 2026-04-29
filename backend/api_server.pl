@@ -1029,7 +1029,9 @@ handle_simulate(Request) :-
     safe_execute(
         (
             http_read_json_dict(Request, JSONData),
-            get_dict(scenario, JSONData, ScenarioAtom),
+            get_dict(scenario, JSONData, ScenarioRaw),
+            % JSON strings come in as Prolog strings — convert to atom for pattern matching
+            (string(ScenarioRaw) -> atom_string(ScenarioAtom, ScenarioRaw) ; ScenarioAtom = ScenarioRaw),
             % Pass the whole JSON dict as params; individual handlers use get_dict
             simulate_scenario(ScenarioAtom, JSONData, SimResult),
             % Format the simulated timetable for JSON transport
@@ -1076,8 +1078,10 @@ handle_compare_scenarios(Request) :-
             http_read_json_dict(Request, JSONData),
             get_dict(scenario_a, JSONData, ParamsA),
             get_dict(scenario_b, JSONData, ParamsB),
-            get_dict(scenario, ParamsA, ScenarioA),
-            get_dict(scenario, ParamsB, ScenarioB),
+            get_dict(scenario, ParamsA, ScenarioARaw),
+            get_dict(scenario, ParamsB, ScenarioBRaw),
+            (string(ScenarioARaw) -> atom_string(ScenarioA, ScenarioARaw) ; ScenarioA = ScenarioARaw),
+            (string(ScenarioBRaw) -> atom_string(ScenarioB, ScenarioBRaw) ; ScenarioB = ScenarioBRaw),
             simulate_scenario(ScenarioA, ParamsA, ResultA),
             simulate_scenario(ScenarioB, ParamsB, ResultB),
             compare_scenarios(ResultA, ResultB, Comparison),
