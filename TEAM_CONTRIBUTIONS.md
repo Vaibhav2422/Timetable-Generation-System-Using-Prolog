@@ -271,16 +271,16 @@
 ---
 
 ### Vaibhav Hade — Group Leader
-**Slides: 1, 2, 3, 6**
+**Slides: 1, 3, 4, 6**
 
 | Slide | Topic | Reason |
 |-------|-------|--------|
 | Slide 1 | Title Slide | Group leader presents the project |
-| Slide 2 | Problem Statement | System design and critical thinking |
 | Slide 3 | Objectives | Project scope and planning |
+| Slide 4 | Literature Survey | System design and critical thinking — connects research to project |
 | Slide 6 | System Architecture / Methodology | Owns the full system design and API layer |
 
-**Speaking points:** Introduce the team, explain the problem, present the architecture diagram, walk through the API flow.
+**Speaking points:** Introduce the team, present objectives, connect base papers to the project, present the architecture diagram and API flow.
 
 ---
 
@@ -310,28 +310,28 @@
 ---
 
 ### Aaryan Giri — Member
-**Slides: 9, 11**
+**Slides: 2, 9, 11**
 
 | Slide | Topic | Reason |
 |-------|-------|--------|
+| Slide 2 | Problem Statement | Can explain the scheduling problem and NP-hard complexity |
 | Slide 9 | Sample Output / Results | Owns multi-solution generator and scenario simulator — can show results |
 | Slide 11 | Comparison with Other Methods | Owns advanced features — can compare approaches |
 
-**Speaking points:** Show the generated timetable output, explain the JSON API response, compare Prolog CSP vs Genetic Algorithm vs Integer Programming, highlight correctness guarantees.
+**Speaking points:** Explain the NP-hard nature of timetabling, list all constraints, show the generated timetable output, compare Prolog CSP vs Genetic Algorithm vs Integer Programming.
 
 ---
 
 ### Onkar Gawade — Member
-**Slides: 4, 13, 14, 15**
+**Slides: 13, 14, 15**
 
 | Slide | Topic | Reason |
 |-------|-------|--------|
-| Slide 4 | Literature Survey | Frontend developer — presents research context |
 | Slide 13 | Future Scope | Owns frontend — can speak to UI/UX improvements |
 | Slide 14 | Conclusion | Summarizes the full system |
 | Slide 15 | References | Closes the presentation |
 
-**Speaking points:** Present the 4 base papers and their gaps, explain future enhancements (GUI, hybrid AI, NLP), summarize key achievements, present all references.
+**Speaking points:** Explain future enhancements (GUI, hybrid AI, NLP), summarize key achievements, present all references.
 
 ---
 
@@ -340,9 +340,9 @@
 | Slide | Topic | Presenter |
 |-------|-------|-----------|
 | 1 | Title Slide | Vaibhav Hade |
-| 2 | Problem Statement | Vaibhav Hade |
+| 2 | Problem Statement | Aaryan Giri |
 | 3 | Objectives | Vaibhav Hade |
-| 4 | Literature Survey | Onkar Gawade |
+| 4 | Literature Survey | Vaibhav Hade |
 | 5 | Technology Used | Satyajeet Ghadge |
 | 6 | System Architecture | Vaibhav Hade |
 | 7 | Constraint Modeling | Omkar Ghanure |
