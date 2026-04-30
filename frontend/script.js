@@ -557,15 +557,15 @@ function loadOptimalDataset() {
         //   t8: IP Tutorial × 4  = 4
         //   t9: spare / overflow  = 4
         teachers: [
-            { id: 't1', name: 'Prof. Vaishali Baviskar', subjects: ['s1'],      maxload: 20, availability: allSlots },
-            { id: 't2', name: 'Prof. Minal Barhate',     subjects: ['s2'],      maxload: 20, availability: allSlots },
-            { id: 't3', name: 'Prof. Swati Joshi',       subjects: ['s3'],      maxload: 20, availability: allSlots },
-            { id: 't4', name: 'Prof. Gopal Upadhye',     subjects: ['s4'],      maxload: 20, availability: allSlots },
-            { id: 't5', name: 'Prof. Shital Dongre',     subjects: ['s5'],      maxload: 20, availability: allSlots },
-            { id: 't6', name: 'Prof. Milind Kulkarni',   subjects: ['s6'],      maxload: 20, availability: allSlots },
-            { id: 't7', name: 'Prof. Viomesh Singh',     subjects: ['s6','s7'], maxload: 20, availability: allSlots },
-            { id: 't8', name: 'Prof. Sonali Deshmukh',   subjects: ['s7','s8'], maxload: 20, availability: allSlots },
-            { id: 't9', name: 'Prof. Bhagwan Thorat',    subjects: ['s8','s9'], maxload: 20, availability: allSlots },
+            { id: 't1', name: 'Prof. Vaishali Baviskar', subjects: ['s1'],      maxload: 8, availability: allSlots },
+            { id: 't2', name: 'Prof. Minal Barhate',     subjects: ['s2'],      maxload: 8, availability: allSlots },
+            { id: 't3', name: 'Prof. Swati Joshi',       subjects: ['s3'],      maxload: 8, availability: allSlots },
+            { id: 't4', name: 'Prof. Gopal Upadhye',     subjects: ['s4'],      maxload: 8, availability: allSlots },
+            { id: 't5', name: 'Prof. Shital Dongre',     subjects: ['s5'],      maxload: 8, availability: allSlots },
+            { id: 't6', name: 'Prof. Milind Kulkarni',   subjects: ['s6'],      maxload: 8, availability: allSlots },
+            { id: 't7', name: 'Prof. Viomesh Singh',     subjects: ['s6','s7'], maxload: 8, availability: allSlots },
+            { id: 't8', name: 'Prof. Sonali Deshmukh',   subjects: ['s7','s8'], maxload: 8, availability: allSlots },
+            { id: 't9', name: 'Prof. Bhagwan Thorat',    subjects: ['s8','s9'], maxload: 8, availability: allSlots },
         ],
 
         // Theory and tutorial subjects only — no labs
