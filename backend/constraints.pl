@@ -33,6 +33,7 @@
     check_weekly_hours/3,
     check_consecutive_slots/2,
     check_batch_parent_no_conflict/3,
+    check_class_no_conflict/3,
     check_max_sessions_per_day/3,
     check_teacher_max_per_day/3,
     check_teacher_weekly_load/2,
@@ -83,6 +84,16 @@
 % ============================================================================
 % Hard constraints must be satisfied for a valid timetable.
 % Any violation makes the timetable invalid.
+
+% ----------------------------------------------------------------------------
+% check_class_no_conflict/3: A class can only have ONE session per time slot
+% ----------------------------------------------------------------------------
+% This is the most fundamental student constraint — a class cannot be in
+% two places at once. AIDS-A cannot have OOPs lecture AND OOPs Lab at 08:00.
+%
+check_class_no_conflict(ClassID, SlotID, Matrix) :-
+    get_all_assignments(Matrix, Assignments),
+    \+ member(assigned(_, ClassID, _, _, SlotID), Assignments).
 
 % ----------------------------------------------------------------------------
 % check_batch_parent_no_conflict/3: Batch cannot clash with parent division
@@ -378,6 +389,7 @@ check_consecutive_slots(SlotID1, SlotID2) :-
 check_all_hard_constraints(RoomID, ClassID, SubjectID, TeacherID, SlotID, Matrix) :-
     check_teacher_no_conflict(TeacherID, SlotID, Matrix),
     check_room_no_conflict(RoomID, SlotID, Matrix),
+    check_class_no_conflict(ClassID, SlotID, Matrix),
     check_teacher_qualified(TeacherID, SubjectID),
     check_room_suitable(RoomID, SubjectID),
     check_room_capacity(RoomID, ClassID),

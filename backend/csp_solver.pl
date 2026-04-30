@@ -448,11 +448,15 @@ filter_domain(Domain, _, AssignedValue, FilteredDomain) :-
 % Conflicts occur when:
 % - Same teacher assigned at same time slot
 % - Same room assigned at same time slot
-% - One class is a batch of the other (students can't be in two places)
+% - Same class assigned at same time slot
 %
-conflicts_with(value(T1, R1, S1), session(C1, _), value(T2, R2, S2)) :-
-    (   T1 = T2, S1 = S2                    % Same teacher, same time
-    ;   R1 = R2, S1 = S2                    % Same room, same time
+% Note: session(C1,_) is the session being assigned; value(T2,R2,S2) is an
+% existing assignment in the domain of another session(C2,_).
+% We only have C1 here — class conflict is enforced by check_class_no_conflict.
+%
+conflicts_with(value(T1, R1, S1), _Session, value(T2, R2, S2)) :-
+    (   T1 = T2, S1 = S2    % Same teacher, same time
+    ;   R1 = R2, S1 = S2    % Same room, same time
     ).
 
 % ============================================================================
