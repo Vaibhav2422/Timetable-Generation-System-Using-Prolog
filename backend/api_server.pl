@@ -329,6 +329,7 @@ store_resources(Data) :-
     catch(retractall(user:class(_, _, _)), _, true),
     catch(retractall(user:class_size(_, _)), _, true),
     catch(retractall(user:batch_of(_, _)), _, true),
+    catch(retractall(knowledge_base:batch_of(_, _)), _, true),
     catch(retractall(knowledge_base:teacher(_, _, _, _, _)), _, true),
     catch(retractall(knowledge_base:subject(_, _, _, _, _)), _, true),
     catch(retractall(knowledge_base:room(_, _, _, _)), _, true),
@@ -385,11 +386,18 @@ store_resource_by_type(class, Data) :-
     to_atom(ID0, ID), to_atom(Name0, Name),
     maplist(to_atom, Subjects0, Subjects),
     assertz(user:class(ID, Name, Subjects)),
-    % If this class has a parent (it's a lab batch), record the batch_of relationship
+    % If this class has a parent (it's a lab batch), assert batch_of in ALL
+    % relevant module namespaces so constraints.pl can always find it.
     (get_dict(parent, Data, ParentID0) ->
         to_atom(ParentID0, ParentID),
-        catch(retractall(user:batch_of(ID, _)), _, true),
-        assertz(user:batch_of(ID, ParentID))
+        % Clear old facts first
+        catch(retractall(user:batch_of(ID, _)),             _, true),
+        catch(retractall(knowledge_base:batch_of(ID, _)),   _, true),
+        % Assert into both user and knowledge_base modules
+        assertz(user:batch_of(ID, ParentID)),
+        assertz(knowledge_base:batch_of(ID, ParentID)),
+        format(atom(Msg), 'Registered batch ~w as subset of ~w', [ID, ParentID]),
+        log_info(Msg)
     ;   true
     ).
 

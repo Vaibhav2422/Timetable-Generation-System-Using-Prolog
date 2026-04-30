@@ -99,7 +99,6 @@
 %
 check_batch_parent_no_conflict(ClassID, SlotID, Matrix) :-
     get_all_assignments(Matrix, Assignments),
-    % Collect all class IDs that conflict with ClassID at SlotID
     \+ (
         member(assigned(_, OtherClassID, _, _, SlotID), Assignments),
         OtherClassID \= ClassID,
@@ -111,16 +110,16 @@ check_batch_parent_no_conflict(ClassID, SlotID, Matrix) :-
 % Checks user:, knowledge_base:, and local batch_of facts.
 classes_share_students(C1, C2) :-
     C1 \= C2,
-    (   batch_of_any(C1, C2)          % C1 is batch of C2
-    ;   batch_of_any(C2, C1)          % C2 is batch of C1
-    ;   batch_of_any(C1, P),          % both batches of same parent
+    (   batch_of_any(C1, C2)
+    ;   batch_of_any(C2, C1)
+    ;   batch_of_any(C1, P),
         batch_of_any(C2, P)
     ).
 
 % batch_of_any/2: check batch_of in any module namespace
 batch_of_any(Batch, Parent) :-
-    (   user:batch_of(Batch, Parent)
-    ;   knowledge_base:batch_of(Batch, Parent)
+    (   knowledge_base:batch_of(Batch, Parent)
+    ;   user:batch_of(Batch, Parent)
     ;   batch_of(Batch, Parent)
     ), !.
 
