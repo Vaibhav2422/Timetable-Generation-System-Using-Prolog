@@ -1020,7 +1020,14 @@ function renderTimetable(timetable) {
         const slot = slots.find(s => s.period === p);
         if (slot) {
             const start = slot.start_time || slot.start || '';
-            const end   = slot.end   || '';
+            let end = slot.end || slot.end_time || '';
+            // Compute end from start + duration if not provided
+            if (!end && start && slot.duration) {
+                const [h, m] = start.split(':').map(Number);
+                const endH = h + Math.floor(slot.duration);
+                const endM = m + Math.round((slot.duration % 1) * 60);
+                end = `${String(endH).padStart(2,'0')}:${String(endM).padStart(2,'0')}`;
+            }
             periodTimes[p] = end ? `${start}–${end}` : start || `${p}`;
         } else {
             periodTimes[p] = `${p}`;

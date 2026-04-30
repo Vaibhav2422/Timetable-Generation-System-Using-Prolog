@@ -70,7 +70,8 @@
 ]).
 :- use_module(constraints, [
     check_all_hard_constraints/6,
-    classes_share_students/2
+    classes_share_students/2,
+    batch_of_any/2
 ]).
 :- use_module(logging, [
     log_info/1,
@@ -450,10 +451,9 @@ filter_domain(Domain, _, AssignedValue, FilteredDomain) :-
 % - One class is a batch of the other (students can't be in two places)
 %
 conflicts_with(value(T1, R1, S1), session(C1, _), value(T2, R2, S2)) :-
-    (T1 = T2, S1 = S2) ;   % Same teacher, same time
-    (R1 = R2, S1 = S2) ;   % Same room, same time
-    (S1 = S2, classes_share_students(C1, _C2),  % batch/parent clash at same slot
-     \+ (C1 = _C2)).        % different classes sharing students
+    (   T1 = T2, S1 = S2                    % Same teacher, same time
+    ;   R1 = R2, S1 = S2                    % Same room, same time
+    ).
 
 % ============================================================================
 % PART 4: INTELLIGENT HEURISTICS

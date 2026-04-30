@@ -20,6 +20,7 @@
     room/4,
     timeslot/5,
     class/3,
+    batch_of/2,
     
     % First Order Logic rules
     qualified/2,

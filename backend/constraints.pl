@@ -48,7 +48,8 @@
     % Helper predicates
     group_by_day/2,
     count_gaps/2,
-    classes_share_students/2
+    classes_share_students/2,
+    batch_of_any/2
 ]).
 
 :- use_module(knowledge_base, [
@@ -56,8 +57,13 @@
     suitable_room/2,
     teacher_available/2,
     get_all_rooms/1,
-    get_all_timeslots/1
+    get_all_timeslots/1,
+    batch_of/2
 ]).
+
+% batch_of must be visible from user module (asserted at runtime by api_server)
+:- dynamic batch_of/2.
+:- multifile batch_of/2.
 :- use_module(matrix_model, [
     get_cell/4,
     get_all_assignments/2,
@@ -102,16 +108,21 @@ check_batch_parent_no_conflict(ClassID, SlotID, Matrix) :-
 
 % classes_share_students/2: True if two class IDs share any students
 % A batch shares students with its parent division, and with sibling batches.
+% Checks user:, knowledge_base:, and local batch_of facts.
 classes_share_students(C1, C2) :-
     C1 \= C2,
-    (   % C1 is a batch of C2 (C2 is the parent division)
-        (batch_of(C1, C2) ; user:batch_of(C1, C2) ; knowledge_base:batch_of(C1, C2))
-    ;   % C2 is a batch of C1 (C1 is the parent division)
-        (batch_of(C2, C1) ; user:batch_of(C2, C1) ; knowledge_base:batch_of(C2, C1))
-    ;   % Both are batches of the same parent
-        (batch_of(C1, Parent) ; user:batch_of(C1, Parent) ; knowledge_base:batch_of(C1, Parent)),
-        (batch_of(C2, Parent) ; user:batch_of(C2, Parent) ; knowledge_base:batch_of(C2, Parent))
+    (   batch_of_any(C1, C2)          % C1 is batch of C2
+    ;   batch_of_any(C2, C1)          % C2 is batch of C1
+    ;   batch_of_any(C1, P),          % both batches of same parent
+        batch_of_any(C2, P)
     ).
+
+% batch_of_any/2: check batch_of in any module namespace
+batch_of_any(Batch, Parent) :-
+    (   user:batch_of(Batch, Parent)
+    ;   knowledge_base:batch_of(Batch, Parent)
+    ;   batch_of(Batch, Parent)
+    ), !.
 
 % ----------------------------------------------------------------------------
 % check_teacher_weekly_load/3: Enforce teacher max weekly hours
