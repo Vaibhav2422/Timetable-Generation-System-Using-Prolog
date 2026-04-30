@@ -537,57 +537,59 @@ function loadExampleDataset() {
 
 // ============================================
 // ============================================
-// Optimal Dataset — 4 classes, no batches, equal teacher load
-// AIDS-A, AIDS-B, AIDS-C, AIDS-D each get all subjects
-// 9 teachers, each gets ~5 sessions/week
+// Optimal Dataset — 4 classes, lectures only, equal teacher load
+// AIDS-A, AIDS-B, AIDS-C, AIDS-D
+// 9 teachers, theory subjects only, ~5 sessions each
 // ============================================
 function loadOptimalDataset() {
     const allSlots = Array.from({length: 45}, (_, i) => `slot${i+1}`);
 
     resourceData = {
-        // 9 teachers, each qualified for specific subjects
-        // Total sessions = 4 classes × 11 subjects = 44 → ~5 per teacher
+        // 9 teachers, each qualified for specific theory subjects
+        // Sessions per teacher:
+        //   t1: OOPs × 4 classes = 4
+        //   t2: MFAI × 4 classes = 4
+        //   t3: CN × 4 classes   = 4
+        //   t4: PAAS × 4 classes = 4
+        //   t5: RAAD × 4 classes = 4
+        //   t6: IP × 4 classes   = 4  (but IP = 3hrs/week → 12 sessions, split with t7)
+        //   t7: IP × 2 + DT Tut × 4 = 6
+        //   t8: IP Tutorial × 4  = 4
+        //   t9: spare / overflow  = 4
         teachers: [
-            { id: 't1', name: 'Prof. Vaishali Baviskar', subjects: ['s1'],             maxload: 20, availability: allSlots },
-            { id: 't2', name: 'Prof. Minal Barhate',     subjects: ['s2'],             maxload: 20, availability: allSlots },
-            { id: 't3', name: 'Prof. Swati Joshi',       subjects: ['s3'],             maxload: 20, availability: allSlots },
-            { id: 't4', name: 'Prof. Gopal Upadhye',     subjects: ['s4','s5'],        maxload: 20, availability: allSlots },
-            { id: 't5', name: 'Prof. Shital Dongre',     subjects: ['s6','s10'],       maxload: 20, availability: allSlots },
-            { id: 't6', name: 'Prof. Milind Kulkarni',   subjects: ['s6','s11'],       maxload: 20, availability: allSlots },
-            { id: 't7', name: 'Prof. Viomesh Singh',     subjects: ['s7'],             maxload: 20, availability: allSlots },
-            { id: 't8', name: 'Prof. Sonali Deshmukh',   subjects: ['s8'],             maxload: 20, availability: allSlots },
-            { id: 't9', name: 'Prof. Bhagwan Thorat',    subjects: ['s9'],             maxload: 20, availability: allSlots },
+            { id: 't1', name: 'Prof. Vaishali Baviskar', subjects: ['s1'],      maxload: 20, availability: allSlots },
+            { id: 't2', name: 'Prof. Minal Barhate',     subjects: ['s2'],      maxload: 20, availability: allSlots },
+            { id: 't3', name: 'Prof. Swati Joshi',       subjects: ['s3'],      maxload: 20, availability: allSlots },
+            { id: 't4', name: 'Prof. Gopal Upadhye',     subjects: ['s4'],      maxload: 20, availability: allSlots },
+            { id: 't5', name: 'Prof. Shital Dongre',     subjects: ['s5'],      maxload: 20, availability: allSlots },
+            { id: 't6', name: 'Prof. Milind Kulkarni',   subjects: ['s6'],      maxload: 20, availability: allSlots },
+            { id: 't7', name: 'Prof. Viomesh Singh',     subjects: ['s6','s7'], maxload: 20, availability: allSlots },
+            { id: 't8', name: 'Prof. Sonali Deshmukh',   subjects: ['s7','s8'], maxload: 20, availability: allSlots },
+            { id: 't9', name: 'Prof. Bhagwan Thorat',    subjects: ['s8','s9'], maxload: 20, availability: allSlots },
         ],
 
+        // Theory and tutorial subjects only — no labs
         subjects: [
-            { id: 's1',  name: 'OOPs',        hours: 2, type: 'theory',   duration: 1 },
-            { id: 's2',  name: 'MFAI',        hours: 2, type: 'theory',   duration: 1 },
-            { id: 's3',  name: 'CN',          hours: 2, type: 'theory',   duration: 1 },
-            { id: 's4',  name: 'PAAS',        hours: 2, type: 'theory',   duration: 1 },
-            { id: 's5',  name: 'RAAD',        hours: 1, type: 'theory',   duration: 1 },
-            { id: 's6',  name: 'IP',          hours: 3, type: 'theory',   duration: 1 },
-            { id: 's7',  name: 'OOPs Lab',    hours: 2, type: 'lab',      duration: 2 },
-            { id: 's8',  name: 'MFAI Lab',    hours: 2, type: 'lab',      duration: 2 },
-            { id: 's9',  name: 'CN Lab',      hours: 2, type: 'lab',      duration: 2 },
-            { id: 's10', name: 'DT Tutorial', hours: 1, type: 'tutorial', duration: 1 },
-            { id: 's11', name: 'IP Tutorial', hours: 1, type: 'tutorial', duration: 1 },
+            { id: 's1', name: 'OOPs',        hours: 2, type: 'theory',   duration: 1 },
+            { id: 's2', name: 'MFAI',        hours: 2, type: 'theory',   duration: 1 },
+            { id: 's3', name: 'CN',          hours: 2, type: 'theory',   duration: 1 },
+            { id: 's4', name: 'PAAS',        hours: 2, type: 'theory',   duration: 1 },
+            { id: 's5', name: 'RAAD',        hours: 1, type: 'theory',   duration: 1 },
+            { id: 's6', name: 'IP',          hours: 3, type: 'theory',   duration: 1 },
+            { id: 's7', name: 'DT Tutorial', hours: 1, type: 'tutorial', duration: 1 },
+            { id: 's8', name: 'IP Tutorial', hours: 1, type: 'tutorial', duration: 1 },
+            { id: 's9', name: 'PAAS Tutorial',hours: 1, type: 'tutorial', duration: 1 },
         ],
 
-        // 4 classrooms (one per class for theory) + 4 lab rooms
+        // 4 classrooms — one per class, all can run simultaneously
         rooms: [
             { id: 'r1', name: '2102', capacity: 72, type: 'classroom' },
             { id: 'r2', name: '2103', capacity: 72, type: 'classroom' },
             { id: 'r3', name: '2104', capacity: 72, type: 'classroom' },
             { id: 'r4', name: '2105', capacity: 72, type: 'classroom' },
-            { id: 'r5', name: '2101-A', capacity: 72, type: 'lab' },
-            { id: 'r6', name: '2101-B', capacity: 72, type: 'lab' },
-            { id: 'r7', name: '2207-A', capacity: 72, type: 'lab' },
-            { id: 'r8', name: '2207-B', capacity: 72, type: 'lab' },
         ],
 
-        // 5 days × 9 periods = 45 slots
-        // Periods 1–7: theory/tutorial (1hr, 08:00–15:00)
-        // Periods 8–9: labs (2hr block, 15:00–17:00) — duration=2 on subject
+        // 5 days × 9 periods = 45 slots, 08:00–17:00
         timeslots: [
             { id: 'slot1',  day: 'monday',    period: 1, start: '08:00', end: '09:00', duration: 1 },
             { id: 'slot2',  day: 'monday',    period: 2, start: '09:00', end: '10:00', duration: 1 },
@@ -636,18 +638,17 @@ function loadOptimalDataset() {
             { id: 'slot45', day: 'friday',    period: 9, start: '16:00', end: '17:00', duration: 1 },
         ],
 
-        // 4 independent classes — no batches, no parent relationships
-        // Each class gets all subjects (theory + lab + tutorial)
+        // 4 independent classes, lectures only
         classes: [
-            { id: 'c1', name: 'AIDS-A', subjects: ['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11'] },
-            { id: 'c2', name: 'AIDS-B', subjects: ['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11'] },
-            { id: 'c3', name: 'AIDS-C', subjects: ['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11'] },
-            { id: 'c4', name: 'AIDS-D', subjects: ['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11'] },
+            { id: 'c1', name: 'AIDS-A', subjects: ['s1','s2','s3','s4','s5','s6','s7','s8','s9'] },
+            { id: 'c2', name: 'AIDS-B', subjects: ['s1','s2','s3','s4','s5','s6','s7','s8','s9'] },
+            { id: 'c3', name: 'AIDS-C', subjects: ['s1','s2','s3','s4','s5','s6','s7','s8','s9'] },
+            { id: 'c4', name: 'AIDS-D', subjects: ['s1','s2','s3','s4','s5','s6','s7','s8','s9'] },
         ]
     };
 
     updateResourceCounts();
-    showNotification('success', '⭐ Optimal dataset loaded — AIDS-A/B/C/D, no batches, equal teacher load. Submit to backend to proceed.');
+    showNotification('success', '⭐ Optimal dataset loaded — lectures only, 4 classes, equal teacher load. Submit to backend to proceed.');
 }
 
 
