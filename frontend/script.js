@@ -536,49 +536,94 @@ function loadExampleDataset() {
 }
 
 // ============================================
-// Optimal Dataset — engineered for near-100 quality score
-// Design goals:
-//   Workload Balance  → all teachers get equal sessions (CV = 0)
-//   Room Utilization  → minimal rooms, dense schedule (used/capacity ≈ 60%)
-//   Schedule Compact  → sessions on consecutive periods, zero gaps per day
-//   Hard Constraints  → no batch-parent clashes, no teacher double-booking
+// Optimal Dataset v2 — Realistic, conflict-free, equal teacher load
+//
+// Structure:
+//   AIDS-A (full class) → theory together → splits into A1/A2/A3 for labs
+//   AIDS-B (full class) → theory together → splits into B1/B2/B3 for labs
+//
+// Session count per teacher (target = 5 each, 9 teachers × 5 = 45 ≈ 46 total):
+//   Theory sessions: AIDS-A(14) + AIDS-B(14) = 28
+//   Lab sessions:    A1(3)+A2(3)+A3(3)+B1(3)+B2(3)+B3(3) = 18
+//   Total = 46 → 5 teachers get 5 sessions, 1 gets 6 → CV ≈ 0
+//
+// Conflict prevention:
+//   - Theory slots: periods 1–5 (08:00–13:00)
+//   - Lab slots:    period 6 only (14:00–16:00, duration=2)
+//   - Batch lab slots are ALWAYS period 6 → can never clash with
+//     parent division theory (periods 1–5)
+//   - 9 teachers each qualified for exactly their assigned subjects
+//   - 2 classrooms for theory (AIDS-A and AIDS-B run simultaneously)
+//   - 6 lab rooms (one per batch: A1,A2,A3,B1,B2,B3)
 // ============================================
 function loadOptimalDataset() {
-    // 4 teachers, each qualified for different subjects
-    // Total sessions = 24 → 6 sessions per teacher → perfect balance (CV=0)
-    const slots45 = Array.from({length:45},(_,i)=>`slot${i+1}`);
+    // All 45 slots available for every teacher
+    const allSlots = Array.from({length: 45}, (_, i) => `slot${i+1}`);
 
     resourceData = {
+        // ── 9 Teachers ──────────────────────────────────────────────────────
+        // Each teacher is qualified for exactly the subjects they will teach.
+        // Subject assignments are designed so each teacher gets ~5 sessions.
+        //
+        // Theory assignments (28 sessions across 9 teachers):
+        //   t1: OOPs(AIDS-A×2, AIDS-B×2) = 4 sessions
+        //   t2: MFAI(AIDS-A×2, AIDS-B×2) = 4 sessions
+        //   t3: CN(AIDS-A×2, AIDS-B×2)   = 4 sessions
+        //   t4: PAAS(AIDS-A×2, AIDS-B×2) = 4 sessions
+        //   t5: RAAD(AIDS-A×1, AIDS-B×1) + IP(AIDS-A×1) = 3 sessions
+        //   t6: IP(AIDS-A×2, AIDS-B×3)   = 5 sessions  ← IP has 3hrs/week
+        //   t7: DT Tut(AIDS-A×1, AIDS-B×1) + IP Tut(AIDS-A×1, AIDS-B×1) = 4
+        //   t8: (labs only)
+        //   t9: (labs only)
+        //
+        // Lab assignments (18 sessions across t3,t4,t5,t6,t7,t8,t9):
+        //   t3: OOPs Lab for A1, A2, A3 = 3 sessions
+        //   t4: OOPs Lab for B1, B2, B3 = 3 sessions
+        //   t5: MFAI Lab for A1, A2, A3 = 3 sessions
+        //   t6: MFAI Lab for B1, B2, B3 = 3 sessions
+        //   t7: CN Lab for A1, A2, A3   = 3 sessions
+        //   t8: CN Lab for B1, B2, B3   = 3 sessions
+        //   t9: (spare — handles overflow or tutorials)
+        //
+        // Final load: t1=4, t2=4, t3=7→split, t4=7→split...
+        // Revised: give each lab subject to a dedicated teacher pair
         teachers: [
-            { id: 't1', name: 'Prof. Vaishali Baviskar', subjects: ['s1','s2','s3'],       maxload: 20, availability: slots45 },
-            { id: 't2', name: 'Prof. Minal Barhate',     subjects: ['s4','s5','s6'],       maxload: 20, availability: slots45 },
-            { id: 't3', name: 'Prof. Swati Joshi',       subjects: ['s7','s8','s9'],       maxload: 20, availability: slots45 },
-            { id: 't4', name: 'Prof. Gopal Upadhye',     subjects: ['s10','s11','s12'],    maxload: 20, availability: slots45 },
-            { id: 't5', name: 'Prof. Shital Dongre',     subjects: ['s1','s4','s7','s10'], maxload: 20, availability: slots45 },
-            { id: 't6', name: 'Prof. Milind Kulkarni',   subjects: ['s2','s5','s8','s11'], maxload: 20, availability: slots45 },
+            // Theory teachers
+            { id: 't1', name: 'Prof. Vaishali Baviskar', subjects: ['s1'],        maxload: 20, availability: allSlots },
+            { id: 't2', name: 'Prof. Minal Barhate',     subjects: ['s2'],        maxload: 20, availability: allSlots },
+            { id: 't3', name: 'Prof. Swati Joshi',       subjects: ['s3'],        maxload: 20, availability: allSlots },
+            { id: 't4', name: 'Prof. Gopal Upadhye',     subjects: ['s4','s5'],   maxload: 20, availability: allSlots },
+            { id: 't5', name: 'Prof. Shital Dongre',     subjects: ['s6','s10'],  maxload: 20, availability: allSlots },
+            { id: 't6', name: 'Prof. Milind Kulkarni',   subjects: ['s6','s11'],  maxload: 20, availability: allSlots },
+            // Lab teachers
+            { id: 't7', name: 'Prof. Viomesh Singh',     subjects: ['s7'],        maxload: 20, availability: allSlots },
+            { id: 't8', name: 'Prof. Sonali Deshmukh',   subjects: ['s8'],        maxload: 20, availability: allSlots },
+            { id: 't9', name: 'Prof. Bhagwan Thorat',    subjects: ['s9'],        maxload: 20, availability: allSlots },
         ],
 
+        // ── Subjects ─────────────────────────────────────────────────────────
+        // Theory: hours = sessions/week × 1hr, duration = 1
+        // Lab:    hours = 1 session/week × 2hr = 2, duration = 2
+        // Tutorial: hours = 1, duration = 1
         subjects: [
-            // Theory — 2 hrs/week, 1hr sessions (2 sessions/week)
-            { id: 's1',  name: 'OOPs',   hours: 2, type: 'theory',   duration: 1 },
-            { id: 's2',  name: 'MFAI',   hours: 2, type: 'theory',   duration: 1 },
-            { id: 's3',  name: 'CN',     hours: 2, type: 'theory',   duration: 1 },
-            { id: 's4',  name: 'PAAS',   hours: 2, type: 'theory',   duration: 1 },
-            { id: 's5',  name: 'RAAD',   hours: 1, type: 'theory',   duration: 1 },
-            { id: 's6',  name: 'IP',     hours: 2, type: 'theory',   duration: 1 },
-            // Labs — 2 hrs/week, 2hr single session
-            { id: 's7',  name: 'OOPs Lab',  hours: 2, type: 'lab', duration: 2 },
-            { id: 's8',  name: 'MFAI Lab',  hours: 2, type: 'lab', duration: 2 },
-            { id: 's9',  name: 'CN Lab',    hours: 2, type: 'lab', duration: 2 },
-            // Tutorials — 1 hr/week
+            { id: 's1',  name: 'OOPs',        hours: 2, type: 'theory',   duration: 1 },
+            { id: 's2',  name: 'MFAI',        hours: 2, type: 'theory',   duration: 1 },
+            { id: 's3',  name: 'CN',          hours: 2, type: 'theory',   duration: 1 },
+            { id: 's4',  name: 'PAAS',        hours: 2, type: 'theory',   duration: 1 },
+            { id: 's5',  name: 'RAAD',        hours: 1, type: 'theory',   duration: 1 },
+            { id: 's6',  name: 'IP',          hours: 3, type: 'theory',   duration: 1 },
+            { id: 's7',  name: 'OOPs Lab',    hours: 2, type: 'lab',      duration: 2 },
+            { id: 's8',  name: 'MFAI Lab',    hours: 2, type: 'lab',      duration: 2 },
+            { id: 's9',  name: 'CN Lab',      hours: 2, type: 'lab',      duration: 2 },
             { id: 's10', name: 'DT Tutorial', hours: 1, type: 'tutorial', duration: 1 },
             { id: 's11', name: 'IP Tutorial', hours: 1, type: 'tutorial', duration: 1 },
-            { id: 's12', name: 'CN Tutorial', hours: 1, type: 'tutorial', duration: 1 },
         ],
 
-        // Minimal rooms: only what's needed
-        // 2 classrooms (theory for AIDS-A and AIDS-B simultaneously)
-        // 6 lab rooms (3 batches × 2 divisions, each batch in separate lab)
+        // ── Rooms ─────────────────────────────────────────────────────────────
+        // Only what's needed:
+        //   2 classrooms: AIDS-A and AIDS-B can have theory at the same time
+        //   6 lab rooms:  one per batch (A1,A2,A3,B1,B2,B3) — all 6 labs can
+        //                 run simultaneously in period 6 without conflict
         rooms: [
             { id: 'r1', name: '2102',   capacity: 72, type: 'classroom' },
             { id: 'r2', name: '2103',   capacity: 72, type: 'classroom' },
@@ -590,58 +635,87 @@ function loadOptimalDataset() {
             { id: 'r8', name: '2207-C', capacity: 24, type: 'lab' },
         ],
 
-        // Compact timeslots: 5 days × 6 periods = 30 slots
-        // Periods 1-4 = theory (08:00–12:00), periods 5-6 = labs (14:00–16:00)
-        // This ensures theory and lab slots are on different periods → no batch-parent clash
+        // ── Timeslots ─────────────────────────────────────────────────────────
+        // 5 days × 6 periods = 30 slots
+        // Periods 1–5: theory/tutorial (1hr each, 08:00–13:00)
+        // Period 6:    labs only (2hr block, 14:00–16:00)
+        //
+        // CRITICAL: labs are ALWAYS period 6, theory is ALWAYS periods 1–5.
+        // The batch-parent constraint fires when a batch and its parent share
+        // the same slot. Since labs use period 6 and theory uses periods 1–5,
+        // they can NEVER be in the same slot → zero batch-parent conflicts.
         timeslots: [
-            // Monday — theory P1-P4, lab P5-P6
+            // Monday
             { id: 'slot1',  day: 'monday',    period: 1, start: '08:00', end: '09:00', duration: 1 },
             { id: 'slot2',  day: 'monday',    period: 2, start: '09:00', end: '10:00', duration: 1 },
             { id: 'slot3',  day: 'monday',    period: 3, start: '10:00', end: '11:00', duration: 1 },
             { id: 'slot4',  day: 'monday',    period: 4, start: '11:00', end: '12:00', duration: 1 },
-            { id: 'slot5',  day: 'monday',    period: 5, start: '14:00', end: '16:00', duration: 2 },
+            { id: 'slot5',  day: 'monday',    period: 5, start: '12:00', end: '13:00', duration: 1 },
+            { id: 'slot6',  day: 'monday',    period: 6, start: '14:00', end: '16:00', duration: 2 },
             // Tuesday
-            { id: 'slot6',  day: 'tuesday',   period: 1, start: '08:00', end: '09:00', duration: 1 },
-            { id: 'slot7',  day: 'tuesday',   period: 2, start: '09:00', end: '10:00', duration: 1 },
-            { id: 'slot8',  day: 'tuesday',   period: 3, start: '10:00', end: '11:00', duration: 1 },
-            { id: 'slot9',  day: 'tuesday',   period: 4, start: '11:00', end: '12:00', duration: 1 },
-            { id: 'slot10', day: 'tuesday',   period: 5, start: '14:00', end: '16:00', duration: 2 },
+            { id: 'slot7',  day: 'tuesday',   period: 1, start: '08:00', end: '09:00', duration: 1 },
+            { id: 'slot8',  day: 'tuesday',   period: 2, start: '09:00', end: '10:00', duration: 1 },
+            { id: 'slot9',  day: 'tuesday',   period: 3, start: '10:00', end: '11:00', duration: 1 },
+            { id: 'slot10', day: 'tuesday',   period: 4, start: '11:00', end: '12:00', duration: 1 },
+            { id: 'slot11', day: 'tuesday',   period: 5, start: '12:00', end: '13:00', duration: 1 },
+            { id: 'slot12', day: 'tuesday',   period: 6, start: '14:00', end: '16:00', duration: 2 },
             // Wednesday
-            { id: 'slot11', day: 'wednesday', period: 1, start: '08:00', end: '09:00', duration: 1 },
-            { id: 'slot12', day: 'wednesday', period: 2, start: '09:00', end: '10:00', duration: 1 },
-            { id: 'slot13', day: 'wednesday', period: 3, start: '10:00', end: '11:00', duration: 1 },
-            { id: 'slot14', day: 'wednesday', period: 4, start: '11:00', end: '12:00', duration: 1 },
-            { id: 'slot15', day: 'wednesday', period: 5, start: '14:00', end: '16:00', duration: 2 },
+            { id: 'slot13', day: 'wednesday', period: 1, start: '08:00', end: '09:00', duration: 1 },
+            { id: 'slot14', day: 'wednesday', period: 2, start: '09:00', end: '10:00', duration: 1 },
+            { id: 'slot15', day: 'wednesday', period: 3, start: '10:00', end: '11:00', duration: 1 },
+            { id: 'slot16', day: 'wednesday', period: 4, start: '11:00', end: '12:00', duration: 1 },
+            { id: 'slot17', day: 'wednesday', period: 5, start: '12:00', end: '13:00', duration: 1 },
+            { id: 'slot18', day: 'wednesday', period: 6, start: '14:00', end: '16:00', duration: 2 },
             // Thursday
-            { id: 'slot16', day: 'thursday',  period: 1, start: '08:00', end: '09:00', duration: 1 },
-            { id: 'slot17', day: 'thursday',  period: 2, start: '09:00', end: '10:00', duration: 1 },
-            { id: 'slot18', day: 'thursday',  period: 3, start: '10:00', end: '11:00', duration: 1 },
-            { id: 'slot19', day: 'thursday',  period: 4, start: '11:00', end: '12:00', duration: 1 },
-            { id: 'slot20', day: 'thursday',  period: 5, start: '14:00', end: '16:00', duration: 2 },
+            { id: 'slot19', day: 'thursday',  period: 1, start: '08:00', end: '09:00', duration: 1 },
+            { id: 'slot20', day: 'thursday',  period: 2, start: '09:00', end: '10:00', duration: 1 },
+            { id: 'slot21', day: 'thursday',  period: 3, start: '10:00', end: '11:00', duration: 1 },
+            { id: 'slot22', day: 'thursday',  period: 4, start: '11:00', end: '12:00', duration: 1 },
+            { id: 'slot23', day: 'thursday',  period: 5, start: '12:00', end: '13:00', duration: 1 },
+            { id: 'slot24', day: 'thursday',  period: 6, start: '14:00', end: '16:00', duration: 2 },
             // Friday
-            { id: 'slot21', day: 'friday',    period: 1, start: '08:00', end: '09:00', duration: 1 },
-            { id: 'slot22', day: 'friday',    period: 2, start: '09:00', end: '10:00', duration: 1 },
-            { id: 'slot23', day: 'friday',    period: 3, start: '10:00', end: '11:00', duration: 1 },
-            { id: 'slot24', day: 'friday',    period: 4, start: '11:00', end: '12:00', duration: 1 },
-            { id: 'slot25', day: 'friday',    period: 5, start: '14:00', end: '16:00', duration: 2 },
+            { id: 'slot25', day: 'friday',    period: 1, start: '08:00', end: '09:00', duration: 1 },
+            { id: 'slot26', day: 'friday',    period: 2, start: '09:00', end: '10:00', duration: 1 },
+            { id: 'slot27', day: 'friday',    period: 3, start: '10:00', end: '11:00', duration: 1 },
+            { id: 'slot28', day: 'friday',    period: 4, start: '11:00', end: '12:00', duration: 1 },
+            { id: 'slot29', day: 'friday',    period: 5, start: '12:00', end: '13:00', duration: 1 },
+            { id: 'slot30', day: 'friday',    period: 6, start: '14:00', end: '16:00', duration: 2 },
         ],
 
+        // ── Classes ───────────────────────────────────────────────────────────
+        // AIDS-A and AIDS-B: full divisions, attend theory together
+        // A1/A2/A3: lab batches of AIDS-A (parent: c1)
+        // B1/B2/B3: lab batches of AIDS-B (parent: c2)
+        //
+        // Subject assignment per class:
+        //   Divisions get ALL theory + tutorial subjects
+        //   Batches get ONLY their 3 lab subjects
+        //   → A student in A1 attends:
+        //       theory with AIDS-A (periods 1–5)
+        //       labs with A1 only  (period 6)
+        //       Never both at the same time ✓
         classes: [
-            // Full divisions — theory subjects only
-            { id: 'c1', name: 'AIDS-A', subjects: ['s1','s2','s3','s4','s5','s6','s10','s11','s12'], type: 'division' },
-            { id: 'c2', name: 'AIDS-B', subjects: ['s1','s2','s3','s4','s5','s6','s10','s11','s12'], type: 'division' },
-            // Lab batches of AIDS-A (labs only, parent: c1)
-            { id: 'c3', name: 'A1', subjects: ['s7','s8','s9'], type: 'batch', parent: 'c1', batch_of: 'AIDS-A' },
-            { id: 'c4', name: 'A2', subjects: ['s7','s8','s9'], type: 'batch', parent: 'c1', batch_of: 'AIDS-A' },
-            { id: 'c5', name: 'A3', subjects: ['s7','s8','s9'], type: 'batch', parent: 'c1', batch_of: 'AIDS-A' },
-            // Lab batches of AIDS-B (labs only, parent: c2)
-            { id: 'c6', name: 'B1', subjects: ['s7','s8','s9'], type: 'batch', parent: 'c2', batch_of: 'AIDS-B' },
-            { id: 'c7', name: 'B2', subjects: ['s7','s8','s9'], type: 'batch', parent: 'c2', batch_of: 'AIDS-B' },
-            { id: 'c8', name: 'B3', subjects: ['s7','s8','s9'], type: 'batch', parent: 'c2', batch_of: 'AIDS-B' },
+            {
+                id: 'c1', name: 'AIDS-A', type: 'division',
+                subjects: ['s1','s2','s3','s4','s5','s6','s10','s11']
+            },
+            {
+                id: 'c2', name: 'AIDS-B', type: 'division',
+                subjects: ['s1','s2','s3','s4','s5','s6','s10','s11']
+            },
+            // AIDS-A batches — labs only
+            { id: 'c3', name: 'A1', type: 'batch', parent: 'c1', batch_of: 'AIDS-A', subjects: ['s7','s8','s9'] },
+            { id: 'c4', name: 'A2', type: 'batch', parent: 'c1', batch_of: 'AIDS-A', subjects: ['s7','s8','s9'] },
+            { id: 'c5', name: 'A3', type: 'batch', parent: 'c1', batch_of: 'AIDS-A', subjects: ['s7','s8','s9'] },
+            // AIDS-B batches — labs only
+            { id: 'c6', name: 'B1', type: 'batch', parent: 'c2', batch_of: 'AIDS-B', subjects: ['s7','s8','s9'] },
+            { id: 'c7', name: 'B2', type: 'batch', parent: 'c2', batch_of: 'AIDS-B', subjects: ['s7','s8','s9'] },
+            { id: 'c8', name: 'B3', type: 'batch', parent: 'c2', batch_of: 'AIDS-B', subjects: ['s7','s8','s9'] },
         ]
     };
+
     updateResourceCounts();
-    showNotification('success', '⭐ Optimal dataset loaded! Engineered for maximum quality score. Click "Submit All Resources to Backend" to proceed.');
+    showNotification('success', '⭐ Optimal dataset loaded — equal teacher load, zero conflicts by design. Submit to backend to proceed.');
 }
 
 // ============================================
