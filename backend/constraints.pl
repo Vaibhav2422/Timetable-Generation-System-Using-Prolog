@@ -701,3 +701,5 @@ avg_list(List, Avg, _) :-
 % The constraints module integrates with knowledge_base.pl and matrix_model.pl
 % to provide complete validation functionality for the CSP solver.
 % ============================================================================
+
+% annotated hard vs soft constraint types
