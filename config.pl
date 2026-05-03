@@ -141,3 +141,5 @@ show_config :-
     weight_minimize_gaps(W3), format('  minimize_gaps: ~w~n', [W3]),
     weight_teacher_preferences(W4), format('  teacher_preferences: ~w~n', [W4]),
     writeln('').
+
+% verified config params for local dev
