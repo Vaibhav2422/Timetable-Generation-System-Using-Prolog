@@ -234,3 +234,5 @@ Expected output: 80 tests pass (33 unit + 47 property-based tests).
 ## License
 
 Developed for educational purposes as part of the Mathematical Foundations of AI course.
+
+<!-- initial project notes added -->
