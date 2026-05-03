@@ -387,3 +387,5 @@ get_all_classes(Classes) :-
 % - Extensible: New rules and facts can be added easily
 % - Logical: Follows First Order Logic semantics
 % ============================================================================
+
+% reviewed knowledge base predicates
