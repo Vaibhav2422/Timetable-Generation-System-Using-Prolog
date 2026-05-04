@@ -609,3 +609,5 @@ count_eliminated_values(_, value(TeacherID, RoomID, SlotID), Matrix, Count) :-
 %
 % This demonstrates Constraint Satisfaction Problem solving, a key MFAI concept.
 % ============================================================================
+
+% trace comments for backtracking steps
