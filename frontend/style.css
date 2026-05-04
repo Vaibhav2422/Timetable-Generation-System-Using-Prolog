@@ -5100,3 +5100,5 @@ body.dark-mode .no-timetable-banner {
     box-shadow: var(--shadow, 0 2px 6px rgba(0,0,0,0.08));
     border: 1px solid var(--border-color, #ddd);
 }
+
+/* spacing fix on timetable grid cells */
