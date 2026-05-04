@@ -407,3 +407,5 @@ determine_risk_level(_, _, low).
 %   suggest_preventive_actions/2     - Actionable recommendations
 %   risk_assessment/2                - Overall risk category
 % ============================================================================
+
+% heuristic improvement - check room first
