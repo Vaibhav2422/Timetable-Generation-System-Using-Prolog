@@ -224,3 +224,5 @@
 ### Conclusion
 
 This project aims to create a comprehensive AI-based timetable generation system that demonstrates mathematical foundations of AI while solving a real-world scheduling problem. Through careful design, rigorous testing, and thorough documentation, the system will serve as both a functional tool and an educational resource for understanding AI techniques in practice.
+
+<!-- scope clarified for sem 4 submission -->
