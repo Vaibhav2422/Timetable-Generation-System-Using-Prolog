@@ -412,3 +412,5 @@ generate_individuals(Population, FitnessMap, N, MutRate, CxRate, [Ind|Rest]) :-
 %% ============================================================================
 %% End of genetic_optimizer.pl
 %% ============================================================================
+
+% crossover rate tuned to 0.75
