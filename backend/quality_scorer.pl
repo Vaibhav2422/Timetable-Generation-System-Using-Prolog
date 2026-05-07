@@ -288,3 +288,5 @@ quality_breakdown(Matrix, Breakdown) :-
 %% ============================================================================
 %% End of quality_scorer.pl
 %% ============================================================================
+
+% teacher gap penalty added to scoring
