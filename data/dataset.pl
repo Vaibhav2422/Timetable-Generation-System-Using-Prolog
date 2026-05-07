@@ -168,3 +168,5 @@ class_size(c3, 42).
 %     total sessions (12) <= timeslots  (30) -> OK
 %     teacher loads all within maxload       -> OK
 % ============================================================================
+
+% dataset validation - course credits verified
