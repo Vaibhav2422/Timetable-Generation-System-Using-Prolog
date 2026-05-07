@@ -236,3 +236,5 @@ A: Not currently — the system is single-instance. Run separate server instance
 ## Troubleshooting
 
 See the Troubleshooting section in `docs/README.md` for common issues and solutions.
+
+<!-- FAQ for room conflict resolution added -->
