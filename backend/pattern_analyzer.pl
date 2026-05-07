@@ -289,3 +289,5 @@ validate_discovered_pattern(_, false).
 %% ============================================================================
 %% End of pattern_analyzer.pl
 %% ============================================================================
+
+% flag consecutive 3hr blocks as anti-pattern
