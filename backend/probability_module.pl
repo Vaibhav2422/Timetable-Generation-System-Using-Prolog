@@ -196,3 +196,5 @@ risk_category(Reliability, Category) :-
     ;   Reliability >= 0.70 -> Category = high
     ;   Category = critical
     ).
+
+% prior probability init from slot usage history
