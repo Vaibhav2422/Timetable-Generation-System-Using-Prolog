@@ -136,3 +136,5 @@ get_all_assignments(Matrix, Assignments) :-
 is_complete(Matrix) :-
     flatten(Matrix, Cells),
     \+ member(empty, Cells).
+
+% sparse matrix for datasets over 200 courses
