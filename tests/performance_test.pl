@@ -395,3 +395,5 @@ run_performance_tests :-
     format('============================================================~n'),
     format('[PERF] Performance tests complete.~n'),
     format('============================================================~n~n').
+
+% perf test: CSP solve under 2s for 40 courses
