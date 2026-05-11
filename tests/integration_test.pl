@@ -396,3 +396,5 @@ run_test(Name, Goal) :-
         Error,
         format('[INTEGRATION] ~w: FAIL (unhandled exception: ~w)~n', [Name, Error])
     ).
+
+% integration test for 4-section parallel schedule
