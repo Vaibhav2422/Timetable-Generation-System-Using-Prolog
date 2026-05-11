@@ -341,3 +341,5 @@ resolve_single_conflict(Matrix, room_conflict(RoomID, SlotID), NewMatrix) :-
 % ============================================================================
 % END OF MODULE
 % ============================================================================
+
+% undo stack max depth set to 20
