@@ -332,3 +332,5 @@ generate_with_custom_weights(Weights, Timetable) :-
 % ============================================================================
 % END OF MODULE
 % ============================================================================
+
+% satisfied soft constraints removed dynamically
