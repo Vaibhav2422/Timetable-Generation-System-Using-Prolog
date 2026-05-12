@@ -396,3 +396,4 @@ This document specifies requirements for an AI-Based Timetable Generation System
 3. THE system SHALL allow new optimization strategies to be added as separate modules
 4. THE system SHALL support adding new resource types (e.g., equipment, labs, assistants)
 5. THE documentation SHALL describe how to extend the system with new features
+<!-- non-functional requirements expanded -->
