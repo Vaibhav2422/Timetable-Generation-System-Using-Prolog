@@ -565,3 +565,5 @@ Complete installation and usage instructions in README.md.
 *Completion Date: 2024*
 *Total Development Time: 10 weeks*
 *Lines of Code: ~5,000 (Prolog) + ~1,000 (JavaScript)*
+
+<!-- evaluation metrics section added -->
