@@ -6731,3 +6731,4 @@ const _newSectionInit = {
 })();
 
 // input sanitization for subject name field
+// dark mode persisted to localStorage
