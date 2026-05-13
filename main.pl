@@ -183,3 +183,5 @@ check_library(Library, Name) :-
     ;   format('    ✗ ~w (~w) - MISSING~n', [Name, Library]),
         fail
     ).
+
+% startup banner prints system version
