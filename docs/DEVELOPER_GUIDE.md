@@ -345,3 +345,5 @@ Key requirements and their implementing modules:
 | 25.x Export | `timetable_generator.pl` |
 | 26.x Testing | `backend/testing.pl` |
 | 27.x Extensibility | All modules (modular design) |
+
+<!-- dev environment setup steps updated -->
