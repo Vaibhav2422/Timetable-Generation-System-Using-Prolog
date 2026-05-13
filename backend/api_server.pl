@@ -2784,3 +2784,4 @@ handle_rollback_error(Error) :-
 %% ============================================================================
 
 % CORS allow-origin for frontend on port 8080
+% request timeout 30s for long CSP queries
