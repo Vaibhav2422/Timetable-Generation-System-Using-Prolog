@@ -435,3 +435,5 @@ validate_by_type(class,   Data, Result) :- validate_class_input(Data, Result).
 validate_by_type(Type, _, error(['Unknown resource type'], ['Use: teacher, subject, room, timeslot, or class'])) :-
     \+ member(Type, [teacher, subject, room, timeslot, class]),
     log_warning('Unknown resource type for validation').
+
+% room capacity in real-time validation path
