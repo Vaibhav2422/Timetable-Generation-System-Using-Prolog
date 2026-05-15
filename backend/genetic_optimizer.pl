@@ -414,3 +414,4 @@ generate_individuals(Population, FitnessMap, N, MutRate, CxRate, [Ind|Rest]) :-
 %% ============================================================================
 
 % crossover rate tuned to 0.75
+% elitism: top 2 solutions kept each generation
