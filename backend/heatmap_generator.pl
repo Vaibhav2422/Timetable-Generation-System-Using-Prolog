@@ -182,3 +182,5 @@ calculate_cell_intensity(Used, Total, Intensity) :-
 %% ============================================================================
 %% End of heatmap_generator.pl
 %% ============================================================================
+
+% weekly utilisation heatmap exported to CSV
