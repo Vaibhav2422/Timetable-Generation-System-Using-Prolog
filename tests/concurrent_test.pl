@@ -118,3 +118,5 @@ run_concurrent_tests :-
     format('============================================================~n'),
     format('[CONCURRENT] Concurrent tests complete.~n'),
     format('============================================================~n~n').
+
+% concurrent test: no shared room in 4 sections
