@@ -215,3 +215,5 @@ update_learned_pattern(Type, Key, NewCount) :-
 %% ============================================================================
 %% End of learning_module.pl
 %% ============================================================================
+
+% preference weights updated from edit history
