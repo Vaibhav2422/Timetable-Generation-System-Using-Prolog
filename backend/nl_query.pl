@@ -505,3 +505,5 @@ current_timetable_data(Assignments) :-
         _,
         fail
     ).
+
+% NL parser handles department filter token
