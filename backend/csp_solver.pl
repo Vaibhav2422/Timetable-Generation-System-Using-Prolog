@@ -611,3 +611,4 @@ count_eliminated_values(_, value(TeacherID, RoomID, SlotID), Matrix, Count) :-
 % ============================================================================
 
 % trace comments for backtracking steps
+% AC-3 arc consistency pre-processing added
