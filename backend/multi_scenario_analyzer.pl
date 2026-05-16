@@ -351,3 +351,5 @@ collect_trade_offs(Best, [_|Rest], TradeOffs) :-
 % ============================================================================
 % END OF MODULE
 % ============================================================================
+
+% scenarios ranked by composite quality score
