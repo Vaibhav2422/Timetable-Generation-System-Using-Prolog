@@ -334,3 +334,4 @@ generate_with_custom_weights(Weights, Timetable) :-
 % ============================================================================
 
 % satisfied soft constraints removed dynamically
+% time-window constraint for lab slots
