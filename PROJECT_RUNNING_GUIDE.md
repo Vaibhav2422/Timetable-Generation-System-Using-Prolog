@@ -272,3 +272,5 @@ If you encounter issues:
 ---
 
 **Congratulations! Your AI Timetable Generator is now fully operational! 🎉**
+
+<!-- troubleshooting section expanded -->
