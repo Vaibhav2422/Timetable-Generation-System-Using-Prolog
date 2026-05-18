@@ -351,3 +351,5 @@ If not found, add the SWI-Prolog `bin` directory to your `PATH`.
 - Increase `max_search_nodes` and `search_timeout` for larger datasets.
 - Reduce the number of sessions (fewer classes or subjects).
 - Check logs for backtracking counts — high backtracking indicates constraint conflicts in the dataset.
+
+<!-- deployment checklist added -->
