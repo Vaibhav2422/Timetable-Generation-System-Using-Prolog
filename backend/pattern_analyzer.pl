@@ -291,3 +291,4 @@ validate_discovered_pattern(_, false).
 %% ============================================================================
 
 % flag consecutive 3hr blocks as anti-pattern
+% overloaded teacher detection improved
