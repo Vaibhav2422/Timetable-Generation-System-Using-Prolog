@@ -225,3 +225,4 @@ log_search_statistics(_Solution) :-
 % ============================================================================
 
 % branching factor logged per level
+% cumulative solve time tracked across sessions
