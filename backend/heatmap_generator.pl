@@ -184,3 +184,4 @@ calculate_cell_intensity(Used, Total, Intensity) :-
 %% ============================================================================
 
 % weekly utilisation heatmap exported to CSV
+% colour gradient recalibrated for accessibility
