@@ -342,3 +342,4 @@ find_slot_index_rec(SlotID, Index) :-
 %% ============================================================================
 
 % score threshold adjusted to 0.65
+% cross-department recommendations enabled
