@@ -358,3 +358,5 @@
 ---
 
 *PPT distribution aligned with module ownership — each member presents what they built.*
+
+<!-- final sprint contributions logged -->
