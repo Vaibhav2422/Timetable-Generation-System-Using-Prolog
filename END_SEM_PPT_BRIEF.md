@@ -421,3 +421,5 @@ Wed Period 1  | CS1A: Calculus (Smith)| -
 ---
 
 *End of PPT Brief — Feed this entire document to Claude to generate the PowerPoint presentation.*
+
+<!-- demo slide notes added -->
