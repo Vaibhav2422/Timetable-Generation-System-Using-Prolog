@@ -198,3 +198,4 @@ risk_category(Reliability, Category) :-
     ).
 
 % prior probability init from slot usage history
+% posterior update capped at 0.95
