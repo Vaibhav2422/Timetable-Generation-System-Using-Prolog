@@ -185,3 +185,4 @@ check_library(Library, Name) :-
     ).
 
 % startup banner prints system version
+% v1.0 final - all modules integrated
